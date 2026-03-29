@@ -3,22 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kamini Digital Studio | Online</title>
+    <title>Kamini Digital Studio | Professional</title>
     <style>
         body { background-color: #f0f8ff; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 20px; transition: 0.5s; margin-bottom: 80px; }
-        .container { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: inline-block; width: 95%; max-width: 800px; }
+        .container { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: inline-block; width: 95%; max-width: 800px; position: relative; }
         h1 { color: #2c3e50; margin-bottom: 5px; }
         #greeting { font-size: 24px; font-weight: bold; color: #e67e22; margin: 10px 0; }
         #time { font-size: 18px; color: #7f8c8d; background: #ecf0f1; padding: 5px 15px; border-radius: 20px; display: inline-block; }
         table { width: 100%; margin: 25px 0; border-collapse: collapse; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        th { background: #007bff; color: white; padding: 15px; text-transform: uppercase; }
+        th { background: #007bff; color: white; padding: 15px; }
         td { padding: 12px; border-bottom: 1px solid #eee; text-align: center; font-weight: 500; }
-        tr:hover { background: #f1f1f1; }
         .whatsapp-btn { background: #25D366; color: white; padding: 15px 30px; text-decoration: none; border-radius: 50px; font-weight: bold; display: inline-block; margin: 20px 0; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); transition: 0.3s; }
         .whatsapp-btn:hover { transform: scale(1.05); background: #128C7E; }
-        .card-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 25px; }
-        .card { background: #fff; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.08); width: 220px; padding: 15px; border-top: 5px solid #007bff; }
-        .star { font-size: 35px; cursor: pointer; color: #ccc; transition: 0.2s; }
+        .star { font-size: 40px; cursor: pointer; color: #ccc; transition: 0.2s; margin: 0 5px; }
+        .submit-btn { background: #3498db; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; margin-top: 15px; font-weight: bold; display: none; transition: 0.3s; }
+        .submit-btn:hover { background: #2980b9; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         .color-btns { position: fixed; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; }
         .color-btn { width: 35px; height: 35px; border-radius: 50%; border: 2px solid white; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
     </style>
@@ -47,7 +46,7 @@
 
         <a href="https://wa.me/919019863904" class="whatsapp-btn">💬 Send Photo on WhatsApp</a>
 
-        <div style="background: #fdfdfd; padding: 20px; border-radius: 15px; border: 1px solid #eee; margin-top: 20px;">
+        <div style="background: #fdfdfd; padding: 20px; border-radius: 15px; border: 2px dashed #eee; margin-top: 20px;">
             <h3 style="margin-top:0;">আমাদের সার্ভিস কেমন লাগলো? ⭐</h3>
             <div id="rating-stars">
                 <span class="star" onclick="setRating(1)">☆</span>
@@ -56,12 +55,8 @@
                 <span class="star" onclick="setRating(4)">☆</span>
                 <span class="star" onclick="setRating(5)">☆</span>
             </div>
-            <p id="rating-msg" style="font-weight: bold; color: #27ae60; margin-top: 10px; min-height: 20px;"></p>
-        </div>
-
-        <div class="card-container">
-            <div class="card"><h3>📸 Photo</h3><p>৫ মিনিটে ছবি ডেলিভারি</p></div>
-            <div class="card" style="border-top-color: #28a745;"><h3>📝 Form</h3><p>নির্ভুল অনলাইন ফর্ম</p></div>
+            <p id="rating-msg" style="font-weight: bold; color: #27ae60; margin-top: 10px; min-height: 24px;"></p>
+            <button id="rating-submit" class="submit-btn" onclick="sendRating()">Submit Rating on WhatsApp</button>
         </div>
 
         <footer style="margin-top: 30px; font-size: 13px; color: #95a5a6; border-top: 1px dashed #ddd; padding-top: 15px;">
@@ -70,10 +65,12 @@
     </div>
 
     <div style="background: #ff4d4d; color: white; padding: 12px; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 1000;">
-        <marquee scrollamount="10">🔥 ধামাকা অফার: ৫ কপি পাসপোর্ট ফটো মাত্র ৩০ টাকা! | ১ কপি জেরক্স মাত্র ১ টাকা! | দ্রুত সার্ভিসের জন্য যোগাযোগ করুন 🔥</marquee>
+        <marquee scrollamount="10">🔥 ৫ কপি পাসপোর্ট ফটো মাত্র ৩০ টাকা! | ১ কপি জেরক্স মাত্র ১ টাকা! | দ্রুত সার্ভিসের জন্য যোগাযোগ করুন 🔥</marquee>
     </div>
 
     <script>
+        let selectedRating = 0;
+
         function updateAll() {
             const now = new Date();
             const hour = now.getHours();
@@ -87,15 +84,23 @@
         function changeBg(color) { document.body.style.backgroundColor = color; }
 
         function setRating(n) {
+            selectedRating = n;
             const stars = document.getElementById('rating-stars').children;
             const msgs = ["খুব খারাপ 😞", "মোটামুটি 😐", "ভালোই 🙂", "দারুণ! 😍", "অসাধারণ! 🏆"];
             for (let i = 0; i < 5; i++) {
                 stars[i].innerHTML = (i < n) ? "★" : "☆";
                 stars[i].style.color = (i < n) ? "#f1c40f" : "#ccc";
             }
-            document.getElementById('rating-msg').innerHTML = msgs[n-1];
+            document.getElementById('rating-msg').innerHTML = "আপনি দিয়েছেন: " + msgs[n-1];
+            document.getElementById('rating-submit').style.display = "inline-block";
+        }
+
+        function sendRating() {
+            const msgs = ["১-স্টার", "২-স্টার", "৩-স্টার", "৪-স্টার", "৫-স্টার"];
+            const text = "Hello! আমি আপনার স্টুডিওর সার্ভিসকে " + msgs[selectedRating-1] + " রেটিং দিয়েছি।";
+            const url = "https://wa.me/919019863904?text=" + encodeURIComponent(text);
+            window.open(url, '_blank');
         }
     </script>
-
 </body>
 </html>
