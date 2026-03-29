@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamini Digital Studio</title>
+    <style>
+        body { background-color: #f0f8ff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 40px; }
+        .container { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: inline-block; width: 90%; max-width: 900px; }
+        h1 { color: #2c3e50; margin-bottom: 5px; }
+        #greeting { font-size: 22px; font-weight: bold; color: #e67e22; margin: 10px 0; }
+        #time { font-size: 18px; color: #7f8c8d; background: #ecf0f1; padding: 5px 15px; border-radius: 20px; display: inline-block; }
+        table { width: 100%; margin: 20px 0; border-collapse: collapse; border-radius: 10px; overflow: hidden; }
+        th { background: #007bff; color: white; padding: 15px; }
+        td { padding: 12px; border-bottom: 1px solid #eee; text-align: center; }
+        tr:nth-child(even) { background: #f9f9f9; }
+        .whatsapp-btn { background: #25D366; color: white; padding: 15px 25px; text-decoration: none; border-radius: 30px; font-weight: bold; display: inline-block; margin: 20px 0; transition: 0.3s; }
+        .whatsapp-btn:hover { background: #128C7E; transform: scale(1.05); }
+        .card-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px; }
+        .card { background: white; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 250px; padding: 15px; border-top: 5px solid #007bff; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Kamini School Lane Digital Studio</h1>
+        
+        <div id="greeting"></div>
+        <div id="time"></div>
+
+        <p style="font-weight: bold;">Contact: <a href="tel:9019863904" style="color: blue;">9019863904</a></p>
+
+        <table>
+            <tr>
+                <th>সার্ভিসের নাম</th>
+                <th>রেট (টাকায়)</th>
+            </tr>
+            <tr><td>জেরক্স (B&W)</td><td>১.০০</td></tr>
+            <tr><td>প্রিন্ট আউট (B&W)</td><td>৫.০০</td></tr>
+            <tr><td>পাসপোর্ট ফটো (৫ কপি)</td><td>৩০.০০</td></tr>
+            <tr><td>বুক অর্ডার</td><td>আলোচনা সাপেক্ষে</td></tr>
+        </table>
+
+        <a href="https://wa.me/919019863904" class="whatsapp-btn">Send Photo on WhatsApp</a>
+
+        <div style="background: #ff4d4d; color: white; padding: 10px; border-radius: 5px; overflow: hidden;">
+            <marquee scrollamount="8">ধামাকা অফার: ৫ কপি পাসপোর্ট ফটো মাত্র ৩০ টাকা! | ১ কপি জেরক্স মাত্র ১ টাকা!</marquee>
+        </div>
+<div style="margin-bottom: 20px;">
+    <button onclick="changeBg('#f0f8ff')" style="background-color: #f0f8ff; border: 1px solid #ccc; padding: 10px; cursor: pointer; border-radius: 5px;">Light</button>
+    <button onclick="changeBg('#ffe4e1')" style="background-color: #ffe4e1; border: 1px solid #ccc; padding: 10px; cursor: pointer; border-radius: 5px;">Rose</button>
+    <button onclick="changeBg('#e0ffe0')" style="background-color: #e0ffe0; border: 1px solid #ccc; padding: 10px; cursor: pointer; border-radius: 5px;">Mint</button>
+    <button onclick="changeBg('#2c3e50')" style="background-color: #2c3e50; color: white; border: 1px solid #ccc; padding: 10px; cursor: pointer; border-radius: 5px;">Dark</button>
+</div>
+
+<script>
+    // এই ফাংশনটি ব্যাকগ্রাউন্ডের রঙ বদলে দেবে
+    function changeBg(color) {
+        document.body.style.backgroundColor = color;
+    }
+</script>
+        <div class="card-container">
+            <div class="card" style="border-top-color: #007bff;"><h3>📸 Photo</h3><p>৫ মিনিটে ছবি ডেলিভারি</p></div>
+            <div class="card" style="border-top-color: #28a745;"><h3>📝 Form</h3><p>নির্ভুল ফর্ম ফিলাপ</p></div>
+            <div class="card" style="border-top-color: #ffc107;"><h3>🖨️ Print</h3><p>উন্নত মানের প্রিন্ট</p></div>
+        </div>
+    <footer style="margin-top: 30px; padding: 20px; font-size: 14px; color: #7f8c8d; border-top: 1px dashed #ccc;">
+    <p>© 2026 Kamini School Lane Digital Studio. <br> 
+    Designed with ❤️ by **TUTUN DEBNATH** (Digital Artist)</p>
+</footer></div>
+
+    <script>
+        function updateAll() {
+            const now = new Date();
+            const hour = now.getHours();
+            
+            // সময় আপডেট
+            document.getElementById('time').innerHTML = "🕒 " + now.toLocaleDateString() + " | " + now.toLocaleTimeString();
+            
+            // গ্রিটিং আপডেট
+            let msg;
+            if (hour < 12) msg = "শুভ সকাল! ☀️";
+            else if (hour < 17) msg = "শুভ দুপুর! 🌤️";
+            else if (hour < 20) msg = "শুভ সন্ধ্যা! 🌙";
+            else msg = "শুভ রাত্রি! ✨";
+            document.getElementById('greeting').innerHTML = msg;
+        }
+        setInterval(updateAll, 1000);
+        updateAll();
+    </script>
+<div style="background: #ff4d4d; color: white; padding: 10px; font-weight: bold; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 1000; box-shadow: 0 -2px 10px rgba(0,0,0,0.2);">
+    <marquee behavior="scroll" direction="left" scrollamount="10">
+        🔥 ধামাকা অফার: ৫ কপি পাসপোর্ট ফটো মাত্র ৩০ টাকা! | ১ কপি জেরক্স মাত্র ১ টাকা! | অনলাইনে ফর্ম ফিলাপের সুব্যবস্থা আছে। | যোগাযোগ: ৯০১৯৮৬৩৯০৪ 🔥
+    </marquee>
+</div>
+
+<div style="position: fixed; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000;">
+    <button onclick="changeBg('#f0f8ff')" style="background: #f0f8ff; border: 2px solid white; padding: 8px; border-radius: 50%; cursor: pointer; width: 40px; height: 40px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);" title="Light"></button>
+    <button onclick="changeBg('#ffe4e1')" style="background: #ffe4e1; border: 2px solid white; padding: 8px; border-radius: 50%; cursor: pointer; width: 40px; height: 40px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);" title="Rose"></button>
+    <button onclick="changeBg('#2c3e50')" style="background: #2c3e50; border: 2px solid white; padding: 8px; border-radius: 50%; cursor: pointer; width: 40px; height: 40px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);" title="Dark"></button>
+</div>
+
+<script>
+    function changeBg(color) {
+        document.body.style.backgroundColor = color;
+    }
+</script>
+</body>
+</html>
