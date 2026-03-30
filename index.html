@@ -109,23 +109,20 @@
         }
 
         window.addEventListener('beforeinstallprompt', (e) => {
-            // ব্রাউজারকে নিজে থেকে পপ-আপ দেখাতে বাধা দেওয়া হচ্ছে
             e.preventDefault();
-            // ইভেন্টটা সেভ করে রাখা হচ্ছে যাতে বাটনে ক্লিক করলে কাজ হয়
             deferredPrompt = e;
-            // এবার আমাদের ডিজাইন করা বাটনটা দেখানো হবে
             installBtn.style.display = 'block';
         });
 
         installBtn.addEventListener('click', async () => {
             if (deferredPrompt) {
-                deferredPrompt.prompt(); // ইনস্টলের পপ-আপ দেখানো
+                deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
                 if (outcome === 'accepted') {
                     console.log('App Installed');
                 }
                 deferredPrompt = null;
-                installBtn.style.display = 'none'; // ইনস্টল হয়ে গেলে বাটনটা লুকিয়ে দেওয়া
+                installBtn.style.display = 'none';
             }
         });
 
@@ -223,7 +220,53 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        function sendOrder() {
+        function sendOrder() {function sendOrder() {
+            const bookEntries = document.querySelectorAll('.book-entry');
+            let orderMsg = "";
+            let isValid = true;
+            let booksArray = []; // ফায়ারবেসে আলাদা করে ডেটা পাঠানোর জন্য
+
+            bookEntries.forEach((entry, index) => {
+                const bName = entry.querySelector('.b-name').value.trim();
+                const wName = entry.querySelector('.w-name').value.trim();
+                const pName = entry.querySelector('.p-name').value.trim();
+
+                if (bName !== "") {
+                    // ফায়ারবেসের জন্য আলাদা ডেটা সেভ করা হচ্ছে
+                    booksArray.push({
+                        book_name: bName,
+                        writer_name: wName,
+                        publisher_name: pName
+                    });
+                    
+                    let bookNum = booksArray.length;
+                    orderMsg += `\n📕 *বই ${bookNum}:* ${bName}`;
+                    if(wName !== "") orderMsg += `\n   লেখক: ${wName}`;
+                    if(pName !== "") orderMsg += `\n   পাবলিশার: ${pName}`;
+                    orderMsg += `\n`;
+                } else if (index === 0) {
+                    isValid = false;
+                }
+            });
+
+            if (!isValid || booksArray.length === 0) {
+                alert("দয়া করে অন্তত প্রথম বইয়ের নামটা অবশ্যই লিখুন!");
+                return;
+            }
+
+            // ফায়ারবেসে সুন্দরভাবে লিস্ট হিসেবে ডেটা সেভ করা হচ্ছে
+            db.collection("book_orders").add({
+                books: booksArray,
+                total_books: booksArray.length,
+                order_time: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                // সেভ হওয়ার পর হোয়াটসঅ্যাপে যাবে
+                const waLink = "https://wa.me/919019863904?text=নতুন বই অর্ডার:\n" + encodeURIComponent(orderMsg.trim());
+                window.location.href = waLink; 
+            }).catch(function(error) {
+                console.error("Error: ", error);
+            });
+        }
             const bookEntries = document.querySelectorAll('.book-entry');
             let orderMsg = "";
             let isValid = true;
