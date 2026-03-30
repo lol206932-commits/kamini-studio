@@ -16,8 +16,8 @@
         th { background-color: var(--btn-color); color: white; padding: 12px; }
         td { padding: 12px; border-bottom: 1px solid rgba(0,0,0,0.1); font-weight: bold; }
         
-        .order-box { margin-top: 20px; padding: 15px; border: 2px solid var(--btn-color); border-radius: 15px; background: rgba(255,255,255,0.2); }
-        input { width: 80%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ddd; outline: none; }
+        .order-box { margin-top: 20px; padding: 15px; border: 2px solid var(--btn-color); border-radius: 15px; background: rgba(255,255,255,0.2); display: flex; flex-direction: column; align-items: center; }
+        input { width: 85%; padding: 10px; margin: 8px 0; border-radius: 5px; border: 1px solid #ddd; outline: none; font-family: inherit; }
         
         .theme-panel { margin-bottom: 15px; display: flex; justify-content: center; gap: 12px; }
         .color-dot { width: 35px; height: 35px; border-radius: 50%; border: 2px solid white; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
@@ -62,8 +62,10 @@
 
         <div class="order-box">
             <h3 id="order-t">📚 বইয়ের অর্ডার দিন</h3>
-            <input type="text" id="bookName" placeholder="বইয়ের নাম লিখুন...">
-            <button style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;" id="order-btn" onclick="sendOrder()">Order Now</button>
+            <input type="text" id="bookName" placeholder="বইয়ের নাম লিখুন (বাধ্যতামূলক)..." required>
+            <input type="text" id="writerName" placeholder="লেখকের নাম (ঐচ্ছিক)...">
+            <input type="text" id="publisherName" placeholder="পাবলিশারের নাম (ঐচ্ছিক)...">
+            <button style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; margin-top: 10px; width: 85%; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" id="order-btn" onclick="sendOrder()">Order Now</button>
         </div>
 
         <div style="margin-top: 20px;">
@@ -82,7 +84,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
 
     <script>
-        // থিম পাল্টানোর কোড
         function setTheme(bg, card, text, shadow) {
             document.documentElement.style.setProperty('--bg-color', bg);
             document.documentElement.style.setProperty('--card-bg', card);
@@ -90,12 +91,12 @@
             document.documentElement.style.setProperty('--shadow-color', shadow);
         }
 
-        // ভাষা পাল্টানোর কোড
+        // ভাষা পাল্টানোর জন্য নতুন কোড
         function setLang(lang) {
             const d = {
-                'en': { title: "Kamini Digital", addr: "20, Kamini School Lane, Howrah", thS: "Service", thR: "Price", map: "📍 View on Maps", wa: "🟢 WhatsApp", orderT: "📚 Book Order", qr: "🔳 Scan for App", rows: [["Xerox", "1.00"], ["Print", "5.00"], ["Photo", "30.00"]] },
-                'hi': { title: "कामिनी डिजिटल", addr: "20, कामिनी स्कूल लेन, हावड़ा", thS: "सेवा", thR: "दर", map: "📍 मैप पर देखें", wa: "🟢 व्हाट्सएप", orderT: "📚 पुस्तक ऑर्डर", qr: "🔳 ऐप के लिए स्कैन", rows: [["जेरॉक्स", "1.00"], ["प्रिंट", "5.00"], ["फोटो", "30.00"]] },
-                'bn': { title: "কামিনী ডিজিটাল", addr: "২০ নম্বর কামিনী স্কুল লেন, হাওড়া", thS: "সার্ভিসের নাম", thR: "রেট", map: "📍 Google Maps-এ দেখুন", wa: "🟢 WhatsApp যোগাযোগ", orderT: "📚 বইয়ের অর্ডার দিন", qr: "🔳 স্ক্যান করে অ্যাপ নিন", rows: [["জেরক্স", "১.০০"], ["প্রিন্ট আউট", "৫.০০"], ["পাসপোর্ট ফটো", "৩০.০০"]] }
+                'en': { title: "Kamini Digital", addr: "20, Kamini School Lane, Howrah", thS: "Service", thR: "Price", map: "📍 View on Maps", wa: "🟢 WhatsApp", orderT: "📚 Book Order", qr: "🔳 Scan for App", rows: [["Xerox", "1.00"], ["Print", "5.00"], ["Photo", "30.00"]], bookP: "Book Name (Required)...", writerP: "Writer's Name (Optional)...", pubP: "Publisher's Name (Optional)..." },
+                'hi': { title: "कामिनी डिजिटल", addr: "20, कामिनी स्कूल लेन, हावड़ा", thS: "सेवा", thR: "दर", map: "📍 मैप पर देखें", wa: "🟢 व्हाट्सएप", orderT: "📚 पुस्तक ऑर्डर", qr: "🔳 ऐप के लिए स्कैन", rows: [["जेरॉक्स", "1.00"], ["प्रिंट", "5.00"], ["फोटो", "30.00"]], bookP: "किताब का नाम (अनिवार्य)...", writerP: "लेखक का नाम (वैकल्पिक)...", pubP: "प्रकाशक का नाम (वैकल्पिक)..." },
+                'bn': { title: "কামিনী ডিজিটাল", addr: "২০ নম্বর কামিনী স্কুল লেন, হাওড়া", thS: "সার্ভিসের নাম", thR: "রেট", map: "📍 Google Maps-এ দেখুন", wa: "🟢 WhatsApp যোগাযোগ", orderT: "📚 বইয়ের অর্ডার দিন", qr: "🔳 স্ক্যান করে অ্যাপ নিন", rows: [["জেরক্স", "১.০০"], ["প্রিন্ট আউট", "৫.০০"], ["পাসপোর্ট ফটো", "৩০.০০"]], bookP: "বইয়ের নাম লিখুন (বাধ্যতামূলক)...", writerP: "লেখকের নাম (ঐচ্ছিক)...", pubP: "পাবলিশারের নাম (ঐচ্ছিক)..." }
             };
             const data = d[lang];
             document.getElementById('title').innerText = data.title;
@@ -106,11 +107,16 @@
             document.getElementById('wa-btn').innerText = data.wa;
             document.getElementById('order-t').innerText = data.orderT;
             document.getElementById('qr-text').innerText = data.qr;
+            
+            // নতুন বক্সগুলোর ভাষা পরিবর্তন
+            document.getElementById('bookName').placeholder = data.bookP;
+            document.getElementById('writerName').placeholder = data.writerP;
+            document.getElementById('publisherName').placeholder = data.pubP;
+
             let rs = ""; data.rows.forEach(r => rs += `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`);
             document.getElementById('table-body').innerHTML = rs;
         }
 
-        // ফায়ারবেস কানেকশন
         const firebaseConfig = {
             apiKey: "AIzaSyC79rsKemc3qthh8-mJ29HM1ni7Q9mIb3Q",
             authDomain: "kamini-digital.firebaseapp.com",
@@ -123,23 +129,37 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // অর্ডার সেভ করার ও হোয়াটসঅ্যাপ খোলার কোড
         function sendOrder() {
-            const bookName = document.getElementById('bookName').value;
-            if (bookName) {
-                // ফায়ারবেসে পাঠানো হচ্ছে
+            // বক্সগুলো থেকে তথ্য নেওয়া হচ্ছে
+            const bookName = document.getElementById('bookName').value.trim();
+            const writerName = document.getElementById('writerName').value.trim();
+            const publisherName = document.getElementById('publisherName').value.trim();
+
+            // শুধু বইয়ের নাম দিলেই অর্ডার নেওয়া হবে
+            if (bookName !== "") {
+                
+                // হোয়াটসঅ্যাপের মেসেজ সাজানো হচ্ছে
+                let orderMsg = "বইয়ের নাম: " + bookName;
+                if(writerName !== "") orderMsg += "\nলেখকের নাম: " + writerName;
+                if(publisherName !== "") orderMsg += "\nপাবলিশারের নাম: " + publisherName;
+
+                // ফায়ারবেসে পুরো ডিটেইলস সেভ হচ্ছে
                 db.collection("book_orders").add({
                     book_name: bookName,
+                    writer_name: writerName || "দেওয়া হয়নি",
+                    publisher_name: publisherName || "দেওয়া হয়নি",
+                    full_order: orderMsg,
                     order_time: firebase.firestore.FieldValue.serverTimestamp()
                 }).catch(function(error) {
                     console.error("Error: ", error);
                 });
                 
-                // সরাসরি হোয়াটসঅ্যাপ খুলে যাচ্ছে
-                const waLink = "https://wa.me/919019863904?text=বই অর্ডার: " + encodeURIComponent(bookName);
+                // সরাসরি হোয়াটসঅ্যাপ খুলে যাচ্ছে (সুন্দরভাবে মেসেজ সাজিয়ে)
+                const waLink = "https://wa.me/919019863904?text=বই অর্ডার:\n" + encodeURIComponent(orderMsg);
                 window.location.href = waLink; 
+                
             } else {
-                alert("দয়া করে বইয়ের নাম লিখুন!");
+                alert("দয়া করে অন্তত বইয়ের নামটা অবশ্যই লিখুন!");
             }
         }
     </script>
