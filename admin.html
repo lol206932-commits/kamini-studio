@@ -2,164 +2,188 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <title>Kamini Digital - অ্যাডমিন প্যানেল</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamini Digital - Admin Table</title>
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #eef2f3; padding: 20px; color: #333; }
-        .admin-container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 15px; margin-bottom: 25px; }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
         
-        /* কার্ডের সাধারণ ডিজাইন */
-        .order-card { background: #f8f9fa; padding: 20px; margin-bottom: 20px; border-radius: 8px; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 6px solid #3498db; transition: 0.3s; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Poppins', 'Segoe UI', sans-serif; background-color: #f4f7f6; color: #333; }
+        
+        /* উপরের ন্যাভিগেশন বার */
+        .navbar { background: #2c3e50; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .navbar h1 { font-size: 22px; font-weight: 600; letter-spacing: 1px; }
+        .navbar span { font-size: 14px; background: #e74c3c; padding: 4px 10px; border-radius: 20px; }
+        
+        /* মূল কন্টেইনার */
+        .container { padding: 30px; max-width: 1200px; margin: 0 auto; }
+        .page-title { margin-bottom: 20px; color: #2c3e50; font-size: 24px; font-weight: 600; }
+        
+        /* এক্সেল স্টাইল টেবিল */
+        .table-container { background: white; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #ddd; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        
+        /* টেবিলের হেড (প্রথম লাইন) */
+        thead { background-color: #34495e; color: white; }
+        th { padding: 15px; font-weight: 600; border-right: 1px solid #465c70; }
+        th:last-child { border-right: none; }
+        
+        /* টেবিলের বডি (ডেটা) */
+        td { padding: 15px; border-bottom: 1px solid #eee; border-right: 1px solid #eee; vertical-align: top; }
+        td:last-child { border-right: none; }
+        
+        /* লাইনের রঙ (একটার পর একটা আলাদা রঙ) */
+        tbody tr:nth-child(even) { background-color: #f9fbfc; }
+        tbody tr:hover { background-color: #f1f5f8; } /* মাউস নিলে রঙ বদলাবে */
+        
+        /* সম্পন্ন হওয়া অর্ডারের রঙ */
+        tr.completed-row { background-color: #fafffa !important; }
+        tr.completed-row td { color: #555; }
         
         /* স্ট্যাটাস ব্যাজ */
-        .status-badge { display: inline-block; padding: 5px 10px; border-radius: 50px; font-size: 13px; font-weight: bold; margin-bottom: 15px; }
-        .status-pending { background: #fff3cd; color: #856404; }
-        .status-completed { background: #d4edda; color: #155724; }
+        .badge { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; }
+        .badge-pending { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        .badge-completed { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         
-        /* সম্পন্ন হওয়া কার্ডের বর্ডার সবুজ হবে */
-        .order-card.completed { border-left-color: #27ae60; background: #f4fdf6; }
-
-        .order-time { font-size: 14px; color: #555; margin-bottom: 15px; font-weight: bold; background: #e0f7fa; display: inline-block; padding: 5px 10px; border-radius: 5px; }
-        .book-item { margin-bottom: 10px; border-bottom: 1px dashed #ccc; padding-bottom: 10px; font-size: 16px; line-height: 1.5; }
-        .book-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        /* বইয়ের তালিকা */
+        .book-item { margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed #ccc; }
+        .book-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .book-name { font-weight: 600; color: #2980b9; font-size: 15px; display: block; }
+        .book-meta { font-size: 13px; color: #7f8c8d; display: block; }
         
-        /* বাটন ডিজাইন */
-        .action-buttons { position: absolute; right: 20px; top: 20px; display: flex; gap: 10px; }
-        .btn { border: none; padding: 8px 15px; cursor: pointer; border-radius: 5px; font-weight: bold; transition: 0.3s; color: white; }
-        .complete-btn { background: #27ae60; }
-        .complete-btn:hover { background: #219150; }
-        .delete-btn { background: #e74c3c; }
-        .delete-btn:hover { background: #c0392b; }
+        /* বাটন */
+        .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn { padding: 6px 12px; border-radius: 4px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.3s; color: white; }
+        .btn-complete { background: #2ecc71; }
+        .btn-complete:hover { background: #27ae60; }
+        .btn-delete { background: #e74c3c; }
+        .btn-delete:hover { background: #c0392b; }
         
-        .error-msg { color: #e74c3c; text-align: center; font-weight: bold; }
+        .empty-state { text-align: center; padding: 40px; color: #7f8c8d; font-size: 16px; font-weight: 600; }
     </style>
 </head>
 <body>
 
-<div class="admin-container">
-    <h2>📦 Kamini Digital - বই অর্ডারের তালিকা</h2>
-    <div id="admin-list-container">
-        <p style="text-align: center;">অর্ডার লোড হচ্ছে, দয়া করে অপেক্ষা করুন...</p>
+    <div class="navbar">
+        <h1>Kamini Digital</h1>
+        <span>অ্যাডমিন প্যানেল</span>
     </div>
-</div>
 
-<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
-
-<script>
-    // আপনার ফায়ারবেস কনফিগ
-    const firebaseConfig = {
-        apiKey: "AIzaSyC79rsKemc3qthh8-mJ29HM1ni7Q9mIb3Q",
-        authDomain: "kamini-digital.firebaseapp.com",
-        projectId: "kamini-digital",
-        storageBucket: "kamini-digital.firebasestorage.app",
-        messagingSenderId: "354990280556",
-        appId: "1:354990280556:web:5e3bf259cdddaf7fa3ad49"
-    };
-
-    // Firebase Initialize
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    function fetchOrders() {
-        const listContainer = document.getElementById('admin-list-container');
+    <div class="container">
+        <h2 class="page-title">📦 সব অর্ডারসমূহ (Table View)</h2>
         
-        // ফায়ারবেস থেকে ডেটা আনা
-        db.collection("book_orders").orderBy("order_time", "desc").onSnapshot((querySnapshot) => {
-            listContainer.innerHTML = ""; 
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 18%;">অর্ডারের সময়</th>
+                        <th style="width: 45%;">বইয়ের বিবরণ</th>
+                        <th style="width: 15%;">স্ট্যাটাস</th>
+                        <th style="width: 22%;">অ্যাকশন</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-table-body">
+                    <tr>
+                        <td colspan="4" class="empty-state">অর্ডার লোড হচ্ছে, দয়া করে অপেক্ষা করুন...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyC79rsKemc3qthh8-mJ29HM1ni7Q9mIb3Q",
+            authDomain: "kamini-digital.firebaseapp.com",
+            projectId: "kamini-digital",
+            storageBucket: "kamini-digital.firebasestorage.app",
+            messagingSenderId: "354990280556",
+            appId: "1:354990280556:web:5e3bf259cdddaf7fa3ad49"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        function fetchOrders() {
+            const tableBody = document.getElementById('admin-table-body');
             
-            if (querySnapshot.empty) {
-                listContainer.innerHTML = "<p style='text-align:center; font-size: 18px; color: #7f8c8d;'>এই মুহূর্তে কোনো নতুন অর্ডার নেই।</p>";
-                return;
-            }
-
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
+            db.collection("book_orders").orderBy("order_time", "desc").onSnapshot((querySnapshot) => {
+                tableBody.innerHTML = ""; 
                 
-                // সময় ঠিক করা
-                let timeString = 'সময় পাওয়া যায়নি';
-                if (data.order_time) {
-                    timeString = data.order_time.toDate().toLocaleString('bn-BD');
-                }
-                
-                // স্ট্যাটাস চেক করা (পেন্ডিং নাকি সম্পন্ন)
-                const status = data.status || 'pending';
-                let statusHtml = '';
-                let cardClass = 'order-card';
-                let completeBtnHtml = '';
-
-                if (status === 'completed') {
-                    statusHtml = `<div class="status-badge status-completed">✅ ডেলিভারি সম্পন্ন</div>`;
-                    cardClass += ' completed'; // কার্ডের রঙ সবুজ করার জন্য
-                } else {
-                    statusHtml = `<div class="status-badge status-pending">⏳ পেন্ডিং</div>`;
-                    completeBtnHtml = `<button class="btn complete-btn" onclick="markCompleted('${doc.id}')">✔️ সম্পন্ন</button>`;
-                }
-                
-                // বইয়ের লিস্ট তৈরি করা
-                let booksHtml = "";
-                if (data.books && Array.isArray(data.books)) {
-                    data.books.forEach((b, i) => {
-                        booksHtml += `
-                        <div class="book-item">
-                            <span style="color:#2980b9;"><strong>বই ${i+1}:</strong> ${b.book_name}</span><br>
-                            ${b.writer_name ? `<span style="color:#7f8c8d;"><strong>লেখক:</strong> ${b.writer_name}</span><br>` : ''}
-                            ${b.publisher_name ? `<span style="color:#7f8c8d;"><strong>পাবলিশার:</strong> ${b.publisher_name}</span>` : ''}
-                        </div>`;
-                    });
-                } else if (data.full_order) {
-                    booksHtml = `<div class="book-item"><pre style="font-family: inherit; margin: 0;">${data.full_order}</pre></div>`;
-                } else if (data.book_name) {
-                     booksHtml = `<div class="book-item"><span style="color:#2980b9;"><strong>বই:</strong> ${data.book_name}</span></div>`;
+                if (querySnapshot.empty) {
+                    tableBody.innerHTML = "<tr><td colspan='4' class='empty-state'>📭 এই মুহূর্তে কোনো নতুন অর্ডার নেই।</td></tr>";
+                    return;
                 }
 
-                const card = document.createElement("div");
-                card.className = cardClass;
-                card.innerHTML = `
-                    ${statusHtml}<br>
-                    <div class="order-time">🕒 অর্ডার সময়: ${timeString}</div>
-                    <div>${booksHtml}</div>
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    let timeString = 'সময় পাওয়া যায়নি';
+                    if (data.order_time) {
+                        timeString = data.order_time.toDate().toLocaleString('bn-BD', { hour: '2-digit', minute:'2-digit', day: '2-digit', month: 'short', year: 'numeric' });
+                    }
                     
-                    <div class="action-buttons">
-                        ${completeBtnHtml}
-                        <button class="btn delete-btn" onclick="deleteOrder('${doc.id}')">🗑️ ডিলিট</button>
-                    </div>
-                `;
-                listContainer.appendChild(card);
-            });
-        }, (error) => {
-            console.error("Firebase Error: ", error);
-            listContainer.innerHTML = `<p class="error-msg">ডেটা লোড করতে সমস্যা হয়েছে। দয়া করে ফায়ারবেস Rules চেক করুন।</p>`;
-        });
-    }
+                    const status = data.status || 'pending';
+                    let statusBadge = '';
+                    let rowClass = '';
+                    let completeBtn = '';
 
-    // অর্ডার স্ট্যাটাস আপডেট করার ফাংশন
-    function markCompleted(id) {
-        if(confirm("আপনি কি নিশ্চিত যে এই অর্ডারটি ডেলিভারি হয়ে গেছে?")) {
-            db.collection("book_orders").doc(id).update({
-                status: "completed"
-            }).then(() => {
-                console.log("অর্ডার স্ট্যাটাস আপডেট হয়েছে!");
-            }).catch((error) => {
-                console.error("Error updating status: ", error);
+                    if (status === 'completed') {
+                        statusBadge = `<span class="badge badge-completed">✅ সম্পন্ন</span>`;
+                        rowClass = 'completed-row';
+                    } else {
+                        statusBadge = `<span class="badge badge-pending">⏳ পেন্ডিং</span>`;
+                        completeBtn = `<button class="btn btn-complete" onclick="markCompleted('${doc.id}')">✔️ সম্পন্ন</button>`;
+                    }
+                    
+                    let booksHtml = "";
+                    if (data.books && Array.isArray(data.books)) {
+                        data.books.forEach((b, i) => {
+                            booksHtml += `
+                            <div class="book-item">
+                                <span class="book-name">📘 ${b.book_name}</span>
+                                ${b.writer_name ? `<span class="book-meta">✍️ লেখক: ${b.writer_name}</span>` : ''}
+                                ${b.publisher_name ? `<span class="book-meta">🏢 পাবলিশার: ${b.publisher_name}</span>` : ''}
+                            </div>`;
+                        });
+                    } else if (data.full_order) {
+                        booksHtml = `<div class="book-item"><pre style="font-family: inherit; margin: 0; font-size: 14px;">${data.full_order}</pre></div>`;
+                    }
+
+                    const tr = document.createElement("tr");
+                    if(rowClass) tr.className = rowClass;
+                    
+                    tr.innerHTML = `
+                        <td style="font-size: 13px; font-weight: 600; color: #555;">🕒 ${timeString}</td>
+                        <td>${booksHtml}</td>
+                        <td>${statusBadge}</td>
+                        <td>
+                            <div class="actions">
+                                ${completeBtn}
+                                <button class="btn btn-delete" onclick="deleteOrder('${doc.id}')">🗑️ ডিলিট</button>
+                            </div>
+                        </td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+            }, (error) => {
+                tableBody.innerHTML = `<tr><td colspan='4' class='empty-state' style='color: #e74c3c;'>⚠️ ডেটা লোড করতে সমস্যা হয়েছে।</td></tr>`;
             });
         }
-    }
 
-    // অর্ডার ডিলিট ফাংশন
-    function deleteOrder(id) {
-        if(confirm("আপনি কি নিশ্চিত যে এই অর্ডারটি সম্পূর্ণ মুছে ফেলতে চান?")) {
-            db.collection("book_orders").doc(id).delete().then(() => {
-                console.log("Document successfully deleted!");
-            }).catch((error) => {
-                console.error("Error removing document: ", error);
-            });
+        function markCompleted(id) {
+            db.collection("book_orders").doc(id).update({ status: "completed" });
         }
-    }
 
-    // পেজ লোড হলে ফাংশনটি চলবে
-    window.onload = fetchOrders;
-</script>
+        function deleteOrder(id) {
+            if(confirm("অর্ডারটি কি চিরতরে মুছে ফেলতে চান?")) {
+                db.collection("book_orders").doc(id).delete();
+            }
+        }
 
+        window.onload = fetchOrders;
+    </script>
 </body>
 </html>
