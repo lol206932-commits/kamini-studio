@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অ্যাডমিন প্যানেল - Kamini Digital</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; padding: 50px; }
+        .login-box { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 400px; margin: auto; }
+        input { width: 80%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        #order-list { display: none; margin-top: 30px; text-align: left; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 600px; margin: 30px auto; }
+        li { background: #e9ecef; margin: 10px 0; padding: 15px; border-radius: 5px; list-style-type: none; border-left: 5px solid #007bff; }
+    </style>
+</head>
+<body>
+
+    <div class="login-box" id="login-section">
+        <h2>লগইন করুন</h2>
+        <input type="password" id="adminPass" placeholder="পাসওয়ার্ড দিন...">
+        <br>
+        <button onclick="checkPass()">Login</button>
+    </div>
+
+    <div id="order-list">
+        <h2>সব অর্ডার:</h2>
+        <ul id="orders"></ul>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+
+    <script>
+        // আপনার ফায়ারবেস ডিটেলস
+        const firebaseConfig = {
+            apiKey: "AIzaSyC79rsKemc3qthh8-mJ29HM1ni7Q9mIb3Q",
+            authDomain: "kamini-digital.firebaseapp.com",
+            projectId: "kamini-digital",
+            storageBucket: "kamini-digital.firebasestorage.app",
+            messagingSenderId: "354990280556",
+            appId: "1:354990280556:web:5e3bf259cdddaf7fa3ad49"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // পাসওয়ার্ড চেক করা
+        function checkPass() {
+            const pass = document.getElementById('adminPass').value;
+            if (pass === "1234") {
+                document.getElementById('login-section').style.display = "none";
+                document.getElementById('order-list').style.display = "block";
+                
+                // লগইন সফল হলে ফায়ারবেস থেকে অর্ডার আনার কাজ শুরু হবে
+                fetchOrders();
+            } else {
+                alert("ভুল পাসওয়ার্ড!");
+            }
+        }
+
+        // ফায়ারবেস থেকে ডেটা আনার ফাংশন
+        function fetchOrders() {
+            const orderUl = document.getElementById('orders');
+            orderUl.innerHTML = "<li>অর্ডার লোড হচ্ছে... অনুগ্রহ করে অপেক্ষা করুন।</li>";
+
+            // ডেটাবেস থেকে নতুন অর্ডারগুলো আগে দেখানোর জন্য (descending order)
+            db.collection("book_orders").orderBy("order_time", "desc").get().then((querySnapshot) => {
+                orderUl.innerHTML = ""; // "লোড হচ্ছে" লেখাটা মুছে দেওয়া হলো
+                
+                if(querySnapshot.empty) {
+                    orderUl.innerHTML = "<li>এখনো কোনো অর্ডার আসেনি।</li>";
+                    return;
+                }
+
+                // প্রত্যেকটা অর্ডারের জন্য একটা করে লিস্ট (li) বানানো
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const li = document.createElement("li");
+                    
+                    // সময় ঠিকভাবে দেখানোর ব্যবস্থা
+                    let timeString = "সময় জানা যায়নি";
+                    if (data.order_time) {
+                        let date = data.order_time.toDate();
+                        timeString = date.toLocaleString('bn-IN'); // লোকাল সময় দেখাবে
+                    }
+
+                    li.innerHTML = `<strong style="font-size: 18px;">বইয়ের নাম: ${data.book_name}</strong> <br> <small style="color: gray;">অর্ডারের সময়: ${timeString}</small>`;
+                    orderUl.appendChild(li);
+                });
+            }).catch((error) => {
+                console.error("Error getting documents: ", error);
+                orderUl.innerHTML = "<li>ডেটা লোড করতে সমস্যা হয়েছে! ফায়ারবেসের কানেকশন চেক করুন।</li>";
+            });
+        }
+    </script>
+</body>
+</html>

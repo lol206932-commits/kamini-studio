@@ -43,7 +43,7 @@
 
     <div class="container">
         <h1 id="title">কামিনী ডিজিটাল</h1>
-        <p id="addr" style="font-weight: bold; margin-bottom: 5px;">২০ নম্বর কামিনী স্কুল লেন, হাওড়া</p>
+        <p id="addr" style="font-weight: bold; margin-bottom: 5px;">২০ নম্বর কামিনী স্কুল লেন, হাওড়া</p>
 
         <table>
             <thead>
@@ -78,7 +78,11 @@
         <img id="qr-image" src="qrcode.png" alt="QR Code">
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+
     <script>
+        // থিম পাল্টানোর কোড
         function setTheme(bg, card, text, shadow) {
             document.documentElement.style.setProperty('--bg-color', bg);
             document.documentElement.style.setProperty('--card-bg', card);
@@ -86,17 +90,12 @@
             document.documentElement.style.setProperty('--shadow-color', shadow);
         }
 
-        function sendOrder() {
-            const book = document.getElementById('bookName').value;
-            if (book) window.open("https://wa.me/919019863904?text=বই অর্ডার: " + encodeURIComponent(book));
-            else alert("বইয়ের নাম লিখুন!");
-        }
-
+        // ভাষা পাল্টানোর কোড
         function setLang(lang) {
             const d = {
                 'en': { title: "Kamini Digital", addr: "20, Kamini School Lane, Howrah", thS: "Service", thR: "Price", map: "📍 View on Maps", wa: "🟢 WhatsApp", orderT: "📚 Book Order", qr: "🔳 Scan for App", rows: [["Xerox", "1.00"], ["Print", "5.00"], ["Photo", "30.00"]] },
                 'hi': { title: "कामिनी डिजिटल", addr: "20, कामिनी स्कूल लेन, हावड़ा", thS: "सेवा", thR: "दर", map: "📍 मैप पर देखें", wa: "🟢 व्हाट्सएप", orderT: "📚 पुस्तक ऑर्डर", qr: "🔳 ऐप के लिए स्कैन", rows: [["जेरॉक्स", "1.00"], ["प्रिंट", "5.00"], ["फोटो", "30.00"]] },
-                'bn': { title: "কামিনী ডিজিটাল", addr: "২০ নম্বর কামিনী স্কুল লেন, হাওড়া", thS: "সার্ভিসের নাম", thR: "রেট", map: "📍 Google Maps-এ দেখুন", wa: "🟢 WhatsApp যোগাযোগ", orderT: "📚 বইয়ের অর্ডার দিন", qr: "🔳 স্ক্যান করে অ্যাপ নিন", rows: [["জেরক্স", "১.০০"], ["প্রিন্ট আউট", "৫.০০"], ["পাসপোর্ট ফটো", "৩০.০০"]] }
+                'bn': { title: "কামিনী ডিজিটাল", addr: "২০ নম্বর কামিনী স্কুল লেন, হাওড়া", thS: "সার্ভিসের নাম", thR: "রেট", map: "📍 Google Maps-এ দেখুন", wa: "🟢 WhatsApp যোগাযোগ", orderT: "📚 বইয়ের অর্ডার দিন", qr: "🔳 স্ক্যান করে অ্যাপ নিন", rows: [["জেরক্স", "১.০০"], ["প্রিন্ট আউট", "৫.০০"], ["পাসপোর্ট ফটো", "৩০.০০"]] }
             };
             const data = d[lang];
             document.getElementById('title').innerText = data.title;
@@ -111,7 +110,38 @@
             document.getElementById('table-body').innerHTML = rs;
         }
 
-        if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
+        // ফায়ারবেস কানেকশন
+        const firebaseConfig = {
+            apiKey: "AIzaSyC79rsKemc3qthh8-mJ29HM1ni7Q9mIb3Q",
+            authDomain: "kamini-digital.firebaseapp.com",
+            projectId: "kamini-digital",
+            storageBucket: "kamini-digital.firebasestorage.app",
+            messagingSenderId: "354990280556",
+            appId: "1:354990280556:web:5e3bf259cdddaf7fa3ad49"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // অর্ডার সেভ করার ও হোয়াটসঅ্যাপ খোলার কোড
+        function sendOrder() {
+            const bookName = document.getElementById('bookName').value;
+            if (bookName) {
+                // ফায়ারবেসে পাঠানো হচ্ছে
+                db.collection("book_orders").add({
+                    book_name: bookName,
+                    order_time: firebase.firestore.FieldValue.serverTimestamp()
+                }).catch(function(error) {
+                    console.error("Error: ", error);
+                });
+                
+                // সরাসরি হোয়াটসঅ্যাপ খুলে যাচ্ছে
+                const waLink = "https://wa.me/919019863904?text=বই অর্ডার: " + encodeURIComponent(bookName);
+                window.location.href = waLink; 
+            } else {
+                alert("দয়া করে বইয়ের নাম লিখুন!");
+            }
+        }
     </script>
 </body>
 </html>
