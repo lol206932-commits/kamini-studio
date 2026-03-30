@@ -17,7 +17,14 @@
         td { padding: 12px; border-bottom: 1px solid rgba(0,0,0,0.1); font-weight: bold; }
         
         .order-box { margin-top: 20px; padding: 15px; border: 2px solid var(--btn-color); border-radius: 15px; background: rgba(255,255,255,0.2); display: flex; flex-direction: column; align-items: center; }
-        input { width: 85%; padding: 10px; margin: 8px 0; border-radius: 5px; border: 1px solid #ddd; outline: none; font-family: inherit; }
+        .book-entry { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 10px; }
+        input { width: 85%; padding: 10px; margin: 5px 0; border-radius: 5px; border: 1px solid #ddd; outline: none; font-family: inherit; }
+        
+        .add-more-btn { background: transparent; color: var(--text-color); border: 2px dashed var(--btn-color); padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; width: 85%; transition: 0.3s; }
+        .add-more-btn:hover { background: rgba(255,255,255,0.3); }
+
+        /* নতুন রিমুভ (ডিলিট) বোতামের ডিজাইন */
+        .remove-btn { background: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 13px; margin-top: 5px; align-self: flex-end; margin-right: 7.5%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
         
         .theme-panel { margin-bottom: 15px; display: flex; justify-content: center; gap: 12px; }
         .color-dot { width: 35px; height: 35px; border-radius: 50%; border: 2px solid white; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
@@ -45,16 +52,20 @@
         <h1 id="title">কামিনী ডিজিটাল</h1>
         <p id="addr" style="font-weight: bold; margin-bottom: 5px;">২০ নম্বর কামিনী স্কুল লেন, হাওড়া</p>
 
-        <table>
-            <thead>
-                <tr><th id="th-s">সার্ভিসের নাম</th><th id="th-r">রেট</th></tr>
-            </thead>
-            <tbody id="table-body">
-                <tr><td>জেরক্স (B&W)</td><td>১.০০</td></tr>
-                <tr><td>প্রিন্ট আউট (B&W)</td><td>৫.০০</td></tr>
-                <tr><td>পাসপোর্ট ফটো (৫ কপি)</td><td>৩০.০০</td></tr>
-            </tbody>
-        </table>
+        <button id="toggleRateBtn" style="padding: 10px 20px; background: #f39c12; color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; margin-top: 15px; margin-bottom: 5px; width: 85%; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" onclick="toggleRateChart()">📋 সার্ভিসের রেট দেখুন</button>
+
+        <div id="rateChartContainer" style="display: none; width: 100%; transition: 0.3s ease;">
+            <table>
+                <thead>
+                    <tr><th id="th-s">সার্ভিসের নাম</th><th id="th-r">রেট</th></tr>
+                </thead>
+                <tbody id="table-body">
+                    <tr><td>জেরক্স (B&W)</td><td>১.০০</td></tr>
+                    <tr><td>প্রিন্ট আউট (B&W)</td><td>৫.০০</td></tr>
+                    <tr><td>পাসপোর্ট ফটো (৫ কপি)</td><td>৩০.০০</td></tr>
+                </tbody>
+            </table>
+        </div>
 
         <a href="https://www.google.com/maps/search/?api=1&query=20+Kamini+School+Lane+Howrah" class="btn-link map-btn" id="map-btn">📍 Google Maps-এ দেখুন</a>
         <br>
@@ -62,10 +73,18 @@
 
         <div class="order-box">
             <h3 id="order-t">📚 বইয়ের অর্ডার দিন</h3>
-            <input type="text" id="bookName" placeholder="বইয়ের নাম লিখুন (বাধ্যতামূলক)..." required>
-            <input type="text" id="writerName" placeholder="লেখকের নাম (ঐচ্ছিক)...">
-            <input type="text" id="publisherName" placeholder="পাবলিশারের নাম (ঐচ্ছিক)...">
-            <button style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; margin-top: 10px; width: 85%; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" id="order-btn" onclick="sendOrder()">Order Now</button>
+            
+            <div id="all-books-container" style="width: 100%;">
+                <div class="book-entry">
+                    <input type="text" class="b-name" placeholder="বইয়ের নাম লিখুন (বাধ্যতামূলক)..." required>
+                    <input type="text" class="w-name" placeholder="লেখকের নাম (ঐচ্ছিক)...">
+                    <input type="text" class="p-name" placeholder="পাবলিশারের নাম (ঐচ্ছিক)...">
+                </div>
+            </div>
+
+            <button class="add-more-btn" id="add-more-btn" onclick="addBookField()">➕ আরও একটি বই যোগ করুন</button>
+
+            <button style="padding: 12px 20px; background: #007bff; color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; margin-top: 15px; width: 85%; box-shadow: 0 4px 10px rgba(0,0,0,0.2);" id="order-btn" onclick="sendOrder()">Order Now</button>
         </div>
 
         <div style="margin-top: 20px;">
@@ -84,6 +103,15 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
 
     <script>
+        let currentLangData = { 
+            bookP: "বইয়ের নাম লিখুন (বাধ্যতামূলক)...", 
+            writerP: "লেখকের নাম (ঐচ্ছিক)...", 
+            pubP: "পাবলিশারের নাম (ঐচ্ছিক)...",
+            showR: "📋 সার্ভিসের রেট দেখুন",
+            hideR: "🔼 সার্ভিসের রেট লুকান",
+            removeBtn: "❌ মুছে ফেলুন" // ডিলিট বোতামের ভাষা
+        };
+
         function setTheme(bg, card, text, shadow) {
             document.documentElement.style.setProperty('--bg-color', bg);
             document.documentElement.style.setProperty('--card-bg', card);
@@ -91,14 +119,15 @@
             document.documentElement.style.setProperty('--shadow-color', shadow);
         }
 
-        // ভাষা পাল্টানোর জন্য নতুন কোড
         function setLang(lang) {
             const d = {
-                'en': { title: "Kamini Digital", addr: "20, Kamini School Lane, Howrah", thS: "Service", thR: "Price", map: "📍 View on Maps", wa: "🟢 WhatsApp", orderT: "📚 Book Order", qr: "🔳 Scan for App", rows: [["Xerox", "1.00"], ["Print", "5.00"], ["Photo", "30.00"]], bookP: "Book Name (Required)...", writerP: "Writer's Name (Optional)...", pubP: "Publisher's Name (Optional)..." },
-                'hi': { title: "कामिनी डिजिटल", addr: "20, कामिनी स्कूल लेन, हावड़ा", thS: "सेवा", thR: "दर", map: "📍 मैप पर देखें", wa: "🟢 व्हाट्सएप", orderT: "📚 पुस्तक ऑर्डर", qr: "🔳 ऐप के लिए स्कैन", rows: [["जेरॉक्स", "1.00"], ["प्रिंट", "5.00"], ["फोटो", "30.00"]], bookP: "किताब का नाम (अनिवार्य)...", writerP: "लेखक का नाम (वैकल्पिक)...", pubP: "प्रकाशक का नाम (वैकल्पिक)..." },
-                'bn': { title: "কামিনী ডিজিটাল", addr: "২০ নম্বর কামিনী স্কুল লেন, হাওড়া", thS: "সার্ভিসের নাম", thR: "রেট", map: "📍 Google Maps-এ দেখুন", wa: "🟢 WhatsApp যোগাযোগ", orderT: "📚 বইয়ের অর্ডার দিন", qr: "🔳 স্ক্যান করে অ্যাপ নিন", rows: [["জেরক্স", "১.০০"], ["প্রিন্ট আউট", "৫.০০"], ["পাসপোর্ট ফটো", "৩০.০০"]], bookP: "বইয়ের নাম লিখুন (বাধ্যতামূলক)...", writerP: "লেখকের নাম (ঐচ্ছিক)...", pubP: "পাবলিশারের নাম (ঐচ্ছিক)..." }
+                'en': { title: "Kamini Digital", addr: "20, Kamini School Lane, Howrah", thS: "Service", thR: "Price", map: "📍 View on Maps", wa: "🟢 WhatsApp", orderT: "📚 Book Order", qr: "🔳 Scan for App", addBtn: "➕ Add another book", rows: [["Xerox", "1.00"], ["Print", "5.00"], ["Photo", "30.00"]], bookP: "Book Name (Required)...", writerP: "Writer's Name (Optional)...", pubP: "Publisher's Name (Optional)...", showR: "📋 View Service Rates", hideR: "🔼 Hide Service Rates", removeBtn: "❌ Remove" },
+                'hi': { title: "कामिनी डिजिटल", addr: "20, कामिनी स्कूल लेन, हावड़ा", thS: "सेवा", thR: "दर", map: "📍 मैप पर देखें", wa: "🟢 व्हाट्सएप", orderT: "📚 पुस्तक ऑर्डर", qr: "🔳 ऐप के लिए स्कैन", addBtn: "➕ एक और किताब जोड़ें", rows: [["जेरॉक्स", "1.00"], ["प्रिंट", "5.00"], ["फोटो", "30.00"]], bookP: "किताब का नाम (अनिवार्य)...", writerP: "लेखक का नाम (वैकल्पिक)...", pubP: "प्रकाशक का नाम (वैकल्पिक)...", showR: "📋 सेवा दरें देखें", hideR: "🔼 सेवा दरें छुपाएं", removeBtn: "❌ हटाएं" },
+                'bn': { title: "কামিনী ডিজিটাল", addr: "২০ নম্বর কামিনী স্কুল লেন, হাওড়া", thS: "সার্ভিসের নাম", thR: "রেট", map: "📍 Google Maps-এ দেখুন", wa: "🟢 WhatsApp যোগাযোগ", orderT: "📚 বইয়ের অর্ডার দিন", qr: "🔳 স্ক্যান করে অ্যাপ নিন", addBtn: "➕ আরও একটি বই যোগ করুন", rows: [["জেরক্স", "১.০০"], ["প্রিন্ট আউট", "৫.০০"], ["পাসপোর্ট ফটো", "৩০.০০"]], bookP: "বইয়ের নাম লিখুন (বাধ্যতামূলক)...", writerP: "লেখকের নাম (ঐচ্ছিক)...", pubP: "পাবলিশারের নাম (ঐচ্ছিক)...", showR: "📋 সার্ভিসের রেট দেখুন", hideR: "🔼 সার্ভিসের রেট লুকান", removeBtn: "❌ মুছে ফেলুন" }
             };
             const data = d[lang];
+            currentLangData = data; 
+
             document.getElementById('title').innerText = data.title;
             document.getElementById('addr').innerText = data.addr;
             document.getElementById('th-s').innerText = data.thS;
@@ -107,14 +136,47 @@
             document.getElementById('wa-btn').innerText = data.wa;
             document.getElementById('order-t').innerText = data.orderT;
             document.getElementById('qr-text').innerText = data.qr;
+            document.getElementById('add-more-btn').innerText = data.addBtn;
             
-            // নতুন বক্সগুলোর ভাষা পরিবর্তন
-            document.getElementById('bookName').placeholder = data.bookP;
-            document.getElementById('writerName').placeholder = data.writerP;
-            document.getElementById('publisherName').placeholder = data.pubP;
+            const rateChart = document.getElementById('rateChartContainer');
+            document.getElementById('toggleRateBtn').innerText = (rateChart.style.display === 'none') ? data.showR : data.hideR;
+            
+            document.querySelectorAll('.b-name').forEach(el => el.placeholder = data.bookP);
+            document.querySelectorAll('.w-name').forEach(el => el.placeholder = data.writerP);
+            document.querySelectorAll('.p-name').forEach(el => el.placeholder = data.pubP);
+            document.querySelectorAll('.remove-btn').forEach(el => el.innerText = data.removeBtn);
 
             let rs = ""; data.rows.forEach(r => rs += `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`);
             document.getElementById('table-body').innerHTML = rs;
+        }
+
+        function toggleRateChart() {
+            const chart = document.getElementById('rateChartContainer');
+            const btn = document.getElementById('toggleRateBtn');
+            if (chart.style.display === 'none') {
+                chart.style.display = 'block';
+                btn.innerText = currentLangData.hideR;
+            } else {
+                chart.style.display = 'none';
+                btn.innerText = currentLangData.showR;
+            }
+        }
+
+        function addBookField() {
+            const container = document.getElementById('all-books-container');
+            const newDiv = document.createElement('div');
+            newDiv.className = 'book-entry';
+            newDiv.style.borderTop = '1px dashed rgba(0,0,0,0.2)';
+            newDiv.style.paddingTop = '10px';
+            newDiv.style.marginTop = '5px';
+
+            newDiv.innerHTML = `
+                <input type="text" class="b-name" placeholder="${currentLangData.bookP}" required>
+                <input type="text" class="w-name" placeholder="${currentLangData.writerP}">
+                <input type="text" class="p-name" placeholder="${currentLangData.pubP}">
+                <button class="remove-btn" onclick="this.parentElement.remove()">${currentLangData.removeBtn}</button>
+            `;
+            container.appendChild(newDiv);
         }
 
         const firebaseConfig = {
@@ -130,37 +192,42 @@
         const db = firebase.firestore();
 
         function sendOrder() {
-            // বক্সগুলো থেকে তথ্য নেওয়া হচ্ছে
-            const bookName = document.getElementById('bookName').value.trim();
-            const writerName = document.getElementById('writerName').value.trim();
-            const publisherName = document.getElementById('publisherName').value.trim();
+            const bookEntries = document.querySelectorAll('.book-entry');
+            let orderMsg = "";
+            let isValid = true;
+            let totalBooks = 0;
 
-            // শুধু বইয়ের নাম দিলেই অর্ডার নেওয়া হবে
-            if (bookName !== "") {
-                
-                // হোয়াটসঅ্যাপের মেসেজ সাজানো হচ্ছে
-                let orderMsg = "বইয়ের নাম: " + bookName;
-                if(writerName !== "") orderMsg += "\nলেখকের নাম: " + writerName;
-                if(publisherName !== "") orderMsg += "\nপাবলিশারের নাম: " + publisherName;
+            bookEntries.forEach((entry, index) => {
+                const bName = entry.querySelector('.b-name').value.trim();
+                const wName = entry.querySelector('.w-name').value.trim();
+                const pName = entry.querySelector('.p-name').value.trim();
 
-                // ফায়ারবেসে পুরো ডিটেইলস সেভ হচ্ছে
-                db.collection("book_orders").add({
-                    book_name: bookName,
-                    writer_name: writerName || "দেওয়া হয়নি",
-                    publisher_name: publisherName || "দেওয়া হয়নি",
-                    full_order: orderMsg,
-                    order_time: firebase.firestore.FieldValue.serverTimestamp()
-                }).catch(function(error) {
-                    console.error("Error: ", error);
-                });
-                
-                // সরাসরি হোয়াটসঅ্যাপ খুলে যাচ্ছে (সুন্দরভাবে মেসেজ সাজিয়ে)
-                const waLink = "https://wa.me/919019863904?text=বই অর্ডার:\n" + encodeURIComponent(orderMsg);
-                window.location.href = waLink; 
-                
-            } else {
-                alert("দয়া করে অন্তত বইয়ের নামটা অবশ্যই লিখুন!");
+                if (bName !== "") {
+                    totalBooks++;
+                    orderMsg += `\n📕 *বই ${totalBooks}:* ${bName}`;
+                    if(wName !== "") orderMsg += `\n   লেখক: ${wName}`;
+                    if(pName !== "") orderMsg += `\n   পাবলিশার: ${pName}`;
+                    orderMsg += `\n`;
+                } else if (index === 0) {
+                    isValid = false;
+                }
+            });
+
+            if (!isValid || totalBooks === 0) {
+                alert("দয়া করে অন্তত প্রথম বইয়ের নামটা অবশ্যই লিখুন!");
+                return;
             }
+
+            db.collection("book_orders").add({
+                full_order: orderMsg.trim(),
+                total_books: totalBooks,
+                order_time: firebase.firestore.FieldValue.serverTimestamp()
+            }).catch(function(error) {
+                console.error("Error: ", error);
+            });
+            
+            const waLink = "https://wa.me/919019863904?text=নতুন বই অর্ডার:\n" + encodeURIComponent(orderMsg.trim());
+            window.location.href = waLink; 
         }
     </script>
 </body>
