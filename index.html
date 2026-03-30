@@ -10,7 +10,9 @@
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--bg-color); color: var(--text-color); text-align: center; margin: 0; padding: 10px; transition: 0.4s ease; }
         .container { background: var(--card-bg); padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px var(--shadow-color); max-width: 500px; margin: auto; }
         
-        #installBtn { display: none; background: var(--btn-color); color: white; border: none; padding: 12px 25px; border-radius: 50px; font-weight: bold; cursor: pointer; margin-bottom: 20px; }
+        /* ইনস্টল বাটনের ডিজাইন */
+        #installBtn { display: none; background: #28a745; color: white; border: none; padding: 12px 25px; border-radius: 50px; font-weight: bold; cursor: pointer; margin: 0 auto 20px auto; width: 80%; max-width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 16px; animation: popIn 0.5s ease; }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         
         table { width: 100%; border-collapse: collapse; margin: 15px 0; border-radius: 10px; overflow: hidden; }
         th { background-color: var(--btn-color); color: white; padding: 12px; }
@@ -22,8 +24,6 @@
         
         .add-more-btn { background: transparent; color: var(--text-color); border: 2px dashed var(--btn-color); padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; width: 85%; transition: 0.3s; }
         .add-more-btn:hover { background: rgba(255,255,255,0.3); }
-
-        /* নতুন রিমুভ (ডিলিট) বোতামের ডিজাইন */
         .remove-btn { background: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 13px; margin-top: 5px; align-self: flex-end; margin-right: 7.5%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
         
         .theme-panel { margin-bottom: 15px; display: flex; justify-content: center; gap: 12px; }
@@ -40,7 +40,7 @@
 </head>
 <body id="mainBody">
 
-    <button id="installBtn">📲 Install Kamini Digital App</button>
+    <button id="installBtn">📲 অ্যাপটি ইনস্টল করুন</button>
 
     <div class="theme-panel">
         <div class="color-dot" style="background: #f0f8ff;" onclick="setTheme('#f0f8ff', '#ffffff', '#2c3e50', 'rgba(0,0,0,0.1)')"></div>
@@ -73,7 +73,6 @@
 
         <div class="order-box">
             <h3 id="order-t">📚 বইয়ের অর্ডার দিন</h3>
-            
             <div id="all-books-container" style="width: 100%;">
                 <div class="book-entry">
                     <input type="text" class="b-name" placeholder="বইয়ের নাম লিখুন (বাধ্যতামূলক)..." required>
@@ -81,9 +80,7 @@
                     <input type="text" class="p-name" placeholder="পাবলিশারের নাম (ঐচ্ছিক)...">
                 </div>
             </div>
-
             <button class="add-more-btn" id="add-more-btn" onclick="addBookField()">➕ আরও একটি বই যোগ করুন</button>
-
             <button style="padding: 12px 20px; background: #007bff; color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; margin-top: 15px; width: 85%; box-shadow: 0 4px 10px rgba(0,0,0,0.2);" id="order-btn" onclick="sendOrder()">Order Now</button>
         </div>
 
@@ -103,13 +100,47 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
 
     <script>
+        // --- PWA এবং অ্যাপ ইনস্টল করার কোড ---
+        let deferredPrompt;
+        const installBtn = document.getElementById('installBtn');
+
+        if ('serviceWorker' in navigator) { 
+            navigator.serviceWorker.register('sw.js').catch(err => console.log("Service Worker Error:", err)); 
+        }
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // ব্রাউজারকে নিজে থেকে পপ-আপ দেখাতে বাধা দেওয়া হচ্ছে
+            e.preventDefault();
+            // ইভেন্টটা সেভ করে রাখা হচ্ছে যাতে বাটনে ক্লিক করলে কাজ হয়
+            deferredPrompt = e;
+            // এবার আমাদের ডিজাইন করা বাটনটা দেখানো হবে
+            installBtn.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt(); // ইনস্টলের পপ-আপ দেখানো
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('App Installed');
+                }
+                deferredPrompt = null;
+                installBtn.style.display = 'none'; // ইনস্টল হয়ে গেলে বাটনটা লুকিয়ে দেওয়া
+            }
+        });
+
+        window.addEventListener('appinstalled', () => {
+            installBtn.style.display = 'none';
+        });
+        // -------------------------------------
+
         let currentLangData = { 
             bookP: "বইয়ের নাম লিখুন (বাধ্যতামূলক)...", 
             writerP: "লেখকের নাম (ঐচ্ছিক)...", 
             pubP: "পাবলিশারের নাম (ঐচ্ছিক)...",
             showR: "📋 সার্ভিসের রেট দেখুন",
             hideR: "🔼 সার্ভিসের রেট লুকান",
-            removeBtn: "❌ মুছে ফেলুন" // ডিলিট বোতামের ভাষা
+            removeBtn: "❌ মুছে ফেলুন"
         };
 
         function setTheme(bg, card, text, shadow) {
@@ -121,9 +152,9 @@
 
         function setLang(lang) {
             const d = {
-                'en': { title: "Kamini Digital", addr: "20, Kamini School Lane, Howrah", thS: "Service", thR: "Price", map: "📍 View on Maps", wa: "🟢 WhatsApp", orderT: "📚 Book Order", qr: "🔳 Scan for App", addBtn: "➕ Add another book", rows: [["Xerox", "1.00"], ["Print", "5.00"], ["Photo", "30.00"]], bookP: "Book Name (Required)...", writerP: "Writer's Name (Optional)...", pubP: "Publisher's Name (Optional)...", showR: "📋 View Service Rates", hideR: "🔼 Hide Service Rates", removeBtn: "❌ Remove" },
-                'hi': { title: "कामिनी डिजिटल", addr: "20, कामिनी स्कूल लेन, हावड़ा", thS: "सेवा", thR: "दर", map: "📍 मैप पर देखें", wa: "🟢 व्हाट्सएप", orderT: "📚 पुस्तक ऑर्डर", qr: "🔳 ऐप के लिए स्कैन", addBtn: "➕ एक और किताब जोड़ें", rows: [["जेरॉक्स", "1.00"], ["प्रिंट", "5.00"], ["फोटो", "30.00"]], bookP: "किताब का नाम (अनिवार्य)...", writerP: "लेखक का नाम (वैकल्पिक)...", pubP: "प्रकाशक का नाम (वैकल्पिक)...", showR: "📋 सेवा दरें देखें", hideR: "🔼 सेवा दरें छुपाएं", removeBtn: "❌ हटाएं" },
-                'bn': { title: "কামিনী ডিজিটাল", addr: "২০ নম্বর কামিনী স্কুল লেন, হাওড়া", thS: "সার্ভিসের নাম", thR: "রেট", map: "📍 Google Maps-এ দেখুন", wa: "🟢 WhatsApp যোগাযোগ", orderT: "📚 বইয়ের অর্ডার দিন", qr: "🔳 স্ক্যান করে অ্যাপ নিন", addBtn: "➕ আরও একটি বই যোগ করুন", rows: [["জেরক্স", "১.০০"], ["প্রিন্ট আউট", "৫.০০"], ["পাসপোর্ট ফটো", "৩০.০০"]], bookP: "বইয়ের নাম লিখুন (বাধ্যতামূলক)...", writerP: "লেখকের নাম (ঐচ্ছিক)...", pubP: "পাবলিশারের নাম (ঐচ্ছিক)...", showR: "📋 সার্ভিসের রেট দেখুন", hideR: "🔼 সার্ভিসের রেট লুকান", removeBtn: "❌ মুছে ফেলুন" }
+                'en': { title: "Kamini Digital", addr: "20, Kamini School Lane, Howrah", thS: "Service", thR: "Price", map: "📍 View on Maps", wa: "🟢 WhatsApp", orderT: "📚 Book Order", qr: "🔳 Scan for App", addBtn: "➕ Add another book", rows: [["Xerox", "1.00"], ["Print", "5.00"], ["Photo", "30.00"]], bookP: "Book Name (Required)...", writerP: "Writer's Name (Optional)...", pubP: "Publisher's Name (Optional)...", showR: "📋 View Service Rates", hideR: "🔼 Hide Service Rates", removeBtn: "❌ Remove", installT: "📲 Install App" },
+                'hi': { title: "कामिनी डिजिटल", addr: "20, कामिनी स्कूल लेन, हावड़ा", thS: "सेवा", thR: "दर", map: "📍 मैप पर देखें", wa: "🟢 व्हाट्सएप", orderT: "📚 पुस्तक ऑर्डर", qr: "🔳 ऐप के लिए स्कैन", addBtn: "➕ एक और किताब जोड़ें", rows: [["जेरॉक्स", "1.00"], ["प्रिंट", "5.00"], ["फोटो", "30.00"]], bookP: "किताब का नाम (अनिवार्य)...", writerP: "लेखक का नाम (वैकल्पिक)...", pubP: "प्रकाशक का नाम (वैकल्पिक)...", showR: "📋 सेवा दरें देखें", hideR: "🔼 सेवा दरें छुपाएं", removeBtn: "❌ हटाएं", installT: "📲 ऐप इंस्टॉल करें" },
+                'bn': { title: "কামিনী ডিজিটাল", addr: "২০ নম্বর কামিনী স্কুল লেন, হাওড়া", thS: "সার্ভিসের নাম", thR: "রেট", map: "📍 Google Maps-এ দেখুন", wa: "🟢 WhatsApp যোগাযোগ", orderT: "📚 বইয়ের অর্ডার দিন", qr: "🔳 স্ক্যান করে অ্যাপ নিন", addBtn: "➕ আরও একটি বই যোগ করুন", rows: [["জেরক্স", "১.০০"], ["প্রিন্ট আউট", "৫.০০"], ["পাসপোর্ট ফটো", "৩০.০০"]], bookP: "বইয়ের নাম লিখুন (বাধ্যতামূলক)...", writerP: "লেখকের নাম (ঐচ্ছিক)...", pubP: "পাবলিশারের নাম (ঐচ্ছিক)...", showR: "📋 সার্ভিসের রেট দেখুন", hideR: "🔼 সার্ভিসের রেট লুকান", removeBtn: "❌ মুছে ফেলুন", installT: "📲 অ্যাপটি ইনস্টল করুন" }
             };
             const data = d[lang];
             currentLangData = data; 
@@ -137,6 +168,7 @@
             document.getElementById('order-t').innerText = data.orderT;
             document.getElementById('qr-text').innerText = data.qr;
             document.getElementById('add-more-btn').innerText = data.addBtn;
+            document.getElementById('installBtn').innerText = data.installT;
             
             const rateChart = document.getElementById('rateChartContainer');
             document.getElementById('toggleRateBtn').innerText = (rateChart.style.display === 'none') ? data.showR : data.hideR;
