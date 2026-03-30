@@ -1,7 +1,7 @@
-self.addEventListener('install', (e) => {
-  console.log('Service Worker Installed');
+self.addEventListener('install', (event) => {
+  console.log('Service Worker installed');
 });
 
-self.addEventListener('fetch', (e) => {
-  e.respondWith(fetch(e.request));
+self.addEventListener('fetch', (event) => {
+  // এটা আপাতত শুধু পেজটা লোড করতে সাহায্য করবে
 });
