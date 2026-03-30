@@ -7,12 +7,30 @@
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #eef2f3; padding: 20px; color: #333; }
         .admin-container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         h2 { text-align: center; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 15px; margin-bottom: 25px; }
-        .order-card { border-left: 6px solid #3498db; background: #f8f9fa; padding: 20px; margin-bottom: 20px; border-radius: 8px; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        
+        /* কার্ডের সাধারণ ডিজাইন */
+        .order-card { background: #f8f9fa; padding: 20px; margin-bottom: 20px; border-radius: 8px; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 6px solid #3498db; transition: 0.3s; }
+        
+        /* স্ট্যাটাস ব্যাজ */
+        .status-badge { display: inline-block; padding: 5px 10px; border-radius: 50px; font-size: 13px; font-weight: bold; margin-bottom: 15px; }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-completed { background: #d4edda; color: #155724; }
+        
+        /* সম্পন্ন হওয়া কার্ডের বর্ডার সবুজ হবে */
+        .order-card.completed { border-left-color: #27ae60; background: #f4fdf6; }
+
         .order-time { font-size: 14px; color: #555; margin-bottom: 15px; font-weight: bold; background: #e0f7fa; display: inline-block; padding: 5px 10px; border-radius: 5px; }
         .book-item { margin-bottom: 10px; border-bottom: 1px dashed #ccc; padding-bottom: 10px; font-size: 16px; line-height: 1.5; }
         .book-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .delete-btn { position: absolute; right: 20px; top: 20px; background: #e74c3c; color: white; border: none; padding: 8px 15px; cursor: pointer; border-radius: 5px; font-weight: bold; transition: 0.3s; }
+        
+        /* বাটন ডিজাইন */
+        .action-buttons { position: absolute; right: 20px; top: 20px; display: flex; gap: 10px; }
+        .btn { border: none; padding: 8px 15px; cursor: pointer; border-radius: 5px; font-weight: bold; transition: 0.3s; color: white; }
+        .complete-btn { background: #27ae60; }
+        .complete-btn:hover { background: #219150; }
+        .delete-btn { background: #e74c3c; }
         .delete-btn:hover { background: #c0392b; }
+        
         .error-msg { color: #e74c3c; text-align: center; font-weight: bold; }
     </style>
 </head>
@@ -48,7 +66,7 @@
         
         // ফায়ারবেস থেকে ডেটা আনা
         db.collection("book_orders").orderBy("order_time", "desc").onSnapshot((querySnapshot) => {
-            listContainer.innerHTML = ""; // লোডিং লেখাটি মুছে দেওয়া
+            listContainer.innerHTML = ""; 
             
             if (querySnapshot.empty) {
                 listContainer.innerHTML = "<p style='text-align:center; font-size: 18px; color: #7f8c8d;'>এই মুহূর্তে কোনো নতুন অর্ডার নেই।</p>";
@@ -64,10 +82,22 @@
                     timeString = data.order_time.toDate().toLocaleString('bn-BD');
                 }
                 
+                // স্ট্যাটাস চেক করা (পেন্ডিং নাকি সম্পন্ন)
+                const status = data.status || 'pending';
+                let statusHtml = '';
+                let cardClass = 'order-card';
+                let completeBtnHtml = '';
+
+                if (status === 'completed') {
+                    statusHtml = `<div class="status-badge status-completed">✅ ডেলিভারি সম্পন্ন</div>`;
+                    cardClass += ' completed'; // কার্ডের রঙ সবুজ করার জন্য
+                } else {
+                    statusHtml = `<div class="status-badge status-pending">⏳ পেন্ডিং</div>`;
+                    completeBtnHtml = `<button class="btn complete-btn" onclick="markCompleted('${doc.id}')">✔️ সম্পন্ন</button>`;
+                }
+                
                 // বইয়ের লিস্ট তৈরি করা
                 let booksHtml = "";
-                
-                // নতুন নিয়মে আসা ডেটা (অ্যারে)
                 if (data.books && Array.isArray(data.books)) {
                     data.books.forEach((b, i) => {
                         booksHtml += `
@@ -77,34 +107,48 @@
                             ${b.publisher_name ? `<span style="color:#7f8c8d;"><strong>পাবলিশার:</strong> ${b.publisher_name}</span>` : ''}
                         </div>`;
                     });
-                } 
-                // পুরোনো নিয়মে আসা ডেটা (যাতে undefined না দেখায়)
-                else if (data.full_order) {
+                } else if (data.full_order) {
                     booksHtml = `<div class="book-item"><pre style="font-family: inherit; margin: 0;">${data.full_order}</pre></div>`;
-                }
-                else if (data.book_name) {
+                } else if (data.book_name) {
                      booksHtml = `<div class="book-item"><span style="color:#2980b9;"><strong>বই:</strong> ${data.book_name}</span></div>`;
                 }
 
                 const card = document.createElement("div");
-                card.className = "order-card";
+                card.className = cardClass;
                 card.innerHTML = `
+                    ${statusHtml}<br>
                     <div class="order-time">🕒 অর্ডার সময়: ${timeString}</div>
                     <div>${booksHtml}</div>
-                    <button class="delete-btn" onclick="deleteOrder('${doc.id}')">ডিলিট</button>
+                    
+                    <div class="action-buttons">
+                        ${completeBtnHtml}
+                        <button class="btn delete-btn" onclick="deleteOrder('${doc.id}')">🗑️ ডিলিট</button>
+                    </div>
                 `;
                 listContainer.appendChild(card);
             });
         }, (error) => {
-            // যদি কোনো কারণে ডেটা লোড না হয়
             console.error("Firebase Error: ", error);
             listContainer.innerHTML = `<p class="error-msg">ডেটা লোড করতে সমস্যা হয়েছে। দয়া করে ফায়ারবেস Rules চেক করুন।</p>`;
         });
     }
 
+    // অর্ডার স্ট্যাটাস আপডেট করার ফাংশন
+    function markCompleted(id) {
+        if(confirm("আপনি কি নিশ্চিত যে এই অর্ডারটি ডেলিভারি হয়ে গেছে?")) {
+            db.collection("book_orders").doc(id).update({
+                status: "completed"
+            }).then(() => {
+                console.log("অর্ডার স্ট্যাটাস আপডেট হয়েছে!");
+            }).catch((error) => {
+                console.error("Error updating status: ", error);
+            });
+        }
+    }
+
     // অর্ডার ডিলিট ফাংশন
     function deleteOrder(id) {
-        if(confirm("আপনি কি নিশ্চিত যে এই অর্ডারটি মুছে ফেলতে চান?")) {
+        if(confirm("আপনি কি নিশ্চিত যে এই অর্ডারটি সম্পূর্ণ মুছে ফেলতে চান?")) {
             db.collection("book_orders").doc(id).delete().then(() => {
                 console.log("Document successfully deleted!");
             }).catch((error) => {
