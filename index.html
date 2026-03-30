@@ -1,106 +1,136 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kamini Digital Studio | Professional</title>
+    <title>Kamini Digital Studio</title>
     <style>
-        body { background-color: #f0f8ff; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 20px; transition: 0.5s; margin-bottom: 80px; }
-        .container { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: inline-block; width: 95%; max-width: 800px; position: relative; }
-        h1 { color: #2c3e50; margin-bottom: 5px; }
-        #greeting { font-size: 24px; font-weight: bold; color: #e67e22; margin: 10px 0; }
-        #time { font-size: 18px; color: #7f8c8d; background: #ecf0f1; padding: 5px 15px; border-radius: 20px; display: inline-block; }
-        table { width: 100%; margin: 25px 0; border-collapse: collapse; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        th { background: #007bff; color: white; padding: 15px; }
-        td { padding: 12px; border-bottom: 1px solid #eee; text-align: center; font-weight: 500; }
-        .whatsapp-btn { background: #25D366; color: white; padding: 15px 30px; text-decoration: none; border-radius: 50px; font-weight: bold; display: inline-block; margin: 20px 0; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); transition: 0.3s; }
-        .whatsapp-btn:hover { transform: scale(1.05); background: #128C7E; }
-        .star { font-size: 40px; cursor: pointer; color: #ccc; transition: 0.2s; margin: 0 5px; }
-        .submit-btn { background: #3498db; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; margin-top: 15px; font-weight: bold; display: none; transition: 0.3s; }
-        .submit-btn:hover { background: #2980b9; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        .color-btns { position: fixed; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; }
-        .color-btn { width: 35px; height: 35px; border-radius: 50%; border: 2px solid white; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        body { background-color: #f0f8ff; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 15px; transition: 0.5s; margin-bottom: 80px; }
+        .container { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: inline-block; width: 95%; max-width: 800px; }
+        .lang-btn { padding: 8px 15px; cursor: pointer; border-radius: 5px; border: none; color: white; font-weight: bold; margin: 5px; transition: 0.3s; }
+        table { width: 100%; margin: 20px 0; border-collapse: collapse; border-radius: 10px; overflow: hidden; }
+        th { background: #007bff; color: white; padding: 12px; }
+        td { padding: 10px; border-bottom: 1px solid #eee; font-weight: 500; }
+        .whatsapp-btn { background: #25D366; color: white; padding: 15px 25px; text-decoration: none; border-radius: 50px; font-weight: bold; display: inline-block; margin: 15px 0; }
+        .address-box { background: #ffffff; padding: 25px; border-radius: 15px; margin-top: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border-top: 8px solid #e74c3c; }
+        .color-btns { position: fixed; top: 10px; right: 10px; display: flex; flex-direction: column; gap: 8px; z-index: 1000; }
+        .color-btn { width: 30px; height: 30px; border-radius: 50%; border: 2px solid white; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div class="color-btns">
-        <div class="color-btn" style="background: #f0f8ff;" onclick="changeBg('#f0f8ff')"></div>
-        <div class="color-btn" style="background: #ffe4e1;" onclick="changeBg('#ffe4e1')"></div>
-        <div class="color-btn" style="background: #2c3e50;" onclick="changeBg('#2c3e50')"></div>
+        <div class="color-btn" style="background: #f0f8ff;" onclick="document.body.style.backgroundColor='#f0f8ff'"></div>
+        <div class="color-btn" style="background: #ffe4e1;" onclick="document.body.style.backgroundColor='#ffe4e1'"></div>
+        <div class="color-btn" style="background: #2c3e50;" onclick="document.body.style.backgroundColor='#2c3e50'"></div>
     </div>
 
     <div class="container">
-        <h1>Kamini School Lane Digital Studio</h1>
-        <div id="greeting"></div>
-        <div id="time"></div>
-        <p>Contact: <a href="tel:9019863904" style="color: #007bff; font-weight: bold; text-decoration: none;">9019863904</a></p>
-
-        <table>
-            <tr><th>সার্ভিসের নাম</th><th>রেট (টাকায়)</th></tr>
-            <tr><td>জেরক্স (B&W)</td><td>১.০০</td></tr>
-            <tr><td>প্রিন্ট আউট (B&W)</td><td>৫.০০</td></tr>
-            <tr><td>পাসপোর্ট ফটো (৫ কপি)</td><td>৩০.০০</td></tr>
-            <tr><td>বুক অর্ডার</td><td>আলোচনা সাপেক্ষে</td></tr>
-        </table>
-
-        <a href="https://wa.me/919019863904" class="whatsapp-btn">💬 Send Photo on WhatsApp</a>
-
-        <div style="background: #fdfdfd; padding: 20px; border-radius: 15px; border: 2px dashed #eee; margin-top: 20px;">
-            <h3 style="margin-top:0;">আমাদের সার্ভিস কেমন লাগলো? ⭐</h3>
-            <div id="rating-stars">
-                <span class="star" onclick="setRating(1)">☆</span>
-                <span class="star" onclick="setRating(2)">☆</span>
-                <span class="star" onclick="setRating(3)">☆</span>
-                <span class="star" onclick="setRating(4)">☆</span>
-                <span class="star" onclick="setRating(5)">☆</span>
-            </div>
-            <p id="rating-msg" style="font-weight: bold; color: #27ae60; margin-top: 10px; min-height: 24px;"></p>
-            <button id="rating-submit" class="submit-btn" onclick="sendRating()">Submit Rating on WhatsApp</button>
+        <div style="margin-bottom: 20px; background: #f8f9fa; padding: 10px; border-radius: 10px; border: 1px solid #ddd;">
+            <button class="lang-btn" style="background: #e67e22;" onclick="changeLang('bn')">বাংলা</button>
+            <button class="lang-btn" style="background: #3498db;" onclick="changeLang('en')">English</button>
+            <button class="lang-btn" style="background: #27ae60;" onclick="changeLang('hi')">हिन्दी</button>
         </div>
 
-        <footer style="margin-top: 30px; font-size: 13px; color: #95a5a6; border-top: 1px dashed #ddd; padding-top: 15px;">
-            © 2026 Kamini School Lane Digital Studio <br> Designed with ❤️ by You & Family
-        </footer>
-    </div>
+        <h1 id="title">কামিনী স্কুল লেন ডিজিটাল স্টুডিও</h1>
+        <div id="greeting" style="font-size: 22px; font-weight: bold; color: #e67e22; margin: 10px 0;"></div>
+        <div id="time" style="font-size: 16px; color: #7f8c8d; background: #ecf0f1; padding: 5px 15px; border-radius: 20px; display: inline-block;"></div>
+        <p><span id="contact-text">যোগাযোগ:</span> <b>9019863904</b></p>
 
-    <div style="background: #ff4d4d; color: white; padding: 12px; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 1000;">
-        <marquee scrollamount="10">🔥 ৫ কপি পাসপোর্ট ফটো মাত্র ৩০ টাকা! | ১ কপি জেরক্স মাত্র ১ টাকা! | দ্রুত সার্ভিসের জন্য যোগাযোগ করুন 🔥</marquee>
+        <table>
+            <thead>
+                <tr><th id="th-name">সার্ভিসের নাম</th><th id="th-rate">রেট (টাকায়)</th></tr>
+            </thead>
+            <tbody>
+                <tr><td id="td-xerox">জেরক্স (B&W)</td><td>১.০০</td></tr>
+                <tr><td id="td-print">প্রিন্ট আউট (B&W)</td><td>৫.০০</td></tr>
+                <tr><td id="td-photo">পাসপোর্ট ফটো (৫ কপি)</td><td>৩০.০০</td></tr>
+            </tbody>
+        </table>
+
+        <a href="https://wa.me/919019863904" class="whatsapp-btn" id="wa-btn">💬 Send Photo on WhatsApp</a>
+
+        <div class="address-box">
+            <h3 id="addr-title" style="color: #c0392b; margin: 0;">আমাদের স্টুডিওর ঠিকানা</h3>
+            <p id="addr-text" style="font-weight: bold; font-size: 22px; margin: 15px 0;">২০, কামিনী স্কুল লেন, হাওড়া</p>
+            <a href="https://www.google.com/maps/place/22%0D%0A58'43.4%22N+88%0D%0A20'22.3%22E/@22.9787163,88.3389657,19z" target="_blank" id="map-btn" style="background: #e74c3c; color: white; padding: 12px 20px; text-decoration: none; border-radius: 50px; display: inline-block; font-weight: bold;">🚩 সরাসরি ম্যাপে দেখুন</a>
+        </div>
     </div>
 
     <script>
-        let selectedRating = 0;
+        let currentLang = 'bn';
 
-        function updateAll() {
-            const now = new Date();
-            const hour = now.getHours();
-            document.getElementById('time').innerHTML = "🕒 " + now.toLocaleDateString() + " | " + now.toLocaleTimeString();
-            let msg = (hour < 12) ? "শুভ সকাল! ☀️" : (hour < 17) ? "শুভ দুপুর! 🌤️" : (hour < 20) ? "শুভ সন্ধ্যা! 🌙" : "শুভ রাত্রি! ✨";
-            document.getElementById('greeting').innerHTML = msg;
-        }
-        setInterval(updateAll, 1000);
-        updateAll();
-
-        function changeBg(color) { document.body.style.backgroundColor = color; }
-
-        function setRating(n) {
-            selectedRating = n;
-            const stars = document.getElementById('rating-stars').children;
-            const msgs = ["খুব খারাপ 😞", "মোটামুটি 😐", "ভালোই 🙂", "দারুণ! 😍", "অসাধারণ! 🏆"];
-            for (let i = 0; i < 5; i++) {
-                stars[i].innerHTML = (i < n) ? "★" : "☆";
-                stars[i].style.color = (i < n) ? "#f1c40f" : "#ccc";
+        const translations = {
+            'bn': {
+                'title': 'কামিনী স্কুল লেন ডিজিটাল স্টুডিও',
+                'contact-text': 'যোগাযোগ:',
+                'th-name': 'সার্ভিসের নাম',
+                'th-rate': 'রেট (টাকায়)',
+                'td-xerox': 'জেরক্স (B&W)',
+                'td-print': 'প্রিন্ট আউট (B&W)',
+                'td-photo': 'পাসপোর্ট ফটো (৫ কপি)',
+                'wa-btn': '💬 Send Photo on WhatsApp',
+                'addr-title': 'আমাদের স্টুডিওর ঠিকানা',
+                'addr-text': '২০, কামিনী স্কুল লেন, হাওড়া',
+                'map-btn': '🚩 সরাসরি ম্যাপে দেখুন',
+                'greetings': { 'morn': 'শুভ সকাল! ☀️', 'aft': 'শুভ দুপুর! 🌤️', 'eve': 'শুভ সন্ধ্যা! 🌙', 'night': 'শুভ রাত্রি! ✨' }
+            },
+            'en': {
+                'title': 'Kamini School Lane Digital Studio',
+                'contact-text': 'Contact:',
+                'th-name': 'Service Name',
+                'th-rate': 'Rate (Rupees)',
+                'td-xerox': 'Xerox (B&W)',
+                'td-print': 'Print Out (B&W)',
+                'td-photo': 'Passport Photo (5 copies)',
+                'wa-btn': '💬 Send Photo on WhatsApp',
+                'addr-title': 'Our Studio Address',
+                'addr-text': '20, Kamini School Lane, Howrah',
+                'map-btn': '🚩 View Directly on Map',
+                'greetings': { 'morn': 'Good Morning! ☀️', 'aft': 'Good Afternoon! 🌤️', 'eve': 'Good Evening! 🌙', 'night': 'Good Night! ✨' }
+            },
+            'hi': {
+                'title': 'कामिनी स्कूल लेन डिजिटल स्टूडियो',
+                'contact-text': 'संपर्क:',
+                'th-name': 'सेवा का नाम',
+                'th-rate': 'दर (रुपये)',
+                'td-xerox': 'जेरॉक्स (B&W)',
+                'td-print': 'प्रिंट आउट (B&W)',
+                'td-photo': 'पासपोर्ट फोटो (5 प्रतियां)',
+                'wa-btn': '💬 WhatsApp पर फोटो भेजें',
+                'addr-title': 'हमारे स्टूडियो का पता',
+                'addr-text': '20, कामिनी स्कूल लेन, हावड़ा',
+                'map-btn': '🚩 मैप पर सीधे देखें',
+                'greetings': { 'morn': 'शुभ प्रभात! ☀️', 'aft': 'शुभ दोपहर! 🌤️', 'eve': 'शुभ संध्या! 🌙', 'night': 'शुभ रात्रि! ✨' }
             }
-            document.getElementById('rating-msg').innerHTML = "আপনি দিয়েছেন: " + msgs[n-1];
-            document.getElementById('rating-submit').style.display = "inline-block";
+        };
+
+        function changeLang(lang) {
+            currentLang = lang;
+            for (let id in translations[lang]) {
+                const element = document.getElementById(id);
+                if (element && id !== 'greetings') {
+                    element.innerText = translations[lang][id];
+                }
+            }
+            updateTime(); // ভাষা বদলানোর সাথে সাথে আপডেট
         }
 
-        function sendRating() {
-            const msgs = ["১-স্টার", "২-স্টার", "৩-স্টার", "৪-স্টার", "৫-স্টার"];
-            const text = "Hello! আমি আপনার স্টুডিওর সার্ভিসকে " + msgs[selectedRating-1] + " রেটিং দিয়েছি।";
-            const url = "https://wa.me/919019863904?text=" + encodeURIComponent(text);
-            window.open(url, '_blank');
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('time').innerText = "🕒 " + now.toLocaleString();
+            
+            const hour = now.getHours();
+            let timeKey = 'night';
+            if (hour >= 5 && hour < 12) timeKey = 'morn';
+            else if (hour >= 12 && hour < 17) timeKey = 'aft';
+            else if (hour >= 17 && hour < 20) timeKey = 'eve';
+
+            document.getElementById('greeting').innerText = translations[currentLang].greetings[timeKey];
         }
+
+        setInterval(updateTime, 1000);
+        updateTime();
     </script>
 </body>
 </html>
