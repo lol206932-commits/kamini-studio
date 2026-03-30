@@ -4,145 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kamini Digital Studio</title>
+    <link rel="manifest" href="manifest.json">
     <style>
-        body { background-color: #f0f8ff; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 15px; transition: 0.5s; margin-bottom: 80px; }
-        .container { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: inline-block; width: 95%; max-width: 800px; }
-        .lang-btn { padding: 8px 15px; cursor: pointer; border-radius: 5px; border: none; color: white; font-weight: bold; margin: 5px; transition: 0.3s; }
-        table { width: 100%; margin: 20px 0; border-collapse: collapse; border-radius: 10px; overflow: hidden; }
-        th { background: #007bff; color: white; padding: 12px; }
-        td { padding: 10px; border-bottom: 1px solid #eee; font-weight: 500; }
-        .whatsapp-btn { background: #25D366; color: white; padding: 15px 25px; text-decoration: none; border-radius: 50px; font-weight: bold; display: inline-block; margin: 15px 0; }
-        .address-box { background: #ffffff; padding: 25px; border-radius: 15px; margin-top: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border-top: 8px solid #e74c3c; }
-        .color-btns { position: fixed; top: 10px; right: 10px; display: flex; flex-direction: column; gap: 8px; z-index: 1000; }
-        .color-btn { width: 30px; height: 30px; border-radius: 50%; border: 2px solid white; cursor: pointer; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f8ff; text-align: center; margin: 0; padding: 20px; transition: 0.3s; }
+        .container { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 500px; margin: auto; }
+        .contact { color: #007bff; font-weight: bold; margin-bottom: 15px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: #fff; }
+        th { background-color: #007bff; color: white; padding: 12px; }
+        td { padding: 10px; border-bottom: 1px solid #ddd; font-weight: bold; color: #333; }
+        .whatsapp-btn { background-color: #25D366; color: white; padding: 12px 20px; border-radius: 30px; text-decoration: none; display: inline-block; margin-top: 15px; font-weight: bold; }
+        .address-box { border: 2px solid #e74c3c; border-radius: 10px; padding: 15px; margin-top: 20px; background: #fff5f5; }
+        .lang-btn { padding: 8px 15px; margin: 5px; border: none; border-radius: 5px; cursor: pointer; background: #e74c3c; color: white; font-weight: bold; }
+        .color-btn { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #ddd; cursor: pointer; margin: 5px; display: inline-block; }
     </style>
 </head>
-<link rel="manifest" href="manifest.json">
-<body>
+<body id="mainBody">
 
-    <div class="color-btns">
-        <div class="color-btn" style="background: #f0f8ff;" onclick="document.body.style.backgroundColor='#f0f8ff'"></div>
-        <div class="color-btn" style="background: #ffe4e1;" onclick="document.body.style.backgroundColor='#ffe4e1'"></div>
-        <div class="color-btn" style="background: #2c3e50;" onclick="document.body.style.backgroundColor='#2c3e50'"></div>
+    <div style="position: fixed; top: 10px; right: 10px;">
+        <div class="color-btn" style="background: #f0f8ff;" onclick="changeBg('#f0f8ff')"></div>
+        <div class="color-btn" style="background: #ffe4e1;" onclick="changeBg('#ffe4e1')"></div>
+        <div class="color-btn" style="background: #2c3e50;" onclick="changeBg('#2c3e50')"></div>
     </div>
 
     <div class="container">
-        <div style="margin-bottom: 20px; background: #f8f9fa; padding: 10px; border-radius: 10px; border: 1px solid #ddd;">
-            <button class="lang-btn" style="background: #e67e22;" onclick="changeLang('bn')">বাংলা</button>
-            <button class="lang-btn" style="background: #3498db;" onclick="changeLang('en')">English</button>
-            <button class="lang-btn" style="background: #27ae60;" onclick="changeLang('hi')">हिन्दी</button>
-        </div>
-
         <h1 id="title">কামিনী স্কুল লেন ডিজিটাল স্টুডিও</h1>
-        <div id="greeting" style="font-size: 22px; font-weight: bold; color: #e67e22; margin: 10px 0;"></div>
-        <div id="time" style="font-size: 16px; color: #7f8c8d; background: #ecf0f1; padding: 5px 15px; border-radius: 20px; display: inline-block;"></div>
-        <p><span id="contact-text">যোগাযোগ:</span> <b>9019863904</b></p>
+        <p id="greet" style="font-weight: bold; color: #d35400;">শুভ দুপুর! 🌤️</p>
+        <p class="contact">Contact: 9019863904</p>
 
         <table>
             <thead>
-                <tr><th id="th-name">সার্ভিসের নাম</th><th id="th-rate">রেট (টাকায়)</th></tr>
+                <tr>
+                    <th id="th-service">সার্ভিসের নাম</th>
+                    <th id="th-rate">রেট (টাকায়)</th>
+                </tr>
             </thead>
-            <tbody>
-                <tr><td id="td-xerox">জেরক্স (B&W)</td><td>১.০০</td></tr>
-                <tr><td id="td-print">প্রিন্ট আউট (B&W)</td><td>৫.০০</td></tr>
-                <tr><td id="td-photo">পাসপোর্ট ফটো (৫ কপি)</td><td>৩০.০০</td></tr>
+            <tbody id="table-body">
+                <tr><td>জেরক্স (B&W)</td><td>১.০০</td></tr>
+                <tr><td>প্রিন্ট আউট (B&W)</td><td>৫.০০</td></tr>
+                <tr><td>পাসপোর্ট ফটো (৫ কপি)</td><td>৩০.০০</td></tr>
             </tbody>
         </table>
 
-        <a href="https://wa.me/919019863904" class="whatsapp-btn" id="wa-btn">💬 Send Photo on WhatsApp</a>
+        <a href="https://wa.me/919019863904" class="whatsapp-btn">🟢 Send Photo on WhatsApp</a>
 
         <div class="address-box">
             <h3 id="addr-title" style="color: #c0392b; margin: 0;">আমাদের স্টুডিওর ঠিকানা</h3>
-            <p id="addr-text" style="font-weight: bold; font-size: 22px; margin: 15px 0;">২০, কামিনী স্কুল লেন, হাওড়া</p>
-            <a href="https://www.google.com/maps/place/22%0D%0A58'43.4%22N+88%0D%0A20'22.3%22E/@22.9787163,88.3389657,19z" target="_blank" id="map-btn" style="background: #e74c3c; color: white; padding: 12px 20px; text-decoration: none; border-radius: 50px; display: inline-block; font-weight: bold;">🚩 সরাসরি ম্যাপে দেখুন</a>
+            <p id="addr-text"><b>২০, কামিনী স্কুল লেন, হাওড়া</b></p>
+            <a href="https://maps.google.com" style="color: white; background: #e74c3c; padding: 5px 10px; border-radius: 5px; text-decoration: none;">সরাসরি ম্যাপে দেখুন</a>
+        </div>
+
+        <div style="margin-top: 25px;">
+            <button class="lang-btn" onclick="setLang('bn')">বাংলা</button>
+            <button class="lang-btn" onclick="setLang('en')">English</button>
+            <button class="lang-btn" onclick="setLang('hi')">हिन्दी</button>
         </div>
     </div>
 
     <script>
-        let currentLang = 'bn';
+        function changeBg(color) { document.getElementById('mainBody').style.backgroundColor = color; }
 
-        const translations = {
-            'bn': {
-                'title': 'কামিনী স্কুল লেন ডিজিটাল স্টুডিও',
-                'contact-text': 'যোগাযোগ:',
-                'th-name': 'সার্ভিসের নাম',
-                'th-rate': 'রেট (টাকায়)',
-                'td-xerox': 'জেরক্স (B&W)',
-                'td-print': 'প্রিন্ট আউট (B&W)',
-                'td-photo': 'পাসপোর্ট ফটো (৫ কপি)',
-                'wa-btn': '💬 Send Photo on WhatsApp',
-                'addr-title': 'আমাদের স্টুডিওর ঠিকানা',
-                'addr-text': '২০, কামিনী স্কুল লেন, হাওড়া',
-                'map-btn': '🚩 সরাসরি ম্যাপে দেখুন',
-                'greetings': { 'morn': 'শুভ সকাল! ☀️', 'aft': 'শুভ দুপুর! 🌤️', 'eve': 'শুভ সন্ধ্যা! 🌙', 'night': 'শুভ রাত্রি! ✨' }
-            },
-            'en': {
-                'title': 'Kamini School Lane Digital Studio',
-                'contact-text': 'Contact:',
-                'th-name': 'Service Name',
-                'th-rate': 'Rate (Rupees)',
-                'td-xerox': 'Xerox (B&W)',
-                'td-print': 'Print Out (B&W)',
-                'td-photo': 'Passport Photo (5 copies)',
-                'wa-btn': '💬 Send Photo on WhatsApp',
-                'addr-title': 'Our Studio Address',
-                'addr-text': '20, Kamini School Lane, Howrah',
-                'map-btn': '🚩 View Directly on Map',
-                'greetings': { 'morn': 'Good Morning! ☀️', 'aft': 'Good Afternoon! 🌤️', 'eve': 'Good Evening! 🌙', 'night': 'Good Night! ✨' }
-            },
-            'hi': {
-                'title': 'कामिनी स्कूल लेन डिजिटल स्टूडियो',
-                'contact-text': 'संपर्क:',
-                'th-name': 'सेवा का नाम',
-                'th-rate': 'दर (रुपये)',
-                'td-xerox': 'जेरॉक्स (B&W)',
-                'td-print': 'प्रिंट आउट (B&W)',
-                'td-photo': 'पासपोर्ट फोटो (5 प्रतियां)',
-                'wa-btn': '💬 WhatsApp पर फोटो भेजें',
-                'addr-title': 'हमारे स्टूडियो का पता',
-                'addr-text': '20, कामिनी स्कूल लेन, हावड़ा',
-                'map-btn': '🚩 मैप पर सीधे देखें',
-                'greetings': { 'morn': 'शुभ प्रभात! ☀️', 'aft': 'शुभ दोपहर! 🌤️', 'eve': 'शुभ संध्या! 🌙', 'night': 'शुभ रात्रि! ✨' }
-            }
-        };
+        function setLang(lang) {
+            const data = {
+                'en': { title: "Kamini School Ln Digital Studio", greet: "Good Afternoon! 🌤️", service: "Service Name", rate: "Rate (INR)", addr: "Our Address", rows: [["Xerox (B&W)", "1.00"], ["Print (B&W)", "5.00"], ["Passport Photo", "30.00"]] },
+                'hi': { title: "कामिनी डिजिटल स्टूडियो", greet: "शुभ दोपहर! 🌤️", service: "सेवा का नाम", rate: "दर (रुपये)", addr: "हमारा पता", rows: [["जेरॉक्स", "1.00"], ["प्रिंट", "5.00"], ["पासपोर्ट फोटो", "30.00"]] },
+                'bn': { title: "কামিনী স্কুল লেন ডিজিটাল স্টুডিও", greet: "শুভ দুপুর! 🌤️", service: "সার্ভিসের নাম", rate: "রেট (টাকায়)", addr: "আমাদের ঠিকানা", rows: [["জেরক্স (B&W)", "১.০০"], ["প্রিন্ট আউট (B&W)", "৫.০০"], ["পাসপোর্ট ফটো", "৩০.০০"]] }
+            };
 
-        function changeLang(lang) {
-            currentLang = lang;
-            for (let id in translations[lang]) {
-                const element = document.getElementById(id);
-                if (element && id !== 'greetings') {
-                    element.innerText = translations[lang][id];
-                }
-            }
-            updateTime(); // ভাষা বদলানোর সাথে সাথে আপডেট
+            document.getElementById('title').innerText = data[lang].title;
+            document.getElementById('greet').innerText = data[lang].greet;
+            document.getElementById('th-service').innerText = data[lang].service;
+            document.getElementById('th-rate').innerText = data[lang].rate;
+            document.getElementById('addr-title').innerText = data[lang].addr;
+
+            let newRows = "";
+            data[lang].rows.forEach(row => {
+                newRows += `<tr><td>${row[0]}</td><td>${row[1]}</td></tr>`;
+            });
+            document.getElementById('table-body').innerHTML = newRows;
         }
 
-        function updateTime() {
-            const now = new Date();
-            document.getElementById('time').innerText = "🕒 " + now.toLocaleString();
-            
-            const hour = now.getHours();
-            let timeKey = 'night';
-            if (hour >= 5 && hour < 12) timeKey = 'morn';
-            else if (hour >= 12 && hour < 17) timeKey = 'aft';
-            else if (hour >= 17 && hour < 20) timeKey = 'eve';
-
-            document.getElementById('greeting').innerText = translations[currentLang].greetings[timeKey];
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js'); });
         }
-
-        setInterval(updateTime, 1000);
-        updateTime();
     </script>
-    if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js');
-}<script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js')
-            .then(reg => console.log('Service Worker: Registered'))
-            .catch(err => console.log('Service Worker: Error: ' + err));
-        });
-    }
-</script>
 </body>
 </html>
