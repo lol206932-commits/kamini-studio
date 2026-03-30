@@ -3,41 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kamini Digital Studio</title>
+    <title>Kamini Digital</title>
     <link rel="manifest" href="manifest.json">
     <style>
-        /* স্মার্ট থিম ভেরিয়েবল */
-        :root { --bg-color: #f0f8ff; --card-bg: #ffffff; --text-color: #2c3e50; --btn-color: #e74c3c; --shadow-color: rgba(0,0,0,0.1); }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--bg-color); color: var(--text-color); text-align: center; margin: 0; padding: 10px; transition: all 0.4s ease; }
-        .container { background: var(--card-bg); padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px var(--shadow-color); max-width: 500px; margin: auto; transition: 0.4s; padding-bottom: 20px; }
+        :root { --bg-color: #f0f8ff; --card-bg: #ffffff; --text-color: #2c3e50; --btn-color: #e74c3c; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--bg-color); color: var(--text-color); text-align: center; margin: 0; padding: 15px; transition: 0.4s; }
+        .container { background: var(--card-bg); padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 500px; margin: auto; transition: 0.4s; }
         
-        /* ইন্সটল বাটন */
-        #installBtn { display: none; background: var(--btn-color); color: white; border: none; padding: 12px 25px; border-radius: 50px; font-weight: bold; cursor: pointer; margin: 15px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        #installBtn:hover { background: #c0392b; }
-
-        /* টেবিল ও রেট চার্ট */
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; border-radius: 10px; overflow: hidden; }
+        #installBtn { display: none; background: var(--btn-color); color: white; border: none; padding: 12px 25px; border-radius: 50px; font-weight: bold; cursor: pointer; margin-bottom: 20px; }
+        
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; border-radius: 10px; overflow: hidden; background: rgba(255,255,255,0.1); }
         th { background-color: var(--btn-color); color: white; padding: 12px; }
         td { padding: 12px; border-bottom: 1px solid rgba(0,0,0,0.1); font-weight: bold; }
         
-        /* অন্যান্য বাটন */
         .whatsapp-btn { background-color: #25D366; color: white; padding: 15px 25px; border-radius: 50px; text-decoration: none; display: inline-block; margin-top: 15px; font-weight: bold; }
-        .theme-panel { margin: 15px 0; display: flex; justify-content: center; gap: 10px; }
-        .color-dot { width: 35px; height: 35px; border-radius: 50%; border: 3px solid white; cursor: pointer; display: inline-block; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .theme-panel { margin: 15px 0; display: flex; justify-content: center; gap: 15px; }
+        .color-dot { width: 40px; height: 40px; border-radius: 50%; border: 3px solid white; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
         .lang-btn { padding: 10px 18px; margin: 5px; border: none; border-radius: 8px; cursor: pointer; background: var(--btn-color); color: white; font-weight: bold; }
+        
+        #qr-section { margin-top: 30px; background: white; padding: 20px; border-radius: 15px; max-width: 300px; margin: 20px auto; color: #2c3e50; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        #qr-image { width: 100%; max-width: 200px; border-radius: 10px; margin-top: 10px; display: block; margin-left: auto; margin-right: auto; }
     </style>
 </head>
 <body id="mainBody">
 
-    <button id="installBtn">📲 Install Kamini Studio App</button>
+    <button id="installBtn">📲 Install Kamini Digital App</button>
 
     <div class="theme-panel">
-        <div class="color-dot" style="background: #f0f8ff;" onclick="setTheme('#f0f8ff', '#ffffff', '#2c3e50', 'rgba(0,0,0,0.1)')"></div> <div class="color-dot" style="background: #2c3e50;" onclick="setTheme('#2c3e50', '#34495e', '#ffffff', 'rgba(0,0,0,0.3)')"></div> <div class="color-dot" style="background: #e74c3c;" onclick="setTheme('#e74c3c', '#c0392b', '#ffffff', 'rgba(0,0,0,0.3)')"></div> <div class="color-dot" style="background: #f8c291;" onclick="setTheme('#f8c291', '#e77f67', '#ffffff', 'rgba(0,0,0,0.2)')"></div> </div>
+        <div class="color-dot" style="background: #f0f8ff;" onclick="setTheme('#f0f8ff', '#ffffff', '#2c3e50')"></div>
+        <div class="color-dot" style="background: #1a1a1a;" onclick="setTheme('#1a1a1a', '#2d2d2d', '#ffffff')"></div>
+        <div class="color-dot" style="background: #e74c3c;" onclick="setTheme('#e74c3c', '#c0392b', '#ffffff')"></div>
+    </div>
 
     <div class="container">
-        <h1 id="title">কামিনী স্কুল লেন ডিজিটাল স্টুডিও</h1>
-        <p id="greet" style="font-weight: bold;">শুভ দুপুর! 🌤️</p>
-        <p style="color: var(--btn-color); font-weight: bold;">Contact: 9019863904</p>
+        <h1 id="title">কামিনী ডিজিটাল</h1>
+        <p id="greet" style="font-weight: bold;">স্বাগতম! 🌤️</p>
+        <p id="contact-text">যোগাযোগ: 9019863904</p>
 
         <table>
             <thead>
@@ -50,30 +51,32 @@
             </tbody>
         </table>
 
-        <a href="https://wa.me/919019863904" class="whatsapp-btn">🟢 Send Photo on WhatsApp</a>
+        <a href="https://wa.me/919019863904" class="whatsapp-btn">🟢 WhatsApp-এ ছবি পাঠান</a>
 
-        <div class="btn-group" style="margin-top: 25px; padding-bottom: 10px;">
+        <div class="btn-group" style="margin-top: 25px;">
             <button class="lang-btn" onclick="setLang('bn')">বাংলা</button>
             <button class="lang-btn" onclick="setLang('en')">English</button>
             <button class="lang-btn" onclick="setLang('hi')">हिन्दी</button>
         </div>
     </div>
 
+    <div id="qr-section">
+        <p>🔳 স্ক্যান করে অ্যাপ ইন্সটল করুন</p>
+        <img id="qr-image" src="qrcode.png" alt="QR Code">
+    </div>
+
     <script>
-        // স্মার্ট থিম চেঞ্জ লজিক
-        function setTheme(bg, card, text, shadow) {
+        function setTheme(bg, card, text) {
             document.documentElement.style.setProperty('--bg-color', bg);
             document.documentElement.style.setProperty('--card-bg', card);
             document.documentElement.style.setProperty('--text-color', text);
-            document.documentElement.style.setProperty('--shadow-color', shadow);
         }
 
-        // ল্যাঙ্গুয়েজ চেঞ্জ লজিক
         function setLang(lang) {
             const data = {
-                'en': { title: "Kamini Studio", greet: "Welcome! 🌤️", service: "Service", rate: "Price", rows: [["Xerox", "1.00"], ["Print", "5.00"], ["Passport Photo", "30.00"]] },
-                'hi': { title: "कामिनी स्टूडियो", greet: "नमस्ते! 🌤️", service: "सेवा", rate: "दर", rows: [["जेरॉक्स", "1.00"], ["प्रिंट", "5.00"], ["पासपोर्ट फोटो", "30.00"]] },
-                'bn': { title: "কামিনী ডিজিটাল স্টুডিও", greet: "শুভ দুপুর! 🌤️", service: "সার্ভিসের নাম", rate: "রেট (টাকায়)", rows: [["জেরক্স", "১.০০"], ["প্রিন্ট আউট", "৫.০০"], ["পাসপোর্ট ফটো", "৩০.০০"]] }
+                'en': { title: "Kamini Digital", greet: "Welcome!", service: "Service", rate: "Price", rows: [["Xerox", "1.00"], ["Print", "5.00"], ["Passport Photo", "30.00"]] },
+                'hi': { title: "कामिनी डिजिटल", greet: "नमस्ते!", service: "सेवा", rate: "दर", rows: [["जेरॉक्स", "1.00"], ["प्रिंट", "5.00"], ["पासपोर्ट फोटो", "30.00"]] },
+                'bn': { title: "কামিনী ডিজিটাল", greet: "স্বাগতম!", service: "সার্ভিসের নাম", rate: "রেট (টাকায়)", rows: [["জেরক্স", "১.০০"], ["প্রিন্ট আউট", "৫.০০"], ["পাসপোর্ট ফটো", "৩০.০০"]] }
             };
             document.getElementById('title').innerText = data[lang].title;
             document.getElementById('greet').innerText = data[lang].greet;
@@ -83,25 +86,17 @@
             document.getElementById('table-body').innerHTML = rows;
         }
 
-        // ইন্সটল বাটন লজিক (শুধুমাত্র মোবাইল এবং শর্তসাপেক্ষে)
         let deferredPrompt;
-        const installBtn = document.getElementById('installBtn');
-
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            installBtn.style.display = 'inline-block'; // বাটনটি দেখা দেবে
+            document.getElementById('installBtn').style.display = 'inline-block';
         });
 
-        installBtn.addEventListener('click', () => {
+        document.getElementById('installBtn').addEventListener('click', () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('User installed the app');
-                    }
-                    installBtn.style.display = 'none';
-                });
+                deferredPrompt.userChoice.then(() => { document.getElementById('installBtn').style.display = 'none'; });
             }
         });
 
