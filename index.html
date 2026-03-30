@@ -6,23 +6,29 @@
     <title>Kamini Digital</title>
     <link rel="manifest" href="manifest.json">
     <style>
-        :root { --bg-color: #f0f8ff; --card-bg: #ffffff; --text-color: #2c3e50; --btn-color: #e74c3c; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--bg-color); color: var(--text-color); text-align: center; margin: 0; padding: 15px; transition: 0.4s; }
-        .container { background: var(--card-bg); padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 500px; margin: auto; transition: 0.4s; }
+        :root { --bg-color: #f0f8ff; --card-bg: #ffffff; --text-color: #2c3e50; --btn-color: #e74c3c; --shadow-color: rgba(0,0,0,0.1); }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--bg-color); color: var(--text-color); text-align: center; margin: 0; padding: 10px; transition: 0.4s ease; }
+        .container { background: var(--card-bg); padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px var(--shadow-color); max-width: 500px; margin: auto; }
         
         #installBtn { display: none; background: var(--btn-color); color: white; border: none; padding: 12px 25px; border-radius: 50px; font-weight: bold; cursor: pointer; margin-bottom: 20px; }
         
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; border-radius: 10px; overflow: hidden; background: rgba(255,255,255,0.1); }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; border-radius: 10px; overflow: hidden; }
         th { background-color: var(--btn-color); color: white; padding: 12px; }
         td { padding: 12px; border-bottom: 1px solid rgba(0,0,0,0.1); font-weight: bold; }
         
-        .whatsapp-btn { background-color: #25D366; color: white; padding: 15px 25px; border-radius: 50px; text-decoration: none; display: inline-block; margin-top: 15px; font-weight: bold; }
-        .theme-panel { margin: 15px 0; display: flex; justify-content: center; gap: 15px; }
-        .color-dot { width: 40px; height: 40px; border-radius: 50%; border: 3px solid white; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
-        .lang-btn { padding: 10px 18px; margin: 5px; border: none; border-radius: 8px; cursor: pointer; background: var(--btn-color); color: white; font-weight: bold; }
+        .order-box { margin-top: 20px; padding: 15px; border: 2px solid var(--btn-color); border-radius: 15px; background: rgba(255,255,255,0.2); }
+        input { width: 80%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ddd; outline: none; }
         
-        #qr-section { margin-top: 30px; background: white; padding: 20px; border-radius: 15px; max-width: 300px; margin: 20px auto; color: #2c3e50; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        #qr-image { width: 100%; max-width: 200px; border-radius: 10px; margin-top: 10px; display: block; margin-left: auto; margin-right: auto; }
+        .theme-panel { margin-bottom: 15px; display: flex; justify-content: center; gap: 12px; }
+        .color-dot { width: 35px; height: 35px; border-radius: 50%; border: 2px solid white; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        
+        .btn-link { padding: 12px 20px; border-radius: 50px; text-decoration: none; display: inline-block; margin-top: 10px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .whatsapp-btn { background-color: #25D366; color: white; }
+        .map-btn { background-color: #4285F4; color: white; }
+        .lang-btn { padding: 8px 15px; margin: 5px; border: none; border-radius: 5px; cursor: pointer; background: var(--btn-color); color: white; font-weight: bold; }
+        
+        #qr-section { margin-top: 25px; background: white; padding: 15px; border-radius: 15px; max-width: 250px; margin: 20px auto; color: #333; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        #qr-image { width: 100%; border-radius: 10px; }
     </style>
 </head>
 <body id="mainBody">
@@ -30,19 +36,18 @@
     <button id="installBtn">📲 Install Kamini Digital App</button>
 
     <div class="theme-panel">
-        <div class="color-dot" style="background: #f0f8ff;" onclick="setTheme('#f0f8ff', '#ffffff', '#2c3e50')"></div>
-        <div class="color-dot" style="background: #1a1a1a;" onclick="setTheme('#1a1a1a', '#2d2d2d', '#ffffff')"></div>
-        <div class="color-dot" style="background: #e74c3c;" onclick="setTheme('#e74c3c', '#c0392b', '#ffffff')"></div>
+        <div class="color-dot" style="background: #f0f8ff;" onclick="setTheme('#f0f8ff', '#ffffff', '#2c3e50', 'rgba(0,0,0,0.1)')"></div>
+        <div class="color-dot" style="background: #2c3e50;" onclick="setTheme('#2c3e50', '#34495e', '#ffffff', 'rgba(0,0,0,0.3)')"></div>
+        <div class="color-dot" style="background: #e74c3c;" onclick="setTheme('#e74c3c', '#c0392b', '#ffffff', 'rgba(0,0,0,0.3)')"></div>
     </div>
 
     <div class="container">
         <h1 id="title">কামিনী ডিজিটাল</h1>
-        <p id="greet" style="font-weight: bold;">স্বাগতম! 🌤️</p>
-        <p id="contact-text">যোগাযোগ: 9019863904</p>
+        <p id="addr" style="font-weight: bold; margin-bottom: 5px;">২০ নম্বর কামিনী স্কুল লেন, হাওড়া</p>
 
         <table>
             <thead>
-                <tr><th id="th-service">সার্ভিসের নাম</th><th id="th-rate">রেট (টাকায়)</th></tr>
+                <tr><th id="th-s">সার্ভিসের নাম</th><th id="th-r">রেট</th></tr>
             </thead>
             <tbody id="table-body">
                 <tr><td>জেরক্স (B&W)</td><td>১.০০</td></tr>
@@ -51,9 +56,17 @@
             </tbody>
         </table>
 
-        <a href="https://wa.me/919019863904" class="whatsapp-btn">🟢 WhatsApp-এ ছবি পাঠান</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=20+Kamini+School+Lane+Howrah" class="btn-link map-btn" id="map-btn">📍 Google Maps-এ দেখুন</a>
+        <br>
+        <a href="https://wa.me/919019863904" class="btn-link whatsapp-btn" id="wa-btn">🟢 WhatsApp যোগাযোগ</a>
 
-        <div class="btn-group" style="margin-top: 25px;">
+        <div class="order-box">
+            <h3 id="order-t">📚 বইয়ের অর্ডার দিন</h3>
+            <input type="text" id="bookName" placeholder="বইয়ের নাম লিখুন...">
+            <button style="padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;" id="order-btn" onclick="sendOrder()">Order Now</button>
+        </div>
+
+        <div style="margin-top: 20px;">
             <button class="lang-btn" onclick="setLang('bn')">বাংলা</button>
             <button class="lang-btn" onclick="setLang('en')">English</button>
             <button class="lang-btn" onclick="setLang('hi')">हिन्दी</button>
@@ -61,44 +74,42 @@
     </div>
 
     <div id="qr-section">
-        <p>🔳 স্ক্যান করে অ্যাপ ইন্সটল করুন</p>
+        <p id="qr-text">🔳 স্ক্যান করে অ্যাপ নিন</p>
         <img id="qr-image" src="qrcode.png" alt="QR Code">
     </div>
 
     <script>
-        function setTheme(bg, card, text) {
+        function setTheme(bg, card, text, shadow) {
             document.documentElement.style.setProperty('--bg-color', bg);
             document.documentElement.style.setProperty('--card-bg', card);
             document.documentElement.style.setProperty('--text-color', text);
+            document.documentElement.style.setProperty('--shadow-color', shadow);
+        }
+
+        function sendOrder() {
+            const book = document.getElementById('bookName').value;
+            if (book) window.open("https://wa.me/919019863904?text=বই অর্ডার: " + encodeURIComponent(book));
+            else alert("বইয়ের নাম লিখুন!");
         }
 
         function setLang(lang) {
-            const data = {
-                'en': { title: "Kamini Digital", greet: "Welcome!", service: "Service", rate: "Price", rows: [["Xerox", "1.00"], ["Print", "5.00"], ["Passport Photo", "30.00"]] },
-                'hi': { title: "कामिनी डिजिटल", greet: "नमस्ते!", service: "सेवा", rate: "दर", rows: [["जेरॉक्स", "1.00"], ["प्रिंट", "5.00"], ["पासपोर्ट फोटो", "30.00"]] },
-                'bn': { title: "কামিনী ডিজিটাল", greet: "স্বাগতম!", service: "সার্ভিসের নাম", rate: "রেট (টাকায়)", rows: [["জেরক্স", "১.০০"], ["প্রিন্ট আউট", "৫.০০"], ["পাসপোর্ট ফটো", "৩০.০০"]] }
+            const d = {
+                'en': { title: "Kamini Digital", addr: "20, Kamini School Lane, Howrah", thS: "Service", thR: "Price", map: "📍 View on Maps", wa: "🟢 WhatsApp", orderT: "📚 Book Order", qr: "🔳 Scan for App", rows: [["Xerox", "1.00"], ["Print", "5.00"], ["Photo", "30.00"]] },
+                'hi': { title: "कामिनी डिजिटल", addr: "20, कामिनी स्कूल लेन, हावड़ा", thS: "सेवा", thR: "दर", map: "📍 मैप पर देखें", wa: "🟢 व्हाट्सएप", orderT: "📚 पुस्तक ऑर्डर", qr: "🔳 ऐप के लिए स्कैन", rows: [["जेरॉक्स", "1.00"], ["प्रिंट", "5.00"], ["फोटो", "30.00"]] },
+                'bn': { title: "কামিনী ডিজিটাল", addr: "২০ নম্বর কামিনী স্কুল লেন, হাওড়া", thS: "সার্ভিসের নাম", thR: "রেট", map: "📍 Google Maps-এ দেখুন", wa: "🟢 WhatsApp যোগাযোগ", orderT: "📚 বইয়ের অর্ডার দিন", qr: "🔳 স্ক্যান করে অ্যাপ নিন", rows: [["জেরক্স", "১.০০"], ["প্রিন্ট আউট", "৫.০০"], ["পাসপোর্ট ফটো", "৩০.০০"]] }
             };
-            document.getElementById('title').innerText = data[lang].title;
-            document.getElementById('greet').innerText = data[lang].greet;
-            document.getElementById('th-service').innerText = data[lang].service;
-            document.getElementById('th-rate').innerText = data[lang].rate;
-            let rows = ""; data[lang].rows.forEach(r => rows += `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`);
-            document.getElementById('table-body').innerHTML = rows;
+            const data = d[lang];
+            document.getElementById('title').innerText = data.title;
+            document.getElementById('addr').innerText = data.addr;
+            document.getElementById('th-s').innerText = data.thS;
+            document.getElementById('th-r').innerText = data.thR;
+            document.getElementById('map-btn').innerText = data.map;
+            document.getElementById('wa-btn').innerText = data.wa;
+            document.getElementById('order-t').innerText = data.orderT;
+            document.getElementById('qr-text').innerText = data.qr;
+            let rs = ""; data.rows.forEach(r => rs += `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`);
+            document.getElementById('table-body').innerHTML = rs;
         }
-
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            document.getElementById('installBtn').style.display = 'inline-block';
-        });
-
-        document.getElementById('installBtn').addEventListener('click', () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then(() => { document.getElementById('installBtn').style.display = 'none'; });
-            }
-        });
 
         if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
     </script>
