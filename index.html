@@ -6,37 +6,42 @@
     <title>Kamini Digital Studio</title>
     <link rel="manifest" href="manifest.json">
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f8ff; text-align: center; margin: 0; padding: 20px; transition: 0.3s; }
-        .container { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 500px; margin: auto; }
-        .contact { color: #007bff; font-weight: bold; margin-bottom: 15px; }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: #fff; }
-        th { background-color: #007bff; color: white; padding: 12px; }
-        td { padding: 10px; border-bottom: 1px solid #ddd; font-weight: bold; color: #333; }
-        .whatsapp-btn { background-color: #25D366; color: white; padding: 12px 20px; border-radius: 30px; text-decoration: none; display: inline-block; margin-top: 15px; font-weight: bold; }
-        .address-box { border: 2px solid #e74c3c; border-radius: 10px; padding: 15px; margin-top: 20px; background: #fff5f5; }
-        .lang-btn { padding: 8px 15px; margin: 5px; border: none; border-radius: 5px; cursor: pointer; background: #e74c3c; color: white; font-weight: bold; }
-        .color-btn { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #ddd; cursor: pointer; margin: 5px; display: inline-block; }
+        /* স্মার্ট থিম ভেরিয়েবল */
+        :root { --bg-color: #f0f8ff; --card-bg: #ffffff; --text-color: #2c3e50; --btn-color: #e74c3c; --shadow-color: rgba(0,0,0,0.1); }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--bg-color); color: var(--text-color); text-align: center; margin: 0; padding: 10px; transition: all 0.4s ease; }
+        .container { background: var(--card-bg); padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px var(--shadow-color); max-width: 500px; margin: auto; transition: 0.4s; padding-bottom: 20px; }
+        
+        /* ইন্সটল বাটন */
+        #installBtn { display: none; background: var(--btn-color); color: white; border: none; padding: 12px 25px; border-radius: 50px; font-weight: bold; cursor: pointer; margin: 15px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        #installBtn:hover { background: #c0392b; }
+
+        /* টেবিল ও রেট চার্ট */
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; border-radius: 10px; overflow: hidden; }
+        th { background-color: var(--btn-color); color: white; padding: 12px; }
+        td { padding: 12px; border-bottom: 1px solid rgba(0,0,0,0.1); font-weight: bold; }
+        
+        /* অন্যান্য বাটন */
+        .whatsapp-btn { background-color: #25D366; color: white; padding: 15px 25px; border-radius: 50px; text-decoration: none; display: inline-block; margin-top: 15px; font-weight: bold; }
+        .theme-panel { margin: 15px 0; display: flex; justify-content: center; gap: 10px; }
+        .color-dot { width: 35px; height: 35px; border-radius: 50%; border: 3px solid white; cursor: pointer; display: inline-block; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .lang-btn { padding: 10px 18px; margin: 5px; border: none; border-radius: 8px; cursor: pointer; background: var(--btn-color); color: white; font-weight: bold; }
     </style>
 </head>
 <body id="mainBody">
 
-    <div style="position: fixed; top: 10px; right: 10px;">
-        <div class="color-btn" style="background: #f0f8ff;" onclick="changeBg('#f0f8ff')"></div>
-        <div class="color-btn" style="background: #ffe4e1;" onclick="changeBg('#ffe4e1')"></div>
-        <div class="color-btn" style="background: #2c3e50;" onclick="changeBg('#2c3e50')"></div>
-    </div>
+    <button id="installBtn">📲 Install Kamini Studio App</button>
+
+    <div class="theme-panel">
+        <div class="color-dot" style="background: #f0f8ff;" onclick="setTheme('#f0f8ff', '#ffffff', '#2c3e50', 'rgba(0,0,0,0.1)')"></div> <div class="color-dot" style="background: #2c3e50;" onclick="setTheme('#2c3e50', '#34495e', '#ffffff', 'rgba(0,0,0,0.3)')"></div> <div class="color-dot" style="background: #e74c3c;" onclick="setTheme('#e74c3c', '#c0392b', '#ffffff', 'rgba(0,0,0,0.3)')"></div> <div class="color-dot" style="background: #f8c291;" onclick="setTheme('#f8c291', '#e77f67', '#ffffff', 'rgba(0,0,0,0.2)')"></div> </div>
 
     <div class="container">
         <h1 id="title">কামিনী স্কুল লেন ডিজিটাল স্টুডিও</h1>
-        <p id="greet" style="font-weight: bold; color: #d35400;">শুভ দুপুর! 🌤️</p>
-        <p class="contact">Contact: 9019863904</p>
+        <p id="greet" style="font-weight: bold;">শুভ দুপুর! 🌤️</p>
+        <p style="color: var(--btn-color); font-weight: bold;">Contact: 9019863904</p>
 
         <table>
             <thead>
-                <tr>
-                    <th id="th-service">সার্ভিসের নাম</th>
-                    <th id="th-rate">রেট (টাকায়)</th>
-                </tr>
+                <tr><th id="th-service">সার্ভিসের নাম</th><th id="th-rate">রেট (টাকায়)</th></tr>
             </thead>
             <tbody id="table-body">
                 <tr><td>জেরক্স (B&W)</td><td>১.০০</td></tr>
@@ -47,13 +52,7 @@
 
         <a href="https://wa.me/919019863904" class="whatsapp-btn">🟢 Send Photo on WhatsApp</a>
 
-        <div class="address-box">
-            <h3 id="addr-title" style="color: #c0392b; margin: 0;">আমাদের স্টুডিওর ঠিকানা</h3>
-            <p id="addr-text"><b>২০, কামিনী স্কুল লেন, হাওড়া</b></p>
-            <a href="https://maps.google.com" style="color: white; background: #e74c3c; padding: 5px 10px; border-radius: 5px; text-decoration: none;">সরাসরি ম্যাপে দেখুন</a>
-        </div>
-
-        <div style="margin-top: 25px;">
+        <div class="btn-group" style="margin-top: 25px; padding-bottom: 10px;">
             <button class="lang-btn" onclick="setLang('bn')">বাংলা</button>
             <button class="lang-btn" onclick="setLang('en')">English</button>
             <button class="lang-btn" onclick="setLang('hi')">हिन्दी</button>
@@ -61,31 +60,52 @@
     </div>
 
     <script>
-        function changeBg(color) { document.getElementById('mainBody').style.backgroundColor = color; }
+        // স্মার্ট থিম চেঞ্জ লজিক
+        function setTheme(bg, card, text, shadow) {
+            document.documentElement.style.setProperty('--bg-color', bg);
+            document.documentElement.style.setProperty('--card-bg', card);
+            document.documentElement.style.setProperty('--text-color', text);
+            document.documentElement.style.setProperty('--shadow-color', shadow);
+        }
 
+        // ল্যাঙ্গুয়েজ চেঞ্জ লজিক
         function setLang(lang) {
             const data = {
-                'en': { title: "Kamini School Ln Digital Studio", greet: "Good Afternoon! 🌤️", service: "Service Name", rate: "Rate (INR)", addr: "Our Address", rows: [["Xerox (B&W)", "1.00"], ["Print (B&W)", "5.00"], ["Passport Photo", "30.00"]] },
-                'hi': { title: "कामिनी डिजिटल स्टूडियो", greet: "शुभ दोपहर! 🌤️", service: "सेवा का नाम", rate: "दर (रुपये)", addr: "हमारा पता", rows: [["जेरॉक्स", "1.00"], ["प्रिंट", "5.00"], ["पासपोर्ट फोटो", "30.00"]] },
-                'bn': { title: "কামিনী স্কুল লেন ডিজিটাল স্টুডিও", greet: "শুভ দুপুর! 🌤️", service: "সার্ভিসের নাম", rate: "রেট (টাকায়)", addr: "আমাদের ঠিকানা", rows: [["জেরক্স (B&W)", "১.০০"], ["প্রিন্ট আউট (B&W)", "৫.০০"], ["পাসপোর্ট ফটো", "৩০.০০"]] }
+                'en': { title: "Kamini Studio", greet: "Welcome! 🌤️", service: "Service", rate: "Price", rows: [["Xerox", "1.00"], ["Print", "5.00"], ["Passport Photo", "30.00"]] },
+                'hi': { title: "कामिनी स्टूडियो", greet: "नमस्ते! 🌤️", service: "सेवा", rate: "दर", rows: [["जेरॉक्स", "1.00"], ["प्रिंट", "5.00"], ["पासपोर्ट फोटो", "30.00"]] },
+                'bn': { title: "কামিনী ডিজিটাল স্টুডিও", greet: "শুভ দুপুর! 🌤️", service: "সার্ভিসের নাম", rate: "রেট (টাকায়)", rows: [["জেরক্স", "১.০০"], ["প্রিন্ট আউট", "৫.০০"], ["পাসপোর্ট ফটো", "৩০.০০"]] }
             };
-
             document.getElementById('title').innerText = data[lang].title;
             document.getElementById('greet').innerText = data[lang].greet;
             document.getElementById('th-service').innerText = data[lang].service;
             document.getElementById('th-rate').innerText = data[lang].rate;
-            document.getElementById('addr-title').innerText = data[lang].addr;
-
-            let newRows = "";
-            data[lang].rows.forEach(row => {
-                newRows += `<tr><td>${row[0]}</td><td>${row[1]}</td></tr>`;
-            });
-            document.getElementById('table-body').innerHTML = newRows;
+            let rows = ""; data[lang].rows.forEach(r => rows += `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`);
+            document.getElementById('table-body').innerHTML = rows;
         }
 
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js'); });
-        }
+        // ইন্সটল বাটন লজিক (শুধুমাত্র মোবাইল এবং শর্তসাপেক্ষে)
+        let deferredPrompt;
+        const installBtn = document.getElementById('installBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'inline-block'; // বাটনটি দেখা দেবে
+        });
+
+        installBtn.addEventListener('click', () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User installed the app');
+                    }
+                    installBtn.style.display = 'none';
+                });
+            }
+        });
+
+        if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
     </script>
 </body>
 </html>
