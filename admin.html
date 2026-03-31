@@ -3,91 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kamini Digital - Admin Table</title>
+    <title>Kamini Digital - Secure Admin Panel</title>
+    <link rel="manifest" href="manifest.json">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
         
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Poppins', 'Segoe UI', sans-serif; background-color: #f4f7f6; color: #333; }
         
-        /* উপরের ন্যাভিগেশন বার */
-        .navbar { background: #2c3e50; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .navbar h1 { font-size: 22px; font-weight: 600; letter-spacing: 1px; }
-        .navbar span { font-size: 14px; background: #e74c3c; padding: 4px 10px; border-radius: 20px; }
+        /* 🔒 লগইন স্ক্রিন স্টাইল */
+        #login-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; background: #2c3e50; color: white; padding: 20px; }
+        .login-box { background: white; padding: 40px 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); text-align: center; width: 100%; max-width: 350px; color: #333; }
+        .login-box h2 { margin-bottom: 20px; color: #2c3e50; }
+        .login-box input { width: 100%; padding: 12px; margin-bottom: 20px; border: 2px solid #bdc3c7; border-radius: 8px; font-size: 18px; text-align: center; letter-spacing: 5px; outline: none; transition: 0.3s; }
+        .login-box input:focus { border-color: #3498db; }
+        .login-box button { width: 100%; padding: 12px; background: #3498db; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .login-box button:hover { background: #2980b9; }
+
+        /* 📱 অ্যাপ ইনস্টল বাটন */
+        #installAdminBtn { display: none; background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 50px; font-weight: bold; cursor: pointer; margin: 15px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 14px; animation: popIn 0.5s ease; }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        /* মূল অ্যাডমিন কন্টেন্ট (প্রথমে লুকানো থাকবে) */
+        #admin-content { display: none; }
+
+        /* ন্যাভিগেশন বার */
+        .navbar { background: #2c3e50; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .navbar h1 { font-size: 20px; font-weight: 600; letter-spacing: 1px; }
+        .navbar span { font-size: 12px; background: #e74c3c; padding: 4px 10px; border-radius: 20px; font-weight: bold; cursor: pointer; }
         
-        /* মূল কন্টেইনার */
-        .container { padding: 30px; max-width: 1200px; margin: 0 auto; }
-        .page-title { margin-bottom: 20px; color: #2c3e50; font-size: 24px; font-weight: 600; }
+        .container { padding: 20px; max-width: 1200px; margin: 0 auto; }
+        .page-title { margin-bottom: 20px; color: #2c3e50; font-size: 22px; font-weight: 600; text-align: center; }
         
-        /* এক্সেল স্টাইল টেবিল */
-        .table-container { background: white; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #ddd; }
+        /* টেবিল স্টাইল */
+        .table-container { background: white; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #ddd; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
-        
-        /* টেবিলের হেড (প্রথম লাইন) */
         thead { background-color: #34495e; color: white; }
-        th { padding: 15px; font-weight: 600; border-right: 1px solid #465c70; }
+        th { padding: 15px; font-weight: 600; border-right: 1px solid #465c70; text-align: center; }
         th:last-child { border-right: none; }
-        
-        /* টেবিলের বডি (ডেটা) */
         td { padding: 15px; border-bottom: 1px solid #eee; border-right: 1px solid #eee; vertical-align: top; }
         td:last-child { border-right: none; }
-        
-        /* লাইনের রঙ (একটার পর একটা আলাদা রঙ) */
         tbody tr:nth-child(even) { background-color: #f9fbfc; }
-        tbody tr:hover { background-color: #f1f5f8; } /* মাউস নিলে রঙ বদলাবে */
+        tbody tr:hover { background-color: #f1f5f8; }
         
-        /* সম্পন্ন হওয়া অর্ডারের রঙ */
-        tr.completed-row { background-color: #fafffa !important; }
-        tr.completed-row td { color: #555; }
+        tr.completed-row { background-color: #fafffa !important; opacity: 0.8; }
+        tr.canceled-row { background-color: #fff5f5 !important; opacity: 0.7; }
         
-        /* স্ট্যাটাস ব্যাজ */
-        .badge { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; }
+        .badge { padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; text-align: center; }
         .badge-pending { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
         .badge-completed { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .badge-canceled { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
         
-        /* বইয়ের তালিকা */
         .book-item { margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px dashed #ccc; }
         .book-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-        .book-name { font-weight: 600; color: #2980b9; font-size: 15px; display: block; }
-        .book-meta { font-size: 13px; color: #7f8c8d; display: block; }
+        .book-name { font-weight: 600; color: #2980b9; font-size: 14px; display: block; }
+        .book-meta { font-size: 12px; color: #7f8c8d; display: block; }
         
-        /* বাটন */
-        .actions { display: flex; gap: 8px; flex-wrap: wrap; }
-        .btn { padding: 6px 12px; border-radius: 4px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.3s; color: white; }
+        .actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+        .btn { padding: 6px 12px; border-radius: 6px; border: none; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .btn-complete { background: #2ecc71; }
         .btn-complete:hover { background: #27ae60; }
+        .btn-cancel { background: #f39c12; }
+        .btn-cancel:hover { background: #e67e22; }
         .btn-delete { background: #e74c3c; }
         .btn-delete:hover { background: #c0392b; }
         
         .empty-state { text-align: center; padding: 40px; color: #7f8c8d; font-size: 16px; font-weight: 600; }
+
+        @media screen and (max-width: 768px) {
+            table, thead, tbody, th, td, tr { display: block; width: 100%; }
+            thead { display: none; }
+            tbody tr { margin-bottom: 15px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border: 2px solid #3498db; background: white; overflow: hidden; }
+            td { text-align: right; padding-left: 40%; position: relative; border-bottom: 1px solid #ecf0f1; border-right: none; }
+            td::before { content: attr(data-label); position: absolute; left: 15px; width: 35%; font-weight: bold; text-align: left; color: #2c3e50; font-size: 13px; }
+            td:nth-child(2) { text-align: left; padding-left: 15px; background: #f8f9fa; }
+            td:nth-child(2)::before { display: none; }
+            .actions { justify-content: flex-end; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="navbar">
-        <h1>Kamini Digital</h1>
-        <span>অ্যাডমিন প্যানেল</span>
+    <div id="login-screen">
+        <div class="login-box">
+            <h2>🔐 সিকিউরিটি পিন দিন</h2>
+            <input type="password" id="admin-pin" placeholder="PIN" inputmode="numeric" onkeypress="handleLoginEnter(event)">
+            <button onclick="checkPin()">লগইন করুন</button>
+        </div>
     </div>
 
-    <div class="container">
-        <h2 class="page-title">📦 সব অর্ডারসমূহ (Table View)</h2>
-        
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 18%;">অর্ডারের সময়</th>
-                        <th style="width: 45%;">বইয়ের বিবরণ</th>
-                        <th style="width: 15%;">স্ট্যাটাস</th>
-                        <th style="width: 22%;">অ্যাকশন</th>
-                    </tr>
-                </thead>
-                <tbody id="admin-table-body">
-                    <tr>
-                        <td colspan="4" class="empty-state">অর্ডার লোড হচ্ছে, দয়া করে অপেক্ষা করুন...</td>
-                    </tr>
-                </tbody>
-            </table>
+    <div id="admin-content">
+        <div class="navbar">
+            <h1>Kamini Digital</h1>
+            <span onclick="logout()">লগ আউট 🚪</span>
+        </div>
+
+        <div style="text-align: center;">
+            <button id="installAdminBtn">📲 অ্যাডমিন অ্যাপটি ইনস্টল করুন</button>
+        </div>
+
+        <div class="container">
+            <h2 class="page-title">📦 সমস্ত অর্ডার লিস্ট</h2>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">কাস্টমার ও সময়</th>
+                            <th style="width: 40%;">বইয়ের বিবরণ</th>
+                            <th style="width: 15%;">স্ট্যাটাস</th>
+                            <th style="width: 25%;">অ্যাকশন</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-table-body">
+                        <tr>
+                            <td colspan="4" class="empty-state">ডেটা লোড হচ্ছে, দয়া করে অপেক্ষা করুন...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -95,6 +129,53 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
 
     <script>
+        // 🛑 আপনার গোপন পিন এখানে সেট করুন (যেমন: "1234")
+        const SECRET_PIN = "1234";
+
+        // PWA (অ্যাপ ইনস্টল) লজিক
+        let deferredPrompt;
+        const installBtn = document.getElementById('installAdminBtn');
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(err => console.log(err)); 
+        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; installBtn.style.display = 'inline-block'; });
+        installBtn.addEventListener('click', async () => { if (deferredPrompt) { deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; installBtn.style.display = 'none'; }});
+        window.addEventListener('appinstalled', () => { installBtn.style.display = 'none'; });
+
+        // লগইন চেক লজিক
+        window.onload = () => {
+            if (sessionStorage.getItem("isAdminLoggedIn") === "true") {
+                showAdminPanel();
+            }
+        };
+
+        function handleLoginEnter(e) {
+            if (e.key === 'Enter') checkPin();
+        }
+
+        function checkPin() {
+            const enteredPin = document.getElementById('admin-pin').value;
+            if (enteredPin === SECRET_PIN) {
+                sessionStorage.setItem("isAdminLoggedIn", "true");
+                document.getElementById('admin-pin').value = "";
+                showAdminPanel();
+            } else {
+                alert("❌ পিন ভুল হয়েছে! আবার চেষ্টা করুন।");
+                document.getElementById('admin-pin').value = "";
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem("isAdminLoggedIn");
+            document.getElementById('admin-content').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'flex';
+        }
+
+        function showAdminPanel() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('admin-content').style.display = 'block';
+            fetchOrders(); // পিন সঠিক হলেই ডেটাবেস থেকে ডেটা টানা হবে
+        }
+
+        // ফায়ারবেস কনফিগারেশন
         const firebaseConfig = {
             apiKey: "AIzaSyC79rsKemc3qthh8-mJ29HM1ni7Q9mIb3Q",
             authDomain: "kamini-digital.firebaseapp.com",
@@ -103,10 +184,10 @@
             messagingSenderId: "354990280556",
             appId: "1:354990280556:web:5e3bf259cdddaf7fa3ad49"
         };
-
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
+        // ফায়ারবেস থেকে ডেটা আনার ফাংশন
         function fetchOrders() {
             const tableBody = document.getElementById('admin-table-body');
             
@@ -120,27 +201,35 @@
 
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
-                    let timeString = 'সময় পাওয়া যায়নি';
+                    let timeString = 'সময় পাওয়া যায়নি';
                     if (data.order_time) {
                         timeString = data.order_time.toDate().toLocaleString('bn-BD', { hour: '2-digit', minute:'2-digit', day: '2-digit', month: 'short', year: 'numeric' });
                     }
-                    
+                    const customerName = data.customer_name || 'অজানা কাস্টমার';
+
                     const status = data.status || 'pending';
-                    let statusBadge = '';
-                    let rowClass = '';
-                    let completeBtn = '';
+                    let statusBadge = ''; let rowClass = ''; let actionBtns = '';
 
                     if (status === 'completed') {
-                        statusBadge = `<span class="badge badge-completed">✅ সম্পন্ন</span>`;
+                        statusBadge = `<span class="badge badge-completed">✅ ডেলিভারি সম্পন্ন</span>`;
                         rowClass = 'completed-row';
+                        actionBtns = `<button class="btn btn-delete" onclick="deleteOrder('${doc.id}')">🗑️ মুছুন</button>`;
+                    } else if (status === 'canceled') {
+                        statusBadge = `<span class="badge badge-canceled">🚫 ক্যানসেলড</span>`;
+                        rowClass = 'canceled-row';
+                        actionBtns = `<button class="btn btn-delete" onclick="deleteOrder('${doc.id}')">🗑️ মুছুন</button>`;
                     } else {
-                        statusBadge = `<span class="badge badge-pending">⏳ পেন্ডিং</span>`;
-                        completeBtn = `<button class="btn btn-complete" onclick="markCompleted('${doc.id}')">✔️ সম্পন্ন</button>`;
+                        statusBadge = `<span class="badge badge-pending">⏳ পেন্ডিং আছে</span>`;
+                        actionBtns = `
+                            <button class="btn btn-complete" onclick="updateStatus('${doc.id}', 'completed')">✔️ সম্পন্ন</button>
+                            <button class="btn btn-cancel" onclick="updateStatus('${doc.id}', 'canceled')">❌ বাতিল</button>
+                            <button class="btn btn-delete" onclick="deleteOrder('${doc.id}')">🗑️</button>
+                        `;
                     }
                     
                     let booksHtml = "";
                     if (data.books && Array.isArray(data.books)) {
-                        data.books.forEach((b, i) => {
+                        data.books.forEach((b) => {
                             booksHtml += `
                             <div class="book-item">
                                 <span class="book-name">📘 ${b.book_name}</span>
@@ -148,42 +237,36 @@
                                 ${b.publisher_name ? `<span class="book-meta">🏢 পাবলিশার: ${b.publisher_name}</span>` : ''}
                             </div>`;
                         });
-                    } else if (data.full_order) {
-                        booksHtml = `<div class="book-item"><pre style="font-family: inherit; margin: 0; font-size: 14px;">${data.full_order}</pre></div>`;
                     }
 
                     const tr = document.createElement("tr");
                     if(rowClass) tr.className = rowClass;
-                    
                     tr.innerHTML = `
-                        <td style="font-size: 13px; font-weight: 600; color: #555;">🕒 ${timeString}</td>
-                        <td>${booksHtml}</td>
-                        <td>${statusBadge}</td>
-                        <td>
-                            <div class="actions">
-                                ${completeBtn}
-                                <button class="btn btn-delete" onclick="deleteOrder('${doc.id}')">🗑️ ডিলিট</button>
-                            </div>
+                        <td data-label="কাস্টমার:">
+                            <strong style="color: #2c3e50; font-size: 15px;">👤 ${customerName}</strong><br>
+                            <span style="font-size: 12px; color: #7f8c8d;">🕒 ${timeString}</span>
                         </td>
+                        <td data-label="বইসমূহ:">${booksHtml}</td>
+                        <td data-label="স্ট্যাটাস:" style="text-align: center;">${statusBadge}</td>
+                        <td data-label="অ্যাকশন:"><div class="actions">${actionBtns}</div></td>
                     `;
                     tableBody.appendChild(tr);
                 });
             }, (error) => {
-                tableBody.innerHTML = `<tr><td colspan='4' class='empty-state' style='color: #e74c3c;'>⚠️ ডেটা লোড করতে সমস্যা হয়েছে।</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan='4' class='empty-state' style='color: #e74c3c;'>⚠️ ডেটা লোড করতে সমস্যা হয়েছে। ইন্টারনেট চেক করুন।</td></tr>`;
             });
         }
 
-        function markCompleted(id) {
-            db.collection("book_orders").doc(id).update({ status: "completed" });
+        function updateStatus(id, newStatus) {
+            let msg = newStatus === 'completed' ? "অর্ডারটি কি ডেলিভারি সম্পন্ন হয়েছে?" : "অর্ডারটি কি ক্যানসেল করতে চান?";
+            if(confirm(msg)) db.collection("book_orders").doc(id).update({ status: newStatus });
         }
 
         function deleteOrder(id) {
-            if(confirm("অর্ডারটি কি চিরতরে মুছে ফেলতে চান?")) {
+            if(confirm("অর্ডারটি কি ডেটাবেস থেকে চিরতরে মুছে ফেলতে চান? এটি আর ফিরে পাওয়া যাবে না।")) {
                 db.collection("book_orders").doc(id).delete();
             }
         }
-
-        window.onload = fetchOrders;
     </script>
 </body>
 </html>
