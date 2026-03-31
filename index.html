@@ -6,23 +6,37 @@
     <title>Kamini Digital</title>
     <link rel="manifest" href="manifest.json">
     <style>
-        :root { --bg-color: #f0f8ff; --card-bg: #ffffff; --text-color: #2c3e50; --btn-color: #e74c3c; --shadow-color: rgba(0,0,0,0.1); }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--bg-color); color: var(--text-color); text-align: center; margin: 0; padding: 10px; transition: 0.4s ease; }
-        .container { background: var(--card-bg); padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px var(--shadow-color); max-width: 500px; margin: auto; }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+        
+        :root { --bg-color: #f4f7f6; --card-bg: #ffffff; --text-color: #2c3e50; --btn-color: #e74c3c; --shadow-color: rgba(0,0,0,0.1); }
+        body { font-family: 'Poppins', 'Segoe UI', Arial, sans-serif; background-color: var(--bg-color); color: var(--text-color); text-align: center; margin: 0; padding: 10px; transition: 0.4s ease; }
+        .container { background: var(--card-bg); padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px var(--shadow-color); max-width: 500px; margin: auto; position: relative; }
         
         #installBtn { display: none; background: #28a745; color: white; border: none; padding: 12px 25px; border-radius: 50px; font-weight: bold; cursor: pointer; margin: 0 auto 20px auto; width: 80%; max-width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 16px; animation: popIn 0.5s ease; }
         @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         
+        .my-orders-btn { position: absolute; top: 20px; right: 20px; background: #3498db; color: white; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3); transition: 0.3s; }
+        .my-orders-btn:hover { background: #2980b9; transform: translateY(-2px); }
+
         table { width: 100%; border-collapse: collapse; margin: 15px 0; border-radius: 10px; overflow: hidden; }
         th { background-color: var(--btn-color); color: white; padding: 12px; }
         td { padding: 12px; border-bottom: 1px solid rgba(0,0,0,0.1); font-weight: bold; }
         
         .order-box { margin-top: 20px; padding: 15px; border: 2px solid var(--btn-color); border-radius: 15px; background: rgba(255,255,255,0.2); display: flex; flex-direction: column; align-items: center; }
         .book-entry { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 10px; }
-        input { width: 85%; padding: 10px; margin: 5px 0; border-radius: 5px; border: 1px solid #ddd; outline: none; font-family: inherit; }
         
-        .add-more-btn { background: transparent; color: var(--text-color); border: 2px dashed var(--btn-color); padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; width: 85%; transition: 0.3s; }
-        .add-more-btn:hover { background: rgba(255,255,255,0.3); }
+        .input-wrapper { display: flex; width: 85%; margin: 5px auto; align-items: center; gap: 5px; }
+        .input-wrapper input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccd1d1; outline: none; font-family: inherit; transition: 0.3s; margin: 0; }
+        .input-wrapper input:focus { border-color: #3498db; box-shadow: 0 0 5px rgba(52, 152, 219, 0.3); }
+        
+        .next-arrow-btn { background: #ecf0f1; color: #2c3e50; border: 1px solid #bdc3c7; padding: 10px; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 14px; display: flex; justify-content: center; align-items: center; }
+        .next-arrow-btn:hover { background: #bdc3c7; }
+
+        .customer-name-wrapper { margin-bottom: 15px; }
+        #customer-name { border: 2px solid #3498db; background: #f0f8ff; font-weight: bold; }
+        
+        .add-more-btn { background: transparent; color: var(--text-color); border: 2px dashed var(--btn-color); padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; width: 85%; transition: 0.3s; }
+        .add-more-btn:hover { background: rgba(231, 76, 60, 0.1); }
         .remove-btn { background: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-size: 13px; margin-top: 5px; align-self: flex-end; margin-right: 7.5%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
         
         .theme-panel { margin-bottom: 15px; display: flex; justify-content: center; gap: 12px; }
@@ -35,153 +49,316 @@
         
         #qr-section { margin-top: 25px; background: white; padding: 15px; border-radius: 15px; max-width: 250px; margin: 20px auto; color: #333; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         #qr-image { width: 100%; border-radius: 10px; }
+
+        /* "আমার অর্ডার" পেজ ডিজাইন */
+        #orders-page { display: none; margin-top: 20px; text-align: left; }
+        .back-btn { background: #2c3e50; color: white; padding: 12px 20px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-bottom: 25px; width: 100%; box-shadow: 0 4px 10px rgba(0,0,0,0.15); font-size: 15px; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .back-btn:hover { background: #1a252f; transform: translateY(-2px); }
+        
+        .order-history-card { background: white; border-radius: 15px; padding: 20px; margin-bottom: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); border-top: 5px solid #3498db; }
+        .order-history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #f0f3f4; padding-bottom: 10px; }
+        .order-history-date { font-size: 13px; color: #7f8c8d; font-weight: 600; }
+        
+        .book-history-item { background: #f8f9fa; border: 1px solid #e1e8ed; border-radius: 10px; padding: 15px; margin-bottom: 12px; position: relative; transition: 0.3s; }
+        .book-history-item:hover { border-color: #3498db; box-shadow: 0 4px 10px rgba(52, 152, 219, 0.1); }
+        .book-history-item.canceled { background: #fdfefe; border-color: #ecf0f1; opacity: 0.7; }
+        .book-history-item.canceled:hover { border-color: #ecf0f1; box-shadow: none; }
+        
+        .book-title { font-size: 16px; color: #2c3e50; font-weight: bold; margin-bottom: 5px; display: block; }
+        .book-details { font-size: 13px; color: #7f8c8d; display: block; line-height: 1.4; }
+        
+        .btn-cancel-sm { background: white; color: #e74c3c; border: 1px solid #e74c3c; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; display: inline-block; }
+        .btn-cancel-sm:hover { background: #e74c3c; color: white; }
+        
+        .btn-delete-sm { background: transparent; color: #7f8c8d; border: 1px dashed #bdc3c7; padding: 5px 10px; border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-delete-sm:hover { background: #f2f4f4; color: #34495e; border-color: #95a5a6; }
+        
+        .badge-canceled { background: #e74c3c; color: white; padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; display: inline-block; }
     </style>
 </head>
 <body id="mainBody">
 
-    <button id="installBtn">📲 অ্যাপটি ইনস্টল করুন</button>
+    <button id="installBtn" data-i18n="install_btn">📲 অ্যাপটি ইনস্টল করুন</button>
 
     <div class="theme-panel">
-        <div class="color-dot" style="background: #f0f8ff;" onclick="setTheme('#f0f8ff', '#ffffff', '#2c3e50', 'rgba(0,0,0,0.1)')"></div>
+        <div class="color-dot" style="background: #f4f7f6;" onclick="setTheme('#f4f7f6', '#ffffff', '#2c3e50', 'rgba(0,0,0,0.1)')"></div>
         <div class="color-dot" style="background: #2c3e50;" onclick="setTheme('#2c3e50', '#34495e', '#ffffff', 'rgba(0,0,0,0.3)')"></div>
         <div class="color-dot" style="background: #e74c3c;" onclick="setTheme('#e74c3c', '#c0392b', '#ffffff', 'rgba(0,0,0,0.3)')"></div>
     </div>
 
-    <div class="container">
-        <h1 id="title">কামিনী ডিজিটাল</h1>
-        <p id="addr" style="font-weight: bold; margin-bottom: 5px;">২০ নম্বর কামিনী স্কুল লেন, হাওড়া</p>
+    <div class="container" id="home-page">
+        <button class="my-orders-btn" onclick="openMyOrders()" data-i18n="my_orders_btn">🛒 আমার অর্ডার</button>
 
-        <button id="toggleRateBtn" style="padding: 10px 20px; background: #f39c12; color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; margin-top: 15px; margin-bottom: 5px; width: 85%; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" onclick="toggleRateChart()">📋 সার্ভিসের রেট দেখুন</button>
+        <h1 id="title" data-i18n="title">কামিনী ডিজিটাল</h1>
+        <p id="addr" style="font-weight: bold; margin-bottom: 5px; color: #7f8c8d;" data-i18n="addr">২০ নম্বর কামিনী স্কুল লেন, হাওড়া</p>
+
+        <button id="toggleRateBtn" style="padding: 10px 20px; background: #f39c12; color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; margin-top: 15px; margin-bottom: 5px; width: 85%; box-shadow: 0 4px 10px rgba(243, 156, 18, 0.3);" onclick="toggleRateChart()" data-i18n="show_rates_btn">📋 সার্ভিসের রেট দেখুন</button>
 
         <div id="rateChartContainer" style="display: none; width: 100%; transition: 0.3s ease;">
             <table>
                 <thead>
-                    <tr><th id="th-s">সার্ভিসের নাম</th><th id="th-r">রেট</th></tr>
+                    <tr><th id="th-s" data-i18n="th_s">সার্ভিসের নাম</th><th id="th-r" data-i18n="th_r">রেট</th></tr>
                 </thead>
                 <tbody id="table-body">
-                    <tr><td>জেরক্স (B&W)</td><td>১.০০</td></tr>
-                    <tr><td>প্রিন্ট আউট (B&W)</td><td>৫.০০</td></tr>
-                    <tr><td>পাসপোর্ট ফটো (৫ কপি)</td><td>৩০.০০</td></tr>
+                    <tr><td data-i18n="xerox">জেরক্স (B&W)</td><td>১.০০</td></tr>
+                    <tr><td data-i18n="print">প্রিন্ট আউট (B&W)</td><td>৫.০০</td></tr>
+                    <tr><td data-i18n="photo">পাসপোর্ট ফটো (৫ কপি)</td><td>৩০.০০</td></tr>
                 </tbody>
             </table>
         </div>
 
-        <a href="https://www.google.com/maps/search/?api=1&query=20+Kamini+School+Lane+Howrah" class="btn-link map-btn" id="map-btn">📍 Google Maps-এ দেখুন</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=20+Kamini+School+Lane+Howrah" class="btn-link map-btn" id="map-btn" data-i18n="map_btn">📍 Google Maps-এ দেখুন</a>
         <br>
-        <a href="https://wa.me/919019863904" class="btn-link whatsapp-btn" id="wa-btn">🟢 WhatsApp যোগাযোগ</a>
+        <a href="https://wa.me/919019863904" class="btn-link whatsapp-btn" id="wa-btn" data-i18n="wa_btn">🟢 WhatsApp যোগাযোগ</a>
 
         <div class="order-box">
-            <h3 id="order-t">📚 বইয়ের অর্ডার দিন</h3>
+            <h3 id="order-t" style="color: #2c3e50;" data-i18n="order_t">📚 বইয়ের অর্ডার দিন</h3>
+            
+            <div class="input-wrapper customer-name-wrapper">
+                <input type="text" id="customer-name" data-i18n-placeholder="custNameP" placeholder="আপনার নাম লিখুন (বাধ্যতামূলক)..." required enterkeyhint="next">
+                <button type="button" class="next-arrow-btn" onclick="goToNextField(this)">➡️</button>
+            </div>
+
             <div id="all-books-container" style="width: 100%;">
                 <div class="book-entry">
-                    <input type="text" class="b-name" placeholder="বইয়ের নাম লিখুন (বাধ্যতামূলক)..." required>
-                    <input type="text" class="w-name" placeholder="লেখকের নাম (ঐচ্ছিক)...">
-                    <input type="text" class="p-name" placeholder="পাবলিশারের নাম (ঐচ্ছিক)...">
+                    <div class="input-wrapper">
+                        <input type="text" class="b-name" data-i18n-placeholder="bookP" placeholder="বইয়ের নাম লিখুন (বাধ্যতামূলক)..." required enterkeyhint="next">
+                        <button type="button" class="next-arrow-btn" onclick="goToNextField(this)">➡️</button>
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="text" class="w-name" data-i18n-placeholder="writerP" placeholder="লেখকের নাম (ঐচ্ছিক)..." enterkeyhint="next">
+                        <button type="button" class="next-arrow-btn" onclick="goToNextField(this)">➡️</button>
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="text" class="p-name" data-i18n-placeholder="pubP" placeholder="পাবলিশারের নাম (ঐচ্ছিক)..." enterkeyhint="next">
+                        <button type="button" class="next-arrow-btn" onclick="goToNextField(this)">➡️</button>
+                    </div>
                 </div>
             </div>
-            <button class="add-more-btn" id="add-more-btn" onclick="addBookField()">➕ আরও একটি বই যোগ করুন</button>
-            <button style="padding: 12px 20px; background: #007bff; color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; margin-top: 15px; width: 85%; box-shadow: 0 4px 10px rgba(0,0,0,0.2);" id="order-btn" onclick="sendOrder()">Order Now</button>
+            <button class="add-more-btn" id="add-more-btn" onclick="addBookField()" data-i18n="addBtn">➕ আরও একটি বই যোগ করুন</button>
+            <button style="padding: 12px 20px; background: #3498db; color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; margin-top: 15px; width: 85%; box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);" id="order-btn" onclick="sendOrder()" data-i18n="order_btn">Order Now</button>
         </div>
 
         <div style="margin-top: 20px;">
-            <button class="lang-btn" onclick="setLang('bn')">বাংলা</button>
-            <button class="lang-btn" onclick="setLang('en')">English</button>
-            <button class="lang-btn" onclick="setLang('hi')">हिन्दी</button>
+            <button class="lang-btn" onclick="changeLanguage('bn')">বাংলা</button>
+            <button class="lang-btn" onclick="changeLanguage('en')">English</button>
+            <button class="lang-btn" onclick="changeLanguage('hi')">हिन्दी</button>
+        </div>
+        
+        <div id="qr-section">
+            <p id="qr-text" style="font-weight: bold;" data-i18n="qr">🔳 স্ক্যান করে অ্যাপ নিন</p>
+            <img id="qr-image" src="qrcode.png" alt="QR Code">
         </div>
     </div>
 
-    <div id="qr-section">
-        <p id="qr-text">🔳 স্ক্যান করে অ্যাপ নিন</p>
-        <img id="qr-image" src="qrcode.png" alt="QR Code">
+    <div class="container" id="orders-page">
+        <button class="back-btn" onclick="goBackToHome()" data-i18n="back_btn">🔙 হোম পেজে ফিরে যান</button>
+        <h2 style="color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 15px; text-align: center; margin-bottom: 25px;" data-i18n="orders_page_title">🛒 আপনার অর্ডারসমূহ</h2>
+        
+        <div id="my-orders-list-full"></div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
 
     <script>
+        // PWA Setup
         let deferredPrompt;
         const installBtn = document.getElementById('installBtn');
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(err => console.log(err)); 
+        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; installBtn.style.display = 'block'; });
+        installBtn.addEventListener('click', async () => { if (deferredPrompt) { deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; installBtn.style.display = 'none'; }});
+        window.addEventListener('appinstalled', () => { installBtn.style.display = 'none'; });
 
-        if ('serviceWorker' in navigator) { 
-            navigator.serviceWorker.register('sw.js').catch(err => console.log("Service Worker Error:", err)); 
+        function setTheme(bg, card, text, shadow) { document.documentElement.style.setProperty('--bg-color', bg); document.documentElement.style.setProperty('--card-bg', card); document.documentElement.style.setProperty('--text-color', text); document.documentElement.style.setProperty('--shadow-color', shadow); }
+        
+        // --- নতুন i18n ভাষার ডিকশনারি ---
+        const translations = {
+            en: {
+                install_btn: "📲 Install App",
+                my_orders_btn: "🛒 My Orders",
+                title: "Kamini Digital",
+                addr: "20, Kamini School Lane, Howrah",
+                show_rates_btn: "📋 View Service Rates",
+                hide_rates_btn: "🔼 Hide Service Rates",
+                th_s: "Service",
+                th_r: "Price",
+                xerox: "Xerox (B&W)",
+                print: "Print Out (B&W)",
+                photo: "Passport Photo (5 copies)",
+                map_btn: "📍 View on Maps",
+                wa_btn: "🟢 WhatsApp",
+                order_t: "📚 Book Order",
+                custNameP: "Enter your name (Required)...",
+                bookP: "Book Name (Required)...",
+                writerP: "Writer's Name (Optional)...",
+                pubP: "Publisher's Name (Optional)...",
+                addBtn: "➕ Add another book",
+                order_btn: "Order Now",
+                qr: "🔳 Scan for App",
+                back_btn: "🔙 Go Back to Home",
+                orders_page_title: "🛒 Your Orders",
+                no_orders: "📭 You haven't placed any orders yet.",
+                removeBtn: "❌ Remove",
+                cancel_btn: "❌ Cancel",
+                delete_btn: "🗑️ Delete",
+                canceled_badge: "🚫 Canceled",
+                book_lbl: "📘",
+                writer_lbl: "✍️ Writer:",
+                pub_lbl: "🏢 Publisher:",
+                name_lbl: "👤 Name:"
+            },
+            bn: {
+                install_btn: "📲 অ্যাপটি ইনস্টল করুন",
+                my_orders_btn: "🛒 আমার অর্ডার",
+                title: "কামিনী ডিজিটাল",
+                addr: "২০ নম্বর কামিনী স্কুল লেন, হাওড়া",
+                show_rates_btn: "📋 সার্ভিসের রেট দেখুন",
+                hide_rates_btn: "🔼 সার্ভিসের রেট লুকান",
+                th_s: "সার্ভিসের নাম",
+                th_r: "রেট",
+                xerox: "জেরক্স (B&W)",
+                print: "প্রিন্ট আউট (B&W)",
+                photo: "পাসপোর্ট ফটো (৫ কপি)",
+                map_btn: "📍 Google Maps-এ দেখুন",
+                wa_btn: "🟢 WhatsApp যোগাযোগ",
+                order_t: "📚 বইয়ের অর্ডার দিন",
+                custNameP: "আপনার নাম লিখুন (বাধ্যতামূলক)...",
+                bookP: "বইয়ের নাম লিখুন (বাধ্যতামূলক)...",
+                writerP: "লেখকের নাম (ঐচ্ছিক)...",
+                pubP: "পাবলিশারের নাম (ঐচ্ছিক)...",
+                addBtn: "➕ আরও একটি বই যোগ করুন",
+                order_btn: "অর্ডার করুন",
+                qr: "🔳 স্ক্যান করে অ্যাপ নিন",
+                back_btn: "🔙 হোম পেজে ফিরে যান",
+                orders_page_title: "🛒 আপনার অর্ডারসমূহ",
+                no_orders: "📭 আপনি এখনো কোনো অর্ডার করেননি।",
+                removeBtn: "❌ মুছে ফেলুন",
+                cancel_btn: "❌ ক্যানসেল করুন",
+                delete_btn: "🗑️ মুছুন",
+                canceled_badge: "🚫 ক্যানসেল করা হয়েছে",
+                book_lbl: "📘",
+                writer_lbl: "✍️ লেখক:",
+                pub_lbl: "🏢 পাবলিশার:",
+                name_lbl: "👤 নাম:"
+            },
+            hi: {
+                install_btn: "📲 ऐप इंस्टॉल करें",
+                my_orders_btn: "🛒 मेरे ऑर्डर",
+                title: "कामिनी डिजिटल",
+                addr: "20, कामिनी स्कूल लेन, हावड़ा",
+                show_rates_btn: "📋 सेवा दरें देखें",
+                hide_rates_btn: "🔼 सेवा दरें छुपाएं",
+                th_s: "सेवा",
+                th_r: "दर",
+                xerox: "जेरॉक्स (B&W)",
+                print: "प्रिंट (B&W)",
+                photo: "पासपोर्ट फोटो (5 कॉपी)",
+                map_btn: "📍 मैप पर देखें",
+                wa_btn: "🟢 व्हाट्सएप",
+                order_t: "📚 पुस्तक ऑर्डर",
+                custNameP: "अपना नाम दर्ज करें (अनिवार्य)...",
+                bookP: "किताब का नाम (अनिवार्य)...",
+                writerP: "लेखक का नाम (वैकल्पिक)...",
+                pubP: "प्रकाशक का नाम (वैकल्पिक)...",
+                addBtn: "➕ एक और किताब जोड़ें",
+                order_btn: "ऑर्डर करें",
+                qr: "🔳 ऐप के लिए स्कैन",
+                back_btn: "🔙 होम पेज पर वापस जाएं",
+                orders_page_title: "🛒 आपके ऑर्डर",
+                no_orders: "📭 आपने अभी तक कोई ऑर्डर नहीं दिया है।",
+                removeBtn: "❌ हटाएं",
+                cancel_btn: "❌ रद्द करें",
+                delete_btn: "🗑️ हटाएं",
+                canceled_badge: "🚫 रद्द किया गया",
+                book_lbl: "📘",
+                writer_lbl: "✍️ लेखक:",
+                pub_lbl: "🏢 प्रकाशक:",
+                name_lbl: "👤 नाम:"
+            }
+        };
+
+        let currentLang = 'bn'; // Default Language
+
+        // --- নতুন ভাষা পরিবর্তন করার ফাংশন ---
+        function changeLanguage(lang) {
+            currentLang = lang;
+            
+            // Text Elements Change
+            const textElements = document.querySelectorAll('[data-i18n]');
+            textElements.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    element.innerText = translations[lang][key];
+                }
+            });
+
+            // Input Placeholders Change
+            const inputElements = document.querySelectorAll('[data-i18n-placeholder]');
+            inputElements.forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                if (translations[lang][key]) {
+                    element.placeholder = translations[lang][key];
+                }
+            });
+
+            // Update dynamically generated remove buttons
+            document.querySelectorAll('.remove-btn').forEach(el => {
+                el.innerText = translations[lang]['removeBtn'];
+            });
+
+            // Update toggle button depending on rate chart visibility
+            const rateChart = document.getElementById('rateChartContainer');
+            const toggleBtn = document.getElementById('toggleRateBtn');
+            if (rateChart.style.display === 'none' || rateChart.style.display === '') {
+                toggleBtn.innerText = translations[lang]['show_rates_btn'];
+            } else {
+                toggleBtn.innerText = translations[lang]['hide_rates_btn'];
+            }
+
+            // Re-render orders if open
+            if(document.getElementById('orders-page').style.display === 'block') {
+                renderOrders();
+            }
         }
 
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installBtn.style.display = 'block';
-        });
+        function toggleRateChart() { 
+            const chart = document.getElementById('rateChartContainer'); 
+            const toggleBtn = document.getElementById('toggleRateBtn');
+            if(chart.style.display === 'none' || chart.style.display === '') {
+                chart.style.display = 'block';
+                toggleBtn.innerText = translations[currentLang]['hide_rates_btn'];
+            } else {
+                chart.style.display = 'none';
+                toggleBtn.innerText = translations[currentLang]['show_rates_btn'];
+            }
+        }
 
-        installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                deferredPrompt = null;
-                installBtn.style.display = 'none';
+        // Enter key চাপলে পরের বক্সে যাওয়ার লজিক
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                if (e.target.tagName === 'INPUT' && e.target.closest('.order-box')) {
+                    e.preventDefault(); 
+                    let inputs = Array.from(document.querySelectorAll('.order-box input'));
+                    let index = inputs.indexOf(e.target);
+                    if (index > -1 && index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    } else {
+                        document.getElementById('order-btn').focus();
+                    }
+                }
             }
         });
 
-        window.addEventListener('appinstalled', () => {
-            installBtn.style.display = 'none';
-        });
-
-        let currentLangData = { 
-            bookP: "বইয়ের নাম লিখুন (বাধ্যতামূলক)...", 
-            writerP: "লেখকের নাম (ঐচ্ছিক)...", 
-            pubP: "পাবলিশারের নাম (ঐচ্ছিক)...",
-            showR: "📋 সার্ভিসের রেট দেখুন",
-            hideR: "🔼 সার্ভিসের রেট লুকান",
-            removeBtn: "❌ মুছে ফেলুন"
-        };
-
-        function setTheme(bg, card, text, shadow) {
-            document.documentElement.style.setProperty('--bg-color', bg);
-            document.documentElement.style.setProperty('--card-bg', card);
-            document.documentElement.style.setProperty('--text-color', text);
-            document.documentElement.style.setProperty('--shadow-color', shadow);
-        }
-
-        function setLang(lang) {
-            const d = {
-                'en': { title: "Kamini Digital", addr: "20, Kamini School Lane, Howrah", thS: "Service", thR: "Price", map: "📍 View on Maps", wa: "🟢 WhatsApp", orderT: "📚 Book Order", qr: "🔳 Scan for App", addBtn: "➕ Add another book", rows: [["Xerox", "1.00"], ["Print", "5.00"], ["Photo", "30.00"]], bookP: "Book Name (Required)...", writerP: "Writer's Name (Optional)...", pubP: "Publisher's Name (Optional)...", showR: "📋 View Service Rates", hideR: "🔼 Hide Service Rates", removeBtn: "❌ Remove", installT: "📲 Install App" },
-                'hi': { title: "कामिनी डिजिटल", addr: "20, कामिनी स्कूल लेन, हावड़ा", thS: "सेवा", thR: "दर", map: "📍 मैप पर देखें", wa: "🟢 व्हाट्सएप", orderT: "📚 पुस्तक ऑर्डर", qr: "🔳 ऐप के लिए स्कैन", addBtn: "➕ एक और किताब जोड़ें", rows: [["जेरॉक्स", "1.00"], ["प्रिंट", "5.00"], ["फोटो", "30.00"]], bookP: "किताब का नाम (अनिवार्य)...", writerP: "लेखक का नाम (वैकल्पिक)...", pubP: "प्रकाशक का नाम (वैकल्पिक)...", showR: "📋 सेवा दरें देखें", hideR: "🔼 सेवा दरें छुपाएं", removeBtn: "❌ हटाएं", installT: "📲 ऐप इंस्टॉल करें" },
-                'bn': { title: "কামিনী ডিজিটাল", addr: "২০ নম্বর কামিনী স্কুল লেন, হাওড়া", thS: "সার্ভিসের নাম", thR: "রেট", map: "📍 Google Maps-এ দেখুন", wa: "🟢 WhatsApp যোগাযোগ", orderT: "📚 বইয়ের অর্ডার দিন", qr: "🔳 স্ক্যান করে অ্যাপ নিন", addBtn: "➕ আরও একটি বই যোগ করুন", rows: [["জেরক্স", "১.০০"], ["প্রিন্ট আউট", "৫.০০"], ["পাসপোর্ট ফটো", "৩০.০০"]], bookP: "বইয়ের নাম লিখুন (বাধ্যতামূলক)...", writerP: "লেখকের নাম (ঐচ্ছিক)...", pubP: "পাবলিশারের নাম (ঐচ্ছিক)...", showR: "📋 সার্ভিসের রেট দেখুন", hideR: "🔼 সার্ভিসের রেট লুকান", removeBtn: "❌ মুছে ফেলুন", installT: "📲 অ্যাপটি ইনস্টল করুন" }
-            };
-            const data = d[lang];
-            currentLangData = data; 
-
-            document.getElementById('title').innerText = data.title;
-            document.getElementById('addr').innerText = data.addr;
-            document.getElementById('th-s').innerText = data.thS;
-            document.getElementById('th-r').innerText = data.thR;
-            document.getElementById('map-btn').innerText = data.map;
-            document.getElementById('wa-btn').innerText = data.wa;
-            document.getElementById('order-t').innerText = data.orderT;
-            document.getElementById('qr-text').innerText = data.qr;
-            document.getElementById('add-more-btn').innerText = data.addBtn;
-            document.getElementById('installBtn').innerText = data.installT;
-            
-            const rateChart = document.getElementById('rateChartContainer');
-            document.getElementById('toggleRateBtn').innerText = (rateChart.style.display === 'none') ? data.showR : data.hideR;
-            
-            document.querySelectorAll('.b-name').forEach(el => el.placeholder = data.bookP);
-            document.querySelectorAll('.w-name').forEach(el => el.placeholder = data.writerP);
-            document.querySelectorAll('.p-name').forEach(el => el.placeholder = data.pubP);
-            document.querySelectorAll('.remove-btn').forEach(el => el.innerText = data.removeBtn);
-
-            let rs = ""; data.rows.forEach(r => rs += `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`);
-            document.getElementById('table-body').innerHTML = rs;
-        }
-
-        function toggleRateChart() {
-            const chart = document.getElementById('rateChartContainer');
-            const btn = document.getElementById('toggleRateBtn');
-            if (chart.style.display === 'none') {
-                chart.style.display = 'block';
-                btn.innerText = currentLangData.hideR;
+        // ➡️ বাটনে ক্লিক করলে পরের বক্সে যাওয়ার লজিক
+        function goToNextField(btn) {
+            let inputs = Array.from(document.querySelectorAll('.order-box input'));
+            let currentInput = btn.previousElementSibling;
+            let index = inputs.indexOf(currentInput);
+            if (index > -1 && index < inputs.length - 1) {
+                inputs[index + 1].focus();
             } else {
-                chart.style.display = 'none';
-                btn.innerText = currentLangData.showR;
+                document.getElementById('order-btn').focus();
             }
         }
 
@@ -192,14 +369,26 @@
             newDiv.style.borderTop = '1px dashed rgba(0,0,0,0.2)';
             newDiv.style.paddingTop = '10px';
             newDiv.style.marginTop = '5px';
-
+            
+            const t = translations[currentLang];
+            
             newDiv.innerHTML = `
-                <input type="text" class="b-name" placeholder="${currentLangData.bookP}" required>
-                <input type="text" class="w-name" placeholder="${currentLangData.writerP}">
-                <input type="text" class="p-name" placeholder="${currentLangData.pubP}">
-                <button class="remove-btn" onclick="this.parentElement.remove()">${currentLangData.removeBtn}</button>
+                <div class="input-wrapper">
+                    <input type="text" class="b-name" data-i18n-placeholder="bookP" placeholder="${t.bookP}" required enterkeyhint="next">
+                    <button type="button" class="next-arrow-btn" onclick="goToNextField(this)">➡️</button>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" class="w-name" data-i18n-placeholder="writerP" placeholder="${t.writerP}" enterkeyhint="next">
+                    <button type="button" class="next-arrow-btn" onclick="goToNextField(this)">➡️</button>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" class="p-name" data-i18n-placeholder="pubP" placeholder="${t.pubP}" enterkeyhint="next">
+                    <button type="button" class="next-arrow-btn" onclick="goToNextField(this)">➡️</button>
+                </div>
+                <button class="remove-btn" onclick="this.parentElement.remove()">${t.removeBtn}</button>
             `;
             container.appendChild(newDiv);
+            newDiv.querySelector('.b-name').focus();
         }
 
         const firebaseConfig = {
@@ -210,15 +399,18 @@
             messagingSenderId: "354990280556",
             appId: "1:354990280556:web:5e3bf259cdddaf7fa3ad49"
         };
-
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
         function sendOrder() {
+            const customerName = document.getElementById('customer-name').value.trim();
+            if (customerName === "") { alert("দয়া করে আপনার নাম লিখুন!"); return; }
+
             const bookEntries = document.querySelectorAll('.book-entry');
-            let orderMsg = "";
+            let orderMsg = `👤 *কাস্টমারের নাম:* ${customerName}\n`; 
             let isValid = true;
             let booksArray = []; 
+            let booksForLocal = []; 
 
             bookEntries.forEach((entry, index) => {
                 const bName = entry.querySelector('.b-name').value.trim();
@@ -226,11 +418,13 @@
                 const pName = entry.querySelector('.p-name').value.trim();
 
                 if (bName !== "") {
-                    // ফায়ারবেসের জন্য নতুন অ্যারে
-                    booksArray.push({
-                        book_name: bName,
-                        writer_name: wName,
-                        publisher_name: pName
+                    booksArray.push({ book_name: bName, writer_name: wName, publisher_name: pName });
+                    
+                    booksForLocal.push({
+                        name: bName,
+                        writer: wName,
+                        publisher: pName,
+                        status: "active"
                     });
                     
                     let bookNum = booksArray.length;
@@ -238,29 +432,126 @@
                     if(wName !== "") orderMsg += `\n   লেখক: ${wName}`;
                     if(pName !== "") orderMsg += `\n   পাবলিশার: ${pName}`;
                     orderMsg += `\n`;
-                } else if (index === 0) {
-                    isValid = false;
-                }
+                    
+                } else if (index === 0) { isValid = false; }
             });
 
-            if (!isValid || booksArray.length === 0) {
-                alert("দয়া করে অন্তত প্রথম বইয়ের নামটা অবশ্যই লিখুন!");
-                return;
-            }
+            if (!isValid || booksArray.length === 0) { alert("দয়া করে অন্তত প্রথম বইয়ের নামটা অবশ্যই লিখুন!"); return; }
 
-            // ফায়ারবেসে নতুন নিয়মে ডেটা পাঠানো হচ্ছে
             db.collection("book_orders").add({
+                customer_name: customerName, 
                 books: booksArray, 
                 total_books: booksArray.length,
                 status: "pending", 
                 order_time: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
+                saveOrderLocally(customerName, booksForLocal);
+
                 const waLink = "https://wa.me/919019863904?text=নতুন বই অর্ডার:\n" + encodeURIComponent(orderMsg.trim());
                 window.location.href = waLink; 
-            }).catch(function(error) {
-                console.error("Error: ", error);
-            });
+            }).catch(function(error) { console.error("Error: ", error); });
         }
+
+        function saveOrderLocally(custName, booksArr) {
+            let myOrders = JSON.parse(localStorage.getItem("kamini_user_orders_v2")) || [];
+            const date = new Date().toLocaleString('bn-BD', { hour: '2-digit', minute:'2-digit', day: '2-digit', month: 'short', year: 'numeric' });
+            myOrders.unshift({ date: date, customer: custName, books: booksArr });
+            localStorage.setItem("kamini_user_orders_v2", JSON.stringify(myOrders));
+        }
+
+        function openMyOrders() {
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('orders-page').style.display = 'block';
+            renderOrders();
+            window.scrollTo(0, 0); 
+        }
+
+        function goBackToHome() {
+            document.getElementById('orders-page').style.display = 'none';
+            document.getElementById('home-page').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        function renderOrders() {
+            const listDiv = document.getElementById("my-orders-list-full");
+            let myOrders = JSON.parse(localStorage.getItem("kamini_user_orders_v2")) || [];
+            const t = translations[currentLang];
+            
+            if (myOrders.length === 0) {
+                listDiv.innerHTML = `<div style='text-align:center; padding: 40px; color:#7f8c8d; font-size: 16px; background: white; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);'>${t.no_orders}</div>`;
+            } else {
+                let html = "";
+                myOrders.forEach((order, oIndex) => {
+                    let booksHtml = "";
+
+                    order.books.forEach((book, bIndex) => {
+                        let isCanceled = book.status === "canceled";
+                        let itemClass = isCanceled ? "book-history-item canceled" : "book-history-item";
+                        
+                        let actionHtml = isCanceled 
+                            ? `<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                                 <div class="badge-canceled">${t.canceled_badge}</div>
+                                 <button class="btn-delete-sm" onclick="removeSingleBook(${oIndex}, ${bIndex})">${t.delete_btn}</button>
+                               </div>` 
+                            : `<button class="btn-cancel-sm" onclick="cancelSingleBook(${oIndex}, ${bIndex})">${t.cancel_btn}</button>`;
+
+                        booksHtml += `
+                        <div class="${itemClass}">
+                            <span class="book-title">${t.book_lbl} ${book.name}</span>
+                            ${book.writer ? `<span class="book-details">${t.writer_lbl} ${book.writer}</span>` : ''}
+                            ${book.publisher ? `<span class="book-details">${t.pub_lbl} ${book.publisher}</span>` : ''}
+                            ${actionHtml}
+                        </div>`;
+                    });
+
+                    html += `
+                    <div class="order-history-card">
+                        <div class="order-history-header">
+                            <span class="order-history-date">🕒 ${order.date}</span>
+                        </div>
+                        <div style="margin-bottom: 10px; font-size: 14px; color: #34495e; font-weight: bold;">${t.name_lbl} ${order.customer}</div>
+                        ${booksHtml}
+                    </div>`;
+                });
+                listDiv.innerHTML = html;
+            }
+        }
+
+        function cancelSingleBook(oIndex, bIndex) {
+            let myOrders = JSON.parse(localStorage.getItem("kamini_user_orders_v2")) || [];
+            let order = myOrders[oIndex];
+            let book = order.books[bIndex];
+
+            if(confirm(`আপনি কি সত্যিই "${book.name}" বইটি ক্যানসেল করতে চান?`)) {
+                let cancelMsg = `❌ *বই ক্যানসেল রিকোয়েস্ট:*\n\n👤 কাস্টমার: ${order.customer}\n📅 অর্ডার সময়: ${order.date}\n\n*আমি নিচের বইটি ক্যানসেল করতে চাই:*\n📕 বই: ${book.name}`;
+                if(book.writer) cancelMsg += `\n   লেখক: ${book.writer}`;
+                if(book.publisher) cancelMsg += `\n   পাবলিশার: ${book.publisher}`;
+
+                myOrders[oIndex].books[bIndex].status = "canceled";
+                localStorage.setItem("kamini_user_orders_v2", JSON.stringify(myOrders));
+                renderOrders(); 
+
+                const waLink = "https://wa.me/919019863904?text=" + encodeURIComponent(cancelMsg);
+                window.location.href = waLink;
+            }
+        }
+
+        function removeSingleBook(oIndex, bIndex) {
+            if(confirm("বইটি কি আপনার লিস্ট থেকে চিরতরে মুছে ফেলতে চান?")) {
+                let myOrders = JSON.parse(localStorage.getItem("kamini_user_orders_v2")) || [];
+                myOrders[oIndex].books.splice(bIndex, 1);
+                
+                if (myOrders[oIndex].books.length === 0) {
+                    myOrders.splice(oIndex, 1);
+                }
+                
+                localStorage.setItem("kamini_user_orders_v2", JSON.stringify(myOrders));
+                renderOrders(); 
+            }
+        }
+        
+        // Initial setup on load
+        changeLanguage('bn');
     </script>
 </body>
 </html>
