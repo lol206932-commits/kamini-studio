@@ -10,7 +10,7 @@
         
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* 🎨 থিম ভ্যারিয়েবলস */
+        /* 🎨 Theme Variables */
         :root {
             --bg-grad: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             --tile-bg: rgba(255, 255, 255, 0.1);
@@ -35,7 +35,6 @@
             overflow-x: hidden; transition: 0.5s; position: relative;
         }
 
-        /* প্রিমিয়াম ব্যাকগ্রাউন্ড টেক্সচার */
         body::before {
             content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
@@ -44,7 +43,6 @@
 
         .app-container { width: 100%; max-width: 450px; display: flex; flex-direction: column; gap: 15px; z-index: 1; }
 
-        /* 💎 গ্লসি ৩ডি টাইলস */
         .tile {
             width: 100%; border-radius: 18px; padding: 20px; position: relative;
             backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
@@ -61,7 +59,6 @@
         .tile-orange { background: #f39c12; color: white !important; }
         .tile-red { background: #e74c3c; color: white !important; }
 
-        /* 📖 ফুল-পেজ ওভারলে */
         .full-page { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             z-index: 2000; display: none; padding: 20px; overflow-y: auto; 
@@ -71,13 +68,11 @@
 
         .back-btn { background: var(--tile-bg); color: inherit; padding: 10px 20px; border-radius: 50px; margin-bottom: 25px; cursor: pointer; display: inline-block; font-weight: bold; border: 1px solid var(--tile-border); }
 
-        /* 📤 কাস্টম শেয়ার পপ-আপ */
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 3000; display: none; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: var(--bg-grad); border: 2px solid var(--tile-border); padding: 30px; border-radius: 25px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .modal-content { background: var(--bg-grad); border: 1px solid var(--tile-border); padding: 30px; border-radius: 25px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         .share-option { background: var(--tile-bg); padding: 15px; border-radius: 15px; margin-bottom: 12px; cursor: pointer; border: 1px solid var(--tile-border); font-weight: bold; color: var(--text-color); transition: 0.3s; }
         .share-option:hover { background: var(--accent); color: white; }
 
-        /* ফর্ম স্টাইল */
         .input-wrapper { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
         input { flex: 1; padding: 15px; border-radius: 12px; border: 2px solid var(--accent); background: #fff; color: #333; outline: none; font-size: 16px; }
         .next-btn { background: var(--accent); color: white; border: none; padding: 12px 15px; border-radius: 10px; cursor: pointer; font-weight: bold; }
@@ -96,49 +91,55 @@
             </div>
         </div>
 
-        <div class="tile tile-orange" onclick="openHistoryPage()"><span id="btn-myorder">📄 আমার অর্ডার (History)</span></div>
-        <div class="tile tile-orange"><span id="btn-rates">📔 সার্ভিসের রেট দেখুন</span></div>
-        <a href="http://googleusercontent.com/maps.google.com/5" target="_blank" class="tile tile-blue" style="text-decoration: none;"><span id="btn-map">📍 Google Maps-এ দেখুন</span></a>
-        <div class="tile tile-red" onclick="openOrderPage()"><span id="btn-order">📚 বইয়ের অর্ডার দিন</span></div>
-        <div class="tile tile-blue" onclick="cycleTheme()"><span id="btn-theme">🌓 থিম পরিবর্তন করুন</span></div>
-        <div class="tile tile-blue" onclick="cycleLanguage()"><span id="btn-lang">🌐 ভাষা: বাংলা</span></div>
-        <div class="tile tile-green" onclick="openShareModal()"><span id="btn-share">📤 বন্ধুদের সাথে শেয়ার করুন</span></div>
+        <div class="tile tile-orange" onclick="openHistoryPage()"><span id="btn-myorder">📄 Amar Order (History)</span></div>
+        <div class="tile tile-orange"><span id="btn-rates">📔 Service-er Rate Dekhun</span></div>
+        
+        <a href="https://maps.google.com/?cid=2723419887409784179&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ" target="_blank" class="tile tile-blue" style="text-decoration: none;">
+            <span id="btn-map">📍 Google Maps-e Dekhun</span>
+        </a>
+
+        <div class="tile tile-red" onclick="openOrderPage()">
+            <span id="btn-order">📚 Boier Order Din</span>
+        </div>
+        <div class="tile tile-blue" onclick="cycleTheme()"><span id="btn-theme">🌓 Theme Poriborton Korun</span></div>
+        <div class="tile tile-blue" onclick="cycleLanguage()"><span id="btn-lang">🌐 Bhasha: Bangla</span></div>
+        <div class="tile tile-green" onclick="openShareModal()"><span id="btn-share">📤 Bondhuder Sathe Share Korun</span></div>
     </div>
 
     <div id="orderPage" class="full-page">
-        <div class="back-btn" onclick="closePage('orderPage')" id="back-order">← ফিরে যান</div>
+        <div class="back-btn" onclick="closePage('orderPage')" id="back-order">← Phire Jan</div>
         <div style="background: var(--tile-bg); padding: 25px; border-radius: 25px; border: 1px solid var(--tile-border);">
-            <h2 id="order-head" style="text-align: center; margin-bottom: 20px;">📋 অর্ডার ডিটেইলস</h2>
-            <label id="lbl-name" style="color: var(--accent); font-weight: bold; display: block; margin-bottom: 8px;">আপনার নাম:</label>
+            <h2 id="order-head" style="text-align: center; margin-bottom: 20px; color: var(--text-color);">📋 Order Details</h2>
+            <label id="lbl-name" style="color: var(--accent); font-weight: bold; display: block; margin-bottom: 8px;">Apnar Naam:</label>
             <div class="input-wrapper">
-                <input type="text" id="custName" placeholder="নাম..." onkeypress="handleEnter(event, this)">
+                <input type="text" id="custName" placeholder="Naam..." onkeypress="handleEnter(event, this)">
                 <button class="next-btn" onclick="focusNext(this)">→</button>
             </div>
             <div id="book-container">
                 <div class="book-entry" style="margin-bottom: 15px; border-bottom: 1px solid var(--tile-border); padding-bottom: 15px;">
-                    <input type="text" class="book-name" placeholder="বইয়ের নাম..." onkeypress="handleEnter(event, this)">
-                    <input type="text" class="writer-name" placeholder="লেখক..." onkeypress="handleEnter(event, this)">
-                    <input type="text" class="pub-name" placeholder="পাবলিশার..." onkeypress="handleEnter(event, this)">
+                    <input type="text" class="book-name" placeholder="Boier Naam..." onkeypress="handleEnter(event, this)">
+                    <input type="text" class="writer-name" placeholder="Lekhok..." onkeypress="handleEnter(event, this)">
+                    <input type="text" class="pub-name" placeholder="Publisher..." onkeypress="handleEnter(event, this)">
                 </div>
             </div>
-            <button onclick="addMoreBook()" id="btn-add-more" style="background:none; border:2px dashed var(--accent); color:var(--accent); width:100%; padding:10px; border-radius:15px; margin-bottom:15px; cursor:pointer;">➕ আরও বই যোগ করুন</button>
-            <button class="final-submit" onclick="placeOrder()" id="btn-submit">অর্ডার নিশ্চিত করুন ✅</button>
+            <button onclick="addMoreBook()" id="btn-add-more" style="background:none; border:2px dashed var(--accent); color:var(--accent); width:100%; padding:10px; border-radius:15px; margin-bottom:15px; cursor:pointer;">➕ Aro Boi Jog Korun</button>
+            <button class="final-submit" onclick="placeOrder()" id="btn-submit">Order Nishchit Korun ✅</button>
         </div>
     </div>
 
     <div id="historyPage" class="full-page">
-        <div class="back-btn" onclick="closePage('historyPage')" id="back-hist">← ফিরে যান</div>
-        <h2 id="hist-head" style="text-align: center; margin-bottom: 20px;">📄 আপনার অর্ডার হিস্ট্রি</h2>
+        <div class="back-btn" onclick="closePage('historyPage')" id="back-hist">← Phire Jan</div>
+        <h2 id="hist-head" style="text-align: center; margin-bottom: 20px; color: var(--text-color);">📄 Apnar Order History</h2>
         <div id="order-list-container"></div>
     </div>
 
     <div id="shareModal" class="modal">
         <div class="modal-content">
-            <h2 id="share-head" style="margin-bottom: 25px;">📤 অ্যাপটি শেয়ার করুন</h2>
-            <div class="share-option" onclick="directShare('whatsapp')">🟢 WhatsApp-এ পাঠান</div>
-            <div class="share-option" onclick="directShare('facebook')">🔵 Facebook-এ দিন</div>
-            <div class="share-option" onclick="copyLink()">🔗 লিঙ্ক কপি করুন</div>
-            <div class="back-btn" onclick="closePage('shareModal')" style="margin-top: 20px;">বন্ধ করুন</div>
+            <h2 id="share-head" style="margin-bottom: 25px;">📤 App-ti Share Korun</h2>
+            <div class="share-option" onclick="directShare('whatsapp')">🟢 WhatsApp-e Pathan</div>
+            <div class="share-option" onclick="directShare('facebook')">🔵 Facebook-e Din</div>
+            <div class="share-option" onclick="copyLink()">🔗 Link Copy Korun</div>
+            <div class="back-btn" onclick="closePage('shareModal')" style="margin-top: 20px;">Bondho Korun</div>
         </div>
     </div>
 
@@ -146,7 +147,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
-        // 1. Firebase Setup
         const firebaseConfig = {
             apiKey: "AIzaSyC79rsKemc3qthh8-mJ29HM1ni7Q9mIb3Q",
             authDomain: "kamini-digital.firebaseapp.com",
@@ -161,14 +161,12 @@
         let userId = localStorage.getItem('s_t_user_id') || 'ST_' + Date.now();
         localStorage.setItem('s_t_user_id', userId);
 
-        // 2. ভাষা ডেটা (টাইটেল ও অ্যাড্রেস ফিক্সড)
         const translations = {
             bn: { title: "S&T GALLERY", addr: "২০ নম্বর কামিনী স্কুল লেন, হাওড়া", myorder: "📄 আমার অর্ডার (History)", rates: "📔 সার্ভিসের রেট দেখুন", map: "📍 Google Maps-এ দেখুন", order: "📚 বইয়ের অর্ডার দিন", theme: "🌓 থিম পরিবর্তন করুন", langBtn: "🌐 ভাষা: বাংলা", share: "📤 বন্ধুদের সাথে শেয়ার করুন", back: "← ফিরে যান", orderHead: "📋 অর্ডার ডিটেইলস", lblName: "আপনার নাম:", phName: "নাম...", phBook: "বই...", phWriter: "লেখক...", phPub: "পাবলিশার...", addMore: "➕ আরও যোগ করুন", submit: "অর্ডার নিশ্চিত করুন ✅", histHead: "📄 অর্ডার হিস্ট্রি", delete: "🗑️ মুছুন", shareHead: "📤 অ্যাপটি শেয়ার করুন" },
             en: { title: "S&T GALLERY", addr: "20, Kamini School Lane, Howrah", myorder: "📄 My Orders", rates: "📔 Service Rates", map: "📍 Google Maps", order: "📚 Order Books", theme: "🌓 Change Theme", langBtn: "🌐 Language: English", share: "📤 Share App", back: "← Back", orderHead: "📋 Order Details", lblName: "Your Name:", phName: "Name...", phBook: "Book...", phWriter: "Writer...", phPub: "Publisher...", addMore: "➕ Add More", submit: "Confirm ✅", histHead: "📄 History", delete: "🗑️ Delete", shareHead: "📤 Share App" },
-            hi: { title: "S&T GALLERY", addr: "20, कामिनी स्कूल लेन, हावड़ा", myorder: "📄 मेरे ऑर्डर", rates: "📔 सर्विस रेट", map: "📍 गूगल मैप्स", order: "📚 किताबें ऑर्डर करें", theme: "🌓 थीम बदलें", langBtn: "🌐 भाषा: हिन्दी", share: "📤 ऐप शेयर करें", back: "← वापस", orderHead: "📋 विवरण", lblName: "आपका नाम:", phName: "नाम...", phBook: "নাম...", phWriter: "लेखक...", phPub: "प्रकाशक...", addMore: "➕ और जोड़ें", submit: "कन्फर्म ✅", histHead: "📄 इतिहास", delete: "🗑️ हटाएं", shareHead: "📤 ऐप शेयर करें" }
+            hi: { title: "S&T GALLERY", addr: "20, कामिनी स्कूल लेन, हावड़ा", myorder: "📄 मेरे ऑर्डर", rates: "📔 सर्विस रेट", map: "📍 गूगल मैप्स", order: "📚 किताबें ऑर्डर करें", theme: "🌓 थीम बदलें", langBtn: "🌐 भाषा: हिन्दी", share: "📤 ऐप शेयर करें", back: "← वापस", orderHead: "📋 विवरण", lblName: "आपका नाम:", phName: "नाम...", phBook: "नाम...", phWriter: "लेखक...", phPub: "प्रकाशक...", addMore: "➕ और जोड़ें", submit: "कन्फर्म ✅", histHead: "📄 इतिहास", delete: "🗑️ हटाएं", shareHead: "📤 ऐप शेयर करें" }
         };
 
-        // 3. থিম ও ভাষা লজিক
         const themes = ['midnight', 'ocean', 'sunset', 'forest', 'light'];
         function setTheme(theme) {
             document.body.className = 'theme-' + theme;
@@ -216,7 +214,6 @@
             document.getElementById('share-head').innerText = d.shareHead;
         }
 
-        // 4. অর্ডার ও হোয়াটসঅ্যাপ লজিক
         async function placeOrder() {
             const name = document.getElementById('custName').value.trim();
             const entries = document.querySelectorAll('.book-entry');
@@ -241,7 +238,7 @@
                     showToUser: true, status: 'pending', order_time: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 
-                // 📞 হোয়াটসঅ্যাপ নাম্বার (লাইন ২৪০)
+                // 📞 Apnar WhatsApp Number ekhane thik korun (Line 240)
                 const myWhatsApp = "919019863904"; 
                 
                 window.open(`https://wa.me/${myWhatsApp}?text=${encodeURIComponent(msg)}`, '_blank');
@@ -249,7 +246,6 @@
             } catch (e) { alert("Error!"); }
         }
 
-        // 5. হিস্ট্রি ও শেয়ার কন্ট্রোল
         async function loadOrderHistory() {
             const container = document.getElementById('order-list-container');
             container.innerHTML = '<p style="text-align:center; padding:20px;">Loading...</p>';
@@ -278,7 +274,7 @@
         function closePage(id) { document.getElementById(id).style.display = 'none'; document.body.style.overflow = 'auto'; }
 
         function directShare(platform) {
-            const text = "S&T GALLERY থেকে সরাসরি বই অর্ডার করুন! লিঙ্ক: ";
+            const text = "S&T GALLERY theke sorasori boi order korun! Link: ";
             const url = window.location.href;
             if(platform === 'whatsapp') window.open(`https://wa.me/?text=${encodeURIComponent(text + url)}`, '_blank');
             else window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
@@ -297,9 +293,9 @@
             const div = document.createElement('div');
             div.className = "book-entry";
             div.style.cssText = "margin-bottom: 15px; border-bottom: 1px solid var(--tile-border); padding-bottom: 15px;";
-            div.innerHTML = `<input type="text" class="book-name" placeholder="বইয়ের নাম..." onkeypress="handleEnter(event, this)">
-                <input type="text" class="writer-name" placeholder="লেখক..." onkeypress="handleEnter(event, this)">
-                <input type="text" class="pub-name" placeholder="পাবলিশার..." onkeypress="handleEnter(event, this)">`;
+            div.innerHTML = `<input type="text" class="book-name" placeholder="Boier Naam..." onkeypress="handleEnter(event, this)">
+                <input type="text" class="writer-name" placeholder="Lekhok..." onkeypress="handleEnter(event, this)">
+                <input type="text" class="pub-name" placeholder="Publisher..." onkeypress="handleEnter(event, this)">`;
             container.appendChild(div);
         }
 
