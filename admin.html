@@ -131,11 +131,27 @@
     <script>
         // 🛑 আপনার গোপন পিন এখানে সেট করুন (যেমন: "1234")
         const SECRET_PIN = "1234";
+<script>
+    // 🛑 আপনার গোপন পিন
+    const SECRET_PIN = "1234";
 
+    // 🔥 ফায়ারবেস কনফিগারেশন একদম ওপরে থাকবে 🔥
+    const firebaseConfig = {
+        apiKey: "AIzaSyC79rsKemc3qthh8-mJ29HM1ni7Q9mIb3Q",
+        authDomain: "kamini-digital.firebaseapp.com",
+        projectId: "kamini-digital",
+        storageBucket: "kamini-digital.firebasestorage.app",
+        messagingSenderId: "354990280556",
+        appId: "1:354990280556:web:5e3bf259cdddaf7fa3ad49"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // এরপর বাকি সব কোড... (PWA লজিক, window.onload ইত্যাদি)
         // PWA (অ্যাপ ইনস্টল) লজিক
         let deferredPrompt;
         const installBtn = document.getElementById('installAdminBtn');
-        if ('serviceWorker' in navigator) navigator.serviceWorker.register(admin-sw.js).catch(err => console.log(err)); 
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register('admin-sw.js').catch(err => console.log(err)); 
         window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; installBtn.style.display = 'inline-block'; });
         installBtn.addEventListener('click', async () => { if (deferredPrompt) { deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; installBtn.style.display = 'none'; }});
         window.addEventListener('appinstalled', () => { installBtn.style.display = 'none'; });
