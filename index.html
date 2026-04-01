@@ -72,15 +72,14 @@
 
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 3000; display: none; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); justify-content: center; align-items: center; padding: 20px; }
         .modal-content { background: var(--bg-grad); border: 1px solid var(--tile-border); padding: 30px; border-radius: 25px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        
         .share-option { background: var(--tile-bg); padding: 15px; border-radius: 15px; margin-bottom: 12px; cursor: pointer; border: 1px solid var(--tile-border); font-weight: bold; color: var(--text-color); transition: 0.3s; }
         .share-option:hover { background: var(--accent); color: white; }
 
-        .input-wrapper { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-        input { flex: 1; padding: 15px; border-radius: 12px; border: 2px solid var(--accent); background: #fff; color: #333; outline: none; font-size: 16px; width: 100%; margin-top: 5px; }
-        .next-btn { background: var(--accent); color: white; border: none; padding: 12px 15px; border-radius: 10px; cursor: pointer; font-weight: bold; }
+        input { width: 100%; padding: 15px; border-radius: 12px; border: 2px solid var(--accent); background: #fff; color: #333; outline: none; font-size: 16px; margin-top: 8px; }
         .final-submit { background: var(--accent); color: white; padding: 18px; width: 100%; border-radius: 50px; border: none; font-weight: bold; font-size: 18px; cursor: pointer; margin-top: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
 
-        .order-item { background: var(--tile-bg); border: 1px solid var(--tile-border); padding: 15px; border-radius: 15px; margin-bottom: 15px; position: relative;}
+        .order-item { background: var(--tile-bg); border: 1px solid var(--tile-border); padding: 15px; border-radius: 15px; margin-bottom: 15px; }
     </style>
 </head>
 <body>
@@ -93,16 +92,21 @@
             </div>
         </div>
 
+        <div id="install-tile" class="tile tile-green" style="display:none;" onclick="installApp()">
+            <span id="btn-install">📲 App-ti Install Korun</span>
+        </div>
+
         <div class="tile tile-orange" onclick="openHistoryPage()"><span id="btn-myorder">📄 Amar Order (History)</span></div>
         <div class="tile tile-orange"><span id="btn-rates">📔 Service-er Rate Dekhun</span></div>
         
-        <a href="https://www.google.com/maps/search/?api=1&query=20,Kamini+School+Lane,Howrah" target="_blank" class="tile tile-blue" style="text-decoration: none;">
+        <a href="https://maps.google.com/?q=Kamini+School+Lane+Howrah" target="_blank" class="tile tile-blue" style="text-decoration: none;">
             <span id="btn-map">📍 Google Maps-e Dekhun</span>
         </a>
 
         <div class="tile tile-red" onclick="openOrderPage()">
             <span id="btn-order">📚 Boier Order Din</span>
         </div>
+
         <div class="tile tile-blue" onclick="cycleTheme()"><span id="btn-theme">🌓 Theme Poriborton Korun</span></div>
         <div class="tile tile-blue" onclick="cycleLanguage()"><span id="btn-lang">🌐 Bhasha: Bangla</span></div>
         <div class="tile tile-green" onclick="openShareModal()"><span id="btn-share">📤 Bondhuder Sathe Share Korun</span></div>
@@ -112,19 +116,16 @@
         <div class="back-btn" onclick="closePage('orderPage')" id="back-order">← Phire Jan</div>
         <div style="background: var(--tile-bg); padding: 25px; border-radius: 25px; border: 1px solid var(--tile-border);">
             <h2 id="order-head" style="text-align: center; margin-bottom: 20px;">📋 Order Details</h2>
-            <label id="lbl-name" style="color: var(--accent); font-weight: bold; display: block; margin-bottom: 8px;">Apnar Naam:</label>
-            <div class="input-wrapper">
-                <input type="text" id="custName" placeholder="Naam..." onkeypress="handleEnter(event, this)">
-                <button class="next-btn" onclick="focusNext(this)">→</button>
-            </div>
-            <div id="book-container">
+            <label id="lbl-name" style="color: var(--accent); font-weight: bold; display: block;">Apnar Naam:</label>
+            <input type="text" id="custName" placeholder="Naam...">
+            <div id="book-container" style="margin-top: 15px;">
                 <div class="book-entry" style="margin-bottom: 15px; border-bottom: 1px solid var(--tile-border); padding-bottom: 15px;">
-                    <input type="text" class="book-name" placeholder="Boier Naam..." onkeypress="handleEnter(event, this)">
-                    <input type="text" class="writer-name" placeholder="Lekhok..." onkeypress="handleEnter(event, this)">
-                    <input type="text" class="pub-name" placeholder="Publisher..." onkeypress="handleEnter(event, this)">
+                    <input type="text" class="book-name" placeholder="Boier Naam...">
+                    <input type="text" class="writer-name" placeholder="Lekhok...">
+                    <input type="text" class="pub-name" placeholder="Publisher...">
                 </div>
             </div>
-            <button onclick="addMoreBook()" id="btn-add-more" style="background:none; border:2px dashed var(--accent); color:var(--accent); width:100%; padding:10px; border-radius:15px; margin-bottom:15px; cursor:pointer;">➕ Aro Boi Jog Korun</button>
+            <button onclick="addMoreBook()" id="btn-add-more" style="background:none; border:2px dashed var(--accent); color:var(--accent); width:100%; padding:10px; border-radius:15px; cursor:pointer;">➕ Aro Boi Jog Korun</button>
             <button class="final-submit" onclick="placeOrder()" id="btn-submit">Order Nishchit Korun ✅</button>
         </div>
     </div>
@@ -149,7 +150,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
-        // Firebase Configuration (Same as yours)
+        // 1. Firebase Init
         const firebaseConfig = {
             apiKey: "AIzaSyC79rsKemc3qthh8-mJ29HM1ni7Q9mIb3Q",
             authDomain: "kamini-digital.firebaseapp.com",
@@ -164,10 +165,11 @@
         let userId = localStorage.getItem('s_t_user_id') || 'ST_' + Date.now();
         localStorage.setItem('s_t_user_id', userId);
 
+        // 2. Language & Theme Logic
         const translations = {
-            bn: { title: "S&T GALLERY", addr: "২০ নম্বর কামিনী স্কুল লেন, হাওড়া", myorder: "📄 আমার অর্ডার (History)", rates: "📔 সার্ভিসের রেট দেখুন", map: "📍 Google Maps-এ দেখুন", order: "📚 বইয়ের অর্ডার দিন", theme: "🌓 থিম পরিবর্তন করুন", langBtn: "🌐 ভাষা: বাংলা", share: "📤 বন্ধুদের সাথে শেয়ার করুন", back: "← ফিরে যান", orderHead: "📋 অর্ডার ডিটেইলস", lblName: "আপনার নাম:", phName: "নাম...", phBook: "বই...", phWriter: "লেখক...", phPub: "পাবলিশার...", addMore: "➕ আরও যোগ করুন", submit: "অর্ডার নিশ্চিত করুন ✅", histHead: "📄 অর্ডার হিস্ট্রি", delete: "🗑️ মুছুন", shareHead: "📤 অ্যাপটি শেয়ার করুন" },
-            en: { title: "S&T GALLERY", addr: "20, Kamini School Lane, Howrah", myorder: "📄 My Orders", rates: "📔 Service Rates", map: "📍 Google Maps", order: "📚 Order Books", theme: "🌓 Change Theme", langBtn: "🌐 Language: English", share: "📤 Share App", back: "← Back", orderHead: "📋 Order Details", lblName: "Your Name:", phName: "Name...", phBook: "Book...", phWriter: "Writer...", phPub: "Publisher...", addMore: "➕ Add More", submit: "Confirm ✅", histHead: "📄 History", delete: "🗑️ Delete", shareHead: "📤 Share App" },
-            hi: { title: "S&T GALLERY", addr: "20, कामिनी स्कूल लेन, हावड़ा", myorder: "📄 मेरे ऑर्डर", rates: "📔 सर्विस रेट", map: "📍 गूगल मैप्स", order: "📚 किताबें ऑर्डर करें", theme: "🌓 थीम बदलें", langBtn: "🌐 भाषा: हिन्दी", share: "📤 ऐप शेयर करें", back: "← वापस", orderHead: "📋 विवरण", lblName: "आपका नाम:", phName: "नाम...", phBook: "नाम...", phWriter: "लेखक...", phPub: "प्रकाशक...", addMore: "➕ और जोड़ें", submit: "कन्फर्म ✅", histHead: "📄 इतिहास", delete: "🗑️ हटाएं", shareHead: "📤 ऐप शेयर करें" }
+            bn: { title: "S&T GALLERY", addr: "২০ নম্বর কামিনী স্কুল লেন, হাওড়া", myorder: "📄 আমার অর্ডার (History)", rates: "📔 সার্ভিসের রেট দেখুন", map: "📍 Google Maps-এ দেখুন", order: "📚 বইয়ের অর্ডার দিন", theme: "🌓 থিম পরিবর্তন করুন", langBtn: "🌐 ভাষা: বাংলা", share: "📤 বন্ধুদের সাথে শেয়ার করুন", back: "← ফিরে যান", orderHead: "📋 অর্ডার ডিটেইলস", lblName: "আপনার নাম:", phName: "নাম...", phBook: "বইয়ের নাম...", phWriter: "লেখক...", phPub: "পাবলিশার...", addMore: "➕ আরও যোগ করুন", submit: "অর্ডার নিশ্চিত করুন ✅", histHead: "📄 অর্ডার হিস্ট্রি", delete: "🗑️ মুছুন", shareHead: "📤 অ্যাপটি শেয়ার করুন", install: "📲 অ্যাপটি ইনস্টল করুন" },
+            en: { title: "S&T GALLERY", addr: "20, Kamini School Lane, Howrah", myorder: "📄 My Orders", rates: "📔 Service Rates", map: "📍 Google Maps", order: "📚 Order Books", theme: "🌓 Change Theme", langBtn: "🌐 Language: English", share: "📤 Share App", back: "← Back", orderHead: "📋 Order Details", lblName: "Your Name:", phName: "Name...", phBook: "Book Name...", phWriter: "Writer...", phPub: "Publisher...", addMore: "➕ Add More", submit: "Confirm ✅", histHead: "📄 History", delete: "🗑️ Delete", shareHead: "📤 Share App", install: "📲 Install App" },
+            hi: { title: "S&T GALLERY", addr: "20, कामिनी स्कूल लेन, हावड़ा", myorder: "📄 मेरे ऑर्डर", rates: "📔 सर्विस रेट", map: "📍 गूगल मैप्स", order: "📚 किताबें ऑर्डर करें", theme: "🌓 थीम बदलें", langBtn: "🌐 भाषा: हिन्दी", share: "📤 ऐप शेयर करें", back: "← वापस", orderHead: "📋 বিবরণ", lblName: "आपका नाम:", phName: "नाम...", phBook: "नाम...", phWriter: "लेखक...", phPub: "प्रकाशक...", addMore: "➕ और जोड़ें", submit: "कन्फर्म ✅", histHead: "📄 इतिहास", delete: "🗑️ हटाएं", shareHead: "📤 ऐप शेयर करें", install: "📲 ऐप इंस्टॉल करें" }
         };
 
         const themes = ['midnight', 'ocean', 'sunset', 'forest', 'light'];
@@ -215,18 +217,41 @@
             document.getElementById('btn-submit').innerText = d.submit;
             document.getElementById('hist-head').innerText = d.histHead;
             document.getElementById('share-head').innerText = d.shareHead;
+            document.getElementById('btn-install').innerText = d.install;
 
-            // Update Dynamic Placeholders
             document.querySelectorAll('.book-name').forEach(i => i.placeholder = d.phBook);
             document.querySelectorAll('.writer-name').forEach(i => i.placeholder = d.phWriter);
             document.querySelectorAll('.pub-name').forEach(i => i.placeholder = d.phPub);
         }
 
+        // 3. PWA Install Logic
+        let deferredPrompt;
+        const installTile = document.getElementById('install-tile');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installTile.style.display = 'flex'; // পিসি বা ফোনে ইনস্টল অ্যাভেলেবল হলে দেখাবে
+        });
+
+        async function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('User installed the app');
+                    installTile.style.display = 'none';
+                }
+                deferredPrompt = null;
+            }
+        }
+
+        // 4. Order & History Logic
         async function placeOrder() {
             const name = document.getElementById('custName').value.trim();
             const entries = document.querySelectorAll('.book-entry');
             let books = [];
-            let msg = `*S&T GALLERY - New Order*\n-----------------------\n👤 *Customer:* ${name}\n`;
+            let msg = `*S&T GALLERY - New Order*\n👤 *Customer:* ${name}\n`;
 
             entries.forEach((en, idx) => {
                 const b = en.querySelector('.book-name').value.trim();
@@ -245,76 +270,55 @@
                     userId: userId, customer_name: name, books: books,
                     showToUser: true, status: 'pending', order_time: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                
-                const myWhatsApp = "919019863904"; 
-                window.open(`https://wa.me/${myWhatsApp}?text=${encodeURIComponent(msg)}`, '_blank');
+                window.open(`https://wa.me/919019863904?text=${encodeURIComponent(msg)}`, '_blank');
                 location.reload();
-            } catch (e) { alert("Error placing order!"); }
+            } catch (e) { alert("Error!"); }
         }
 
         async function loadOrderHistory() {
             const container = document.getElementById('order-list-container');
-            container.innerHTML = '<p style="text-align:center; padding:20px;">Loading...</p>';
+            container.innerHTML = '<p style="text-align:center;">Loading...</p>';
             try {
                 const snap = await db.collection("book_orders").where("userId", "==", userId).get();
-                let orders = []; 
-                snap.forEach(doc => { if(doc.data().showToUser) orders.push({id: doc.id, ...doc.data()}); });
+                let orders = []; snap.forEach(doc => { if(doc.data().showToUser) orders.push({id: doc.id, ...doc.data()}); });
                 orders.sort((a,b) => (b.order_time?.seconds || 0) - (a.order_time?.seconds || 0));
                 
-                const lang = localStorage.getItem('lang') || 'bn';
                 let html = '';
                 orders.forEach(d => {
                     html += `<div class="order-item">
                         <span style="float:right; font-size:11px; background:var(--accent); color:white; padding:2px 8px; border-radius:5px;">${d.status}</span>
                         <strong>${d.order_time ? d.order_time.toDate().toLocaleDateString() : 'New'}</strong>
-                        <ul style="margin:10px 0; font-size:14px; opacity:0.9;">${d.books.map(b => `<li>${b.book_name}</li>`).join('')}</ul>
-                        <span onclick="hideOrder('${d.id}')" style="color:#ff7675; cursor:pointer; font-size:12px; text-decoration:underline;">${translations[lang].delete}</span>
+                        <ul>${d.books.map(b => `<li>${b.book_name}</li>`).join('')}</ul>
+                        <span onclick="hideOrder('${d.id}')" style="color:#ff7675; cursor:pointer; font-size:12px; text-decoration:underline;">Delete</span>
                     </div>`;
                 });
                 container.innerHTML = html || 'No orders found.';
-            } catch (e) { container.innerHTML = 'Error loading history!'; }
+            } catch (e) { container.innerHTML = 'Error!'; }
         }
 
-        // Missing function fixed
-        async function hideOrder(orderId) {
+        async function hideOrder(id) {
             if(confirm("Are you sure?")) {
-                try {
-                    await db.collection("book_orders").doc(orderId).update({ showToUser: false });
-                    loadOrderHistory();
-                } catch(e) { alert("Delete failed!"); }
+                await db.collection("book_orders").doc(id).update({ showToUser: false });
+                loadOrderHistory();
             }
         }
 
-        function openOrderPage() { document.getElementById('orderPage').style.display = 'block'; document.body.style.overflow = 'hidden'; }
+        // 5. Utility Functions
+        function openOrderPage() { document.getElementById('orderPage').style.display = 'block'; }
         function openHistoryPage() { document.getElementById('historyPage').style.display = 'block'; loadOrderHistory(); }
         function openShareModal() { document.getElementById('shareModal').style.display = 'flex'; }
         function closePage(id) { document.getElementById(id).style.display = 'none'; document.body.style.overflow = 'auto'; }
-
-        function directShare(platform) {
-            const text = "S&T GALLERY theke sorasori boi order korun! Link: ";
-            const url = window.location.href;
-            if(platform === 'whatsapp') window.open(`https://wa.me/?text=${encodeURIComponent(text + url)}`, '_blank');
-            else window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
-        }
         function copyLink() { navigator.clipboard.writeText(window.location.href); alert("Link Copied!"); }
 
-        function handleEnter(e, cur) { if (e.key === "Enter") { e.preventDefault(); focusNext(cur); } }
-        function focusNext(cur) {
-            const ins = Array.from(document.querySelectorAll('#orderPage input'));
-            const idx = ins.indexOf(cur);
-            if (idx < ins.length - 1) ins[idx+1].focus();
-            else document.getElementById('btn-submit').focus();
-        }
-        
         function addMoreBook() {
             const container = document.getElementById('book-container');
             const lang = localStorage.getItem('lang') || 'bn';
             const div = document.createElement('div');
             div.className = "book-entry";
             div.style.cssText = "margin-bottom: 15px; border-bottom: 1px solid var(--tile-border); padding-bottom: 15px;";
-            div.innerHTML = `<input type="text" class="book-name" placeholder="${translations[lang].phBook}" onkeypress="handleEnter(event, this)">
-                <input type="text" class="writer-name" placeholder="${translations[lang].phWriter}" onkeypress="handleEnter(event, this)">
-                <input type="text" class="pub-name" placeholder="${translations[lang].phPub}" onkeypress="handleEnter(event, this)">`;
+            div.innerHTML = `<input type="text" class="book-name" placeholder="${translations[lang].phBook}">
+                <input type="text" class="writer-name" placeholder="${translations[lang].phWriter}">
+                <input type="text" class="pub-name" placeholder="${translations[lang].phPub}">`;
             container.appendChild(div);
         }
 
