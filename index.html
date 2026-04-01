@@ -20,6 +20,7 @@
             --accent: #3498db;
         }
 
+        .theme-midnight { --bg-grad: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); --accent: #3498db; }
         .theme-ocean { --bg-grad: linear-gradient(135deg, #064e3b 0%, #134e4a 100%); --accent: #00bcd4; }
         .theme-sunset { --bg-grad: linear-gradient(135deg, #4c1d95 0%, #831843 100%); --accent: #ff7675; }
         .theme-forest { --bg-grad: linear-gradient(135deg, #14532d 0%, #064e3b 100%); --accent: #2ecc71; }
@@ -58,6 +59,7 @@
         .tile-blue { background: var(--accent); color: white !important; }
         .tile-orange { background: #f39c12; color: white !important; }
         .tile-red { background: #e74c3c; color: white !important; }
+        .tile-green { background: #27ae60; color: white !important; }
 
         .full-page { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
@@ -74,14 +76,14 @@
         .share-option:hover { background: var(--accent); color: white; }
 
         .input-wrapper { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-        input { flex: 1; padding: 15px; border-radius: 12px; border: 2px solid var(--accent); background: #fff; color: #333; outline: none; font-size: 16px; }
+        input { flex: 1; padding: 15px; border-radius: 12px; border: 2px solid var(--accent); background: #fff; color: #333; outline: none; font-size: 16px; width: 100%; margin-top: 5px; }
         .next-btn { background: var(--accent); color: white; border: none; padding: 12px 15px; border-radius: 10px; cursor: pointer; font-weight: bold; }
         .final-submit { background: var(--accent); color: white; padding: 18px; width: 100%; border-radius: 50px; border: none; font-weight: bold; font-size: 18px; cursor: pointer; margin-top: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
 
-        .order-item { background: var(--tile-bg); border: 1px solid var(--tile-border); padding: 15px; border-radius: 15px; margin-bottom: 15px; }
+        .order-item { background: var(--tile-bg); border: 1px solid var(--tile-border); padding: 15px; border-radius: 15px; margin-bottom: 15px; position: relative;}
     </style>
 </head>
-<body class="theme-midnight">
+<body>
 
     <div class="app-container">
         <div class="tile header-tile">
@@ -94,7 +96,7 @@
         <div class="tile tile-orange" onclick="openHistoryPage()"><span id="btn-myorder">📄 Amar Order (History)</span></div>
         <div class="tile tile-orange"><span id="btn-rates">📔 Service-er Rate Dekhun</span></div>
         
-        <a href="https://maps.google.com/?cid=2723419887409784179&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ" target="_blank" class="tile tile-blue" style="text-decoration: none;">
+        <a href="https://www.google.com/maps/search/?api=1&query=20,Kamini+School+Lane,Howrah" target="_blank" class="tile tile-blue" style="text-decoration: none;">
             <span id="btn-map">📍 Google Maps-e Dekhun</span>
         </a>
 
@@ -109,7 +111,7 @@
     <div id="orderPage" class="full-page">
         <div class="back-btn" onclick="closePage('orderPage')" id="back-order">← Phire Jan</div>
         <div style="background: var(--tile-bg); padding: 25px; border-radius: 25px; border: 1px solid var(--tile-border);">
-            <h2 id="order-head" style="text-align: center; margin-bottom: 20px; color: var(--text-color);">📋 Order Details</h2>
+            <h2 id="order-head" style="text-align: center; margin-bottom: 20px;">📋 Order Details</h2>
             <label id="lbl-name" style="color: var(--accent); font-weight: bold; display: block; margin-bottom: 8px;">Apnar Naam:</label>
             <div class="input-wrapper">
                 <input type="text" id="custName" placeholder="Naam..." onkeypress="handleEnter(event, this)">
@@ -129,7 +131,7 @@
 
     <div id="historyPage" class="full-page">
         <div class="back-btn" onclick="closePage('historyPage')" id="back-hist">← Phire Jan</div>
-        <h2 id="hist-head" style="text-align: center; margin-bottom: 20px; color: var(--text-color);">📄 Apnar Order History</h2>
+        <h2 id="hist-head" style="text-align: center; margin-bottom: 20px;">📄 Apnar Order History</h2>
         <div id="order-list-container"></div>
     </div>
 
@@ -147,6 +149,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
+        // Firebase Configuration (Same as yours)
         const firebaseConfig = {
             apiKey: "AIzaSyC79rsKemc3qthh8-mJ29HM1ni7Q9mIb3Q",
             authDomain: "kamini-digital.firebaseapp.com",
@@ -162,31 +165,31 @@
         localStorage.setItem('s_t_user_id', userId);
 
         const translations = {
-            bn: { title: "S&T GALLERY", addr: "২০ নম্বর কামিনী স্কুল লেন, হাওড়া", myorder: "📄 আমার অর্ডার (History)", rates: "📔 সার্ভিসের রেট দেখুন", map: "📍 Google Maps-এ দেখুন", order: "📚 বইয়ের অর্ডার দিন", theme: "🌓 থিম পরিবর্তন করুন", langBtn: "🌐 ভাষা: বাংলা", share: "📤 বন্ধুদের সাথে শেয়ার করুন", back: "← ফিরে যান", orderHead: "📋 অর্ডার ডিটেইলস", lblName: "আপনার নাম:", phName: "নাম...", phBook: "বই...", phWriter: "লেখক...", phPub: "পাবলিশার...", addMore: "➕ আরও যোগ করুন", submit: "অর্ডার নিশ্চিত করুন ✅", histHead: "📄 অর্ডার হিস্ট্রি", delete: "🗑️ মুছুন", shareHead: "📤 অ্যাপটি শেয়ার করুন" },
+            bn: { title: "S&T GALLERY", addr: "২০ নম্বর কামিনী স্কুল লেন, হাওড়া", myorder: "📄 আমার অর্ডার (History)", rates: "📔 সার্ভিসের রেট দেখুন", map: "📍 Google Maps-এ দেখুন", order: "📚 বইয়ের অর্ডার দিন", theme: "🌓 থিম পরিবর্তন করুন", langBtn: "🌐 ভাষা: বাংলা", share: "📤 বন্ধুদের সাথে শেয়ার করুন", back: "← ফিরে যান", orderHead: "📋 অর্ডার ডিটেইলস", lblName: "আপনার নাম:", phName: "নাম...", phBook: "বই...", phWriter: "লেখক...", phPub: "পাবলিশার...", addMore: "➕ আরও যোগ করুন", submit: "অর্ডার নিশ্চিত করুন ✅", histHead: "📄 অর্ডার হিস্ট্রি", delete: "🗑️ মুছুন", shareHead: "📤 অ্যাপটি শেয়ার করুন" },
             en: { title: "S&T GALLERY", addr: "20, Kamini School Lane, Howrah", myorder: "📄 My Orders", rates: "📔 Service Rates", map: "📍 Google Maps", order: "📚 Order Books", theme: "🌓 Change Theme", langBtn: "🌐 Language: English", share: "📤 Share App", back: "← Back", orderHead: "📋 Order Details", lblName: "Your Name:", phName: "Name...", phBook: "Book...", phWriter: "Writer...", phPub: "Publisher...", addMore: "➕ Add More", submit: "Confirm ✅", histHead: "📄 History", delete: "🗑️ Delete", shareHead: "📤 Share App" },
-            hi: { title: "S&T GALLERY", addr: "20, कामिनी स्कूल लेन, हावड़ा", myorder: "📄 मेरे ऑर्डर", rates: "📔 सर्विस रेट", map: "📍 गूगल मैप्स", order: "📚 किताबें ऑर्डर करें", theme: "🌓 थीम बदलें", langBtn: "🌐 भाषा: हिन्दी", share: "📤 ऐप शेयर करें", back: "← वापस", orderHead: "📋 विवरण", lblName: "आपका नाम:", phName: "नाम...", phBook: "नाम...", phWriter: "लेखक...", phPub: "प्रकाशक...", addMore: "➕ और जोड़ें", submit: "कन्फर्म ✅", histHead: "📄 इतिहास", delete: "🗑️ हटाएं", shareHead: "📤 ऐप शेयर करें" }
+            hi: { title: "S&T GALLERY", addr: "20, कामिनी स्कूल लेन, हावड़ा", myorder: "📄 मेरे ऑर्डर", rates: "📔 सर्विस रेट", map: "📍 गूगल मैप्स", order: "📚 किताबें ऑर्डर करें", theme: "🌓 थीम बदलें", langBtn: "🌐 भाषा: हिन्दी", share: "📤 ऐप शेयर करें", back: "← वापस", orderHead: "📋 विवरण", lblName: "आपका नाम:", phName: "नाम...", phBook: "नाम...", phWriter: "लेखक...", phPub: "प्रकाशक...", addMore: "➕ और जोड़ें", submit: "कन्फर्म ✅", histHead: "📄 इतिहास", delete: "🗑️ हटाएं", shareHead: "📤 ऐप शेयर करें" }
         };
 
         const themes = ['midnight', 'ocean', 'sunset', 'forest', 'light'];
+
         function setTheme(theme) {
             document.body.className = 'theme-' + theme;
             localStorage.setItem('s_t_theme', theme);
             updateUI();
         }
+
         function cycleTheme() {
             let cur = localStorage.getItem('s_t_theme') || 'midnight';
             let next = themes[(themes.indexOf(cur) + 1) % themes.length];
             setTheme(next);
         }
 
-        function setLanguage(lang) {
-            localStorage.setItem('lang', lang);
-            updateUI();
-        }
         function cycleLanguage() {
             const langs = ['bn', 'en', 'hi'];
-            let next = langs[(langs.indexOf(localStorage.getItem('lang') || 'bn') + 1) % langs.length];
-            setLanguage(next);
+            let current = localStorage.getItem('lang') || 'bn';
+            let next = langs[(langs.indexOf(current) + 1) % langs.length];
+            localStorage.setItem('lang', next);
+            updateUI();
         }
 
         function updateUI() {
@@ -200,8 +203,8 @@
             document.getElementById('btn-rates').innerText = d.rates;
             document.getElementById('btn-map').innerText = d.map;
             document.getElementById('btn-order').innerText = d.order;
-            document.getElementById('btn-theme').innerText = d.theme + " (" + theme.toUpperCase() + ")";
-            document.getElementById('btn-lang').innerText = d.langBtn + " (Change)";
+            document.getElementById('btn-theme').innerText = `${d.theme} (${theme.toUpperCase()})`;
+            document.getElementById('btn-lang').innerText = d.langBtn;
             document.getElementById('btn-share').innerText = d.share;
             document.getElementById('back-order').innerText = d.back;
             document.getElementById('back-hist').innerText = d.back;
@@ -212,6 +215,11 @@
             document.getElementById('btn-submit').innerText = d.submit;
             document.getElementById('hist-head').innerText = d.histHead;
             document.getElementById('share-head').innerText = d.shareHead;
+
+            // Update Dynamic Placeholders
+            document.querySelectorAll('.book-name').forEach(i => i.placeholder = d.phBook);
+            document.querySelectorAll('.writer-name').forEach(i => i.placeholder = d.phWriter);
+            document.querySelectorAll('.pub-name').forEach(i => i.placeholder = d.phPub);
         }
 
         async function placeOrder() {
@@ -238,12 +246,10 @@
                     showToUser: true, status: 'pending', order_time: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 
-                // 📞 Apnar WhatsApp Number ekhane thik korun (Line 240)
                 const myWhatsApp = "919019863904"; 
-                
                 window.open(`https://wa.me/${myWhatsApp}?text=${encodeURIComponent(msg)}`, '_blank');
                 location.reload();
-            } catch (e) { alert("Error!"); }
+            } catch (e) { alert("Error placing order!"); }
         }
 
         async function loadOrderHistory() {
@@ -251,7 +257,8 @@
             container.innerHTML = '<p style="text-align:center; padding:20px;">Loading...</p>';
             try {
                 const snap = await db.collection("book_orders").where("userId", "==", userId).get();
-                let orders = []; snap.forEach(doc => { if(doc.data().showToUser) orders.push({id: doc.id, ...doc.data()}); });
+                let orders = []; 
+                snap.forEach(doc => { if(doc.data().showToUser) orders.push({id: doc.id, ...doc.data()}); });
                 orders.sort((a,b) => (b.order_time?.seconds || 0) - (a.order_time?.seconds || 0));
                 
                 const lang = localStorage.getItem('lang') || 'bn';
@@ -265,7 +272,17 @@
                     </div>`;
                 });
                 container.innerHTML = html || 'No orders found.';
-            } catch (e) { container.innerHTML = 'Error!'; }
+            } catch (e) { container.innerHTML = 'Error loading history!'; }
+        }
+
+        // Missing function fixed
+        async function hideOrder(orderId) {
+            if(confirm("Are you sure?")) {
+                try {
+                    await db.collection("book_orders").doc(orderId).update({ showToUser: false });
+                    loadOrderHistory();
+                } catch(e) { alert("Delete failed!"); }
+            }
         }
 
         function openOrderPage() { document.getElementById('orderPage').style.display = 'block'; document.body.style.overflow = 'hidden'; }
@@ -288,20 +305,22 @@
             if (idx < ins.length - 1) ins[idx+1].focus();
             else document.getElementById('btn-submit').focus();
         }
+        
         function addMoreBook() {
             const container = document.getElementById('book-container');
+            const lang = localStorage.getItem('lang') || 'bn';
             const div = document.createElement('div');
             div.className = "book-entry";
             div.style.cssText = "margin-bottom: 15px; border-bottom: 1px solid var(--tile-border); padding-bottom: 15px;";
-            div.innerHTML = `<input type="text" class="book-name" placeholder="Boier Naam..." onkeypress="handleEnter(event, this)">
-                <input type="text" class="writer-name" placeholder="Lekhok..." onkeypress="handleEnter(event, this)">
-                <input type="text" class="pub-name" placeholder="Publisher..." onkeypress="handleEnter(event, this)">`;
+            div.innerHTML = `<input type="text" class="book-name" placeholder="${translations[lang].phBook}" onkeypress="handleEnter(event, this)">
+                <input type="text" class="writer-name" placeholder="${translations[lang].phWriter}" onkeypress="handleEnter(event, this)">
+                <input type="text" class="pub-name" placeholder="${translations[lang].phPub}" onkeypress="handleEnter(event, this)">`;
             container.appendChild(div);
         }
 
         window.onload = () => { 
             setTheme(localStorage.getItem('s_t_theme') || 'midnight');
-            setLanguage(localStorage.getItem('lang') || 'bn'); 
+            updateUI(); 
         };
     </script>
 </body>
