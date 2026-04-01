@@ -135,7 +135,7 @@
         // PWA (অ্যাপ ইনস্টল) লজিক
         let deferredPrompt;
         const installBtn = document.getElementById('installAdminBtn');
-        if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(err => console.log(err)); 
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register(admin-sw.js).catch(err => console.log(err)); 
         window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; installBtn.style.display = 'inline-block'; });
         installBtn.addEventListener('click', async () => { if (deferredPrompt) { deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; installBtn.style.display = 'none'; }});
         window.addEventListener('appinstalled', () => { installBtn.style.display = 'none'; });
